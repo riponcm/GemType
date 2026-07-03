@@ -60,10 +60,32 @@ GemType checks the grammar and spelling of text the user is actively writing in 
 | Content scripts on `<all_urls>` | The extension's single purpose is checking writing in text fields on whatever site the user writes on; this cannot be predicted in advance. The script is inert until the user focuses an editable field, and users can disable specific sites or the whole extension from the popup. |
 | Remote code | None. All code is packaged in the extension. |
 
-**Data usage disclosures (check these boxes):**
-- Website content (the text the user is editing) → sent to Google's Gemini API for processing → NOT sold, NOT used for unrelated purposes, NOT transferred except to the API the user configured
-- No personally identifiable information collected by the developer
-- Privacy policy URL: `https://github.com/riponcm/GemType/blob/main/PRIVACY.md`
+**Data usage disclosures — check exactly these two data types:**
+
+| Data type (dashboard checkbox) | Why it must be declared |
+|---|---|
+| ☑ **Website content** | The text of the field the user is editing is transmitted to Google's Gemini API for grammar analysis / rewriting. This is the extension's single purpose. |
+| ☑ **Authentication information** | The user's own Gemini API key is stored locally and transmitted to Google's API as the authentication header on every request. It never goes anywhere else. |
+
+Leave every other data type unchecked — the extension does not touch
+personal communications history, location, web history, user activity
+(clicks/keystroke logging), health, or financial data. Note for reviewer
+context: password inputs, payment fields (`autocomplete="cc-*"`), and
+one-time-code fields are excluded from reading at the code level.
+
+**Certifications (check all three at the bottom of the Privacy tab):**
+- ☑ I do not sell or transfer user data to third parties, apart from the approved use cases
+- ☑ I do not use or transfer user data for purposes that are unrelated to my item's single purpose
+- ☑ I do not use or transfer user data to determine creditworthiness or for lending purposes
+
+**Privacy policy URL:** `https://github.com/riponcm/GemType/blob/main/PRIVACY.md`
+
+**Expect an in-depth review:** content scripts on `<all_urls>` are classed as
+a *broad host permission*, which always routes the extension to manual review
+(days to ~2 weeks for a first submission). This is unavoidable for a
+check-anywhere writing tool — Grammarly and LanguageTool carry the same
+permission. The justification table above answers the reviewer's standard
+questions.
 
 ## Assets
 

@@ -31,6 +31,9 @@ receive, or store any of your data**. There is no GemType server.
   API as described above
 - No browsing-history collection; the extension reads only the text fields
   you actively edit, and only on sites where it is enabled
+- **Password fields are never read** (`<input type="password">` is excluded
+  by design), and fields marked as payment (`autocomplete="cc-*"`),
+  one-time-code, or password-manager fields are skipped as well
 - No remote code — all extension code ships in the package
 
 ## Your controls
