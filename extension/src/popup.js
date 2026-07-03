@@ -14,11 +14,21 @@ async function load() {
     ...(stored.settings || {}),
   };
 
+  // Ask the content script (top frame) for the hostname instead of reading
+  // tab.url — this avoids needing the "activeTab" permission entirely.
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  try {
-    hostname = tab?.url ? new URL(tab.url).hostname : null;
-  } catch {
-    hostname = null;
+  hostname = null;
+  if (tab?.id != null) {
+    try {
+      const res = await chrome.tabs.sendMessage(
+        tab.id,
+        { type: 'GET_HOSTNAME' },
+        { frameId: 0 }
+      );
+      hostname = res?.hostname || null;
+    } catch {
+      hostname = null; // no content script here (chrome://, web store, PDF…)
+    }
   }
 
   $('enabled').checked = settings.enabled;
