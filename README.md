@@ -27,6 +27,29 @@
 - 🕶️ **Private by design** — your text goes only to Google's Gemini API; no tracking, no analytics, nothing else phones home
 - ⚙️ **Full control** — per-site disable, global toggle, model picker, language setting; honors `data-gramm="false"` opt-outs
 
+## ⚖️ GemType vs. Grammarly
+
+| | **GemType** | **Grammarly** |
+|---|---|---|
+| 💰 Price | **Free** — bring your own Gemini key ([free tier](https://aistudio.google.com/apikey), no card) | Free plan is limited; Premium **$12–30 / month** |
+| ✅ Grammar & spelling fixes | ✔️ unlimited | ✔️ (full corrections need Premium) |
+| 🔁 Sentence re-check after each accepted fix | ✔️ automatic | — |
+| ✍️ AI rewrites (Improve / Shorten) | ✔️ included | Premium |
+| 🎭 Preset styles (Formal / Casual) | ✔️ included | Premium |
+| 🌐 Languages | Any language Gemini understands — auto-detected | English + a handful |
+| 🕶️ Trackers / analytics | **None** | Product analytics & telemetry |
+| 👤 Account required | **No** | Yes |
+| 🖥️ Where your text is processed | Google's Gemini API only, with **your** key — no middleman server | Grammarly's servers |
+| 🔓 Open source | ✔️ MIT | — |
+| 📄 Google Docs | — (Google whitelists specific vendors) | ✔️ |
+
+**What does "bring your own key" really cost?** For a single person typing,
+the **free Gemini tier is more than enough** — GemType checks only after you
+pause, skips unchanged text, and caches results, so even a heavy writing day
+stays comfortably inside the free quota. If you ever switch the key to the
+paid tier, a typical check costs ~$0.0003 — around **$1/month** for very
+heavy daily use. Compare that to $144–360/year for Premium.
+
 ## 🚀 Install
 
 **Chrome Web Store** — *coming soon.*
