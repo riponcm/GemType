@@ -1,6 +1,14 @@
-.DS_Store
-node_modules/
+# local AI tooling / project memory — never publish
+CLAUDE.md
+.projectmem/
+.claude/
+
+# store publishing playbook (kept local — contains submission details)
+store/
+
+# build artifacts
 safari/build/
-store/*.zip
 xcuserdata/
 *.xcuserstate
+node_modules/
+.DS_Store

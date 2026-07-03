@@ -50,6 +50,15 @@ stays comfortably inside the free quota. On the paid tier, a typical check
 costs around $0.0003 — roughly one dollar per month for very heavy daily
 use, compared with $144–360 per year for Premium.
 
+## Screenshots
+
+| | |
+|---|---|
+| ![Live checking with underlines and the issue-count badge](assets/screenshots/underlines.png) | ![Suggestion card with one-click Accept](assets/screenshots/card.png) |
+| *Live checking — underlines and issue-count badge* | *Click an underline, accept the fix* |
+| ![All suggestions in one panel](assets/screenshots/panel.png) | ![Rewrite toolbar on selected text](assets/screenshots/toolbar.png) |
+| *Review all suggestions from the badge* | *Select text to rewrite: Improve, Fix, Shorten, Formal, Casual* |
+
 ## Install
 
 **Chrome Web Store** — *coming soon.*
@@ -123,10 +132,10 @@ extension/              the Chrome extension (MV3, no build step)
     │   └── util.js         text extraction, offset maps, safe replacement
     ├── options.html/js     API key, model, language, disabled sites
     └── popup.html/js       global + per-site toggles
+assets/                 logo, hero animation, screenshots
 test/
 ├── test-page.html      manual test fields (incl. scroll + opt-out cases)
 └── harness.html        automated harness with a mocked Gemini backend
-store/                  Chrome Web Store listing assets
 safari/                 Xcode wrapper project (generated)
 ```
 
@@ -162,6 +171,84 @@ analysis. Do not use it in fields containing passwords, secrets, or text you
 are not comfortable processing with a cloud AI service — or disable it for
 those sites with one click.
 
+## Frequently asked questions
+
+**Is GemType a free alternative to Grammarly?**
+Yes. GemType provides live grammar checking, one-click fixes, and AI rewrites
+on any website at no cost — you supply your own free Gemini API key from
+Google AI Studio. There is no subscription and no premium tier.
+
+**Is the Gemini API key really free? Do I need a credit card?**
+Google AI Studio issues free API keys with no credit card required. The free
+quota is far more than one person needs for everyday typing; GemType is built
+to stay inside it (debounced checks, caching, sentence-scoped re-checks).
+
+**Is GemType safe? Where does my text go?**
+The text you edit is sent directly from your browser to Google's Gemini API,
+authenticated with your own key. There is no GemType server, no account, and
+no analytics — the developers never see your text. Password, payment, and
+one-time-code fields are never read. See [PRIVACY.md](PRIVACY.md).
+
+**Which websites does it work on?**
+Any site with a normal text field or rich editor: Gmail, LinkedIn, X
+(Twitter), Reddit, GitHub, forums, web mail, CMS editors. Google Docs is the
+one notable exception, because it renders documents to a canvas and restricts
+its annotation API to Google-whitelisted vendors.
+
+**Does it work in languages other than English?**
+Yes. GemType auto-detects the language you are writing in and checks it with
+the same model — Spanish, French, German, Portuguese, Bengali, Hindi, Arabic,
+Chinese, Japanese, and anything else Gemini understands. You can also pin a
+language in settings.
+
+**How is this different from pasting my text into ChatGPT or Gemini?**
+GemType works where you type: mistakes are underlined in place while you
+write, fixes apply with one click and native undo, and each fix triggers an
+automatic re-check of the sentence. No copy-paste round trips.
+
+**Does it slow down my browser?**
+No. The content script stays inert until you focus a text field, checks only
+after you pause typing, and draws its UI on a lightweight overlay without
+touching the page's own editor.
+
+**Can it run fully offline or with a local model?**
+Not yet. A pluggable backend (including self-hosted models) is on the
+roadmap.
+
+## Contributing
+
+Contributions are welcome — this project went from an empty folder to a
+working extension in a day, and there is plenty of interesting work left:
+
+- Firefox port (WebExtension API is nearly identical)
+- Compatibility fixes for stubborn editors (report a site, ideally with a
+  reduced test case in `test/test-page.html`)
+- Translations for the UI
+- The proxy backend for a zero-setup hosted mode
+
+Open an issue to discuss anything bigger before you build it. If GemType
+helped you, starring the repository genuinely helps others find it.
+
+## Sponsor this project
+
+GemType is free, open source, and unfunded. The Safari version is built and
+working — but shipping it to the App Store requires the **Apple Developer
+Program fee of $99/year**, which is currently the only thing standing between
+this project and Safari users (and, later, the iOS keyboard).
+
+If you or your company find GemType useful, consider sponsoring:
+**[github.com/sponsors/riponcm](https://github.com/sponsors/riponcm)** — the
+first goal is exactly one thing: the Apple Developer fee. Every sponsor is
+credited in this README.
+
 ## License
 
 [MIT](LICENSE) © 2026 Matily
+
+---
+
+<div align="center">
+
+Another open source product from <b>Matily</b> — open source software studio.
+
+</div>
