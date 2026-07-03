@@ -245,6 +245,9 @@ credited in this README.
 
 [MIT](LICENSE) © 2026 Matily
 
+The GemType name and logo are not covered by the MIT license — see
+[TRADEMARK.md](TRADEMARK.md). Please give forks their own name and icon.
+
 ---
 
 <div align="center">
