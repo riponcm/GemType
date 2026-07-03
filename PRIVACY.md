@@ -58,5 +58,6 @@ receive, or store any of your data**. There is no GemType server.
 
 ## Contact
 
-Questions or concerns: open an issue at
-[github.com/riponcm/GemType](https://github.com/riponcm/GemType/issues).
+Questions or concerns: email **hello@matily.com**, or open an issue on the
+[GitHub repository](https://github.com/riponcm/GemType/issues) once it is
+public.
