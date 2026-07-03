@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body {
+    width: 440px; height: 280px; overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(135deg, #d1fae5 0%, #e0e7ff 60%, #fce7f3 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px;
+  }
+  img.logo { width: 330px; }
+  .line {
+    background: #1f2328; color: #fff;
+    font-size: 14px; font-weight: 600;
+    padding: 8px 18px; border-radius: 999px;
+  }
+  .line .u { text-decoration: underline wavy #f87171 2px; text-underline-offset: 4px; }
+  .line .ok { color: #34d399; }
+</style>
+</head>
+<body>
+  <img class="logo" src="../assets/logo.svg" alt="GemType" />
+  <div class="line">fix <span class="u">you're</span> writing → fix <span class="ok">your</span> writing ✓</div>
+</body>
+</html>

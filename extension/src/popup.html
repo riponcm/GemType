@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      width: 260px;
+      margin: 0;
+      background: #fff;
+      color: #1f2328;
+      font-size: 13px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px;
+      border-bottom: 1px solid #eef0f2;
+      font-weight: 700;
+    }
+    .header img { width: 22px; height: 22px; border-radius: 5px; }
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .row .label { font-weight: 600; }
+    .row .sub { color: #6b7280; font-size: 11px; margin-top: 2px; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .switch { position: relative; width: 36px; height: 20px; flex: none; }
+    .switch input { display: none; }
+    .slider {
+      position: absolute; inset: 0;
+      background: #d1d5db; border-radius: 20px;
+      cursor: pointer; transition: background .15s;
+    }
+    .slider::before {
+      content: ""; position: absolute;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #fff; top: 2px; left: 2px;
+      transition: transform .15s;
+      box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    }
+    input:checked + .slider { background: #10a37f; }
+    input:checked + .slider::before { transform: translateX(16px); }
+    .warn {
+      margin: 10px 14px;
+      padding: 8px 10px;
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #92400e;
+      display: none;
+    }
+    .warn a { color: #92400e; font-weight: 600; cursor: pointer; }
+    .footer { padding: 10px 14px; }
+    .footer a { color: #2563eb; cursor: pointer; text-decoration: none; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="header"><img src="../icons/icon48.png" alt="" />GemType</div>
+  <div class="warn" id="noKey">No API key set — <a id="setKey">add your free Gemini key</a></div>
+  <div class="row">
+    <div>
+      <div class="label">Enabled</div>
+      <div class="sub">Check writing everywhere</div>
+    </div>
+    <label class="switch"><input type="checkbox" id="enabled" /><span class="slider"></span></label>
+  </div>
+  <div class="row">
+    <div>
+      <div class="label">This site</div>
+      <div class="sub" id="host">…</div>
+    </div>
+    <label class="switch"><input type="checkbox" id="site" /><span class="slider"></span></label>
+  </div>
+  <div class="footer"><a id="options">⚙︎ Settings</a></div>
+  <script src="popup.js"></script>
+</body>
+</html>

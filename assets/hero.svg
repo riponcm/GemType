@@ -1,0 +1,67 @@
+<svg width="820" height="310" viewBox="0 0 820 310" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" role="img" aria-label="GemType animated demo: typing with mistakes, underlines appear, one click fixes them">
+  <defs>
+    <filter id="soft" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+    <clipPath id="typing">
+      <rect x="88" y="130" height="46" width="0">
+        <animate attributeName="width" values="0;560;560" keyTimes="0;0.24;1" dur="9s" repeatCount="indefinite"/>
+      </rect>
+    </clipPath>
+  </defs>
+
+  <!-- compose card -->
+  <rect x="60" y="80" width="700" height="170" rx="16" fill="#ffffff" stroke="#e2e4e8" filter="url(#soft)"/>
+  <circle cx="88" cy="106" r="5" fill="#fda4af"/>
+  <circle cx="106" cy="106" r="5" fill="#fcd34d"/>
+  <circle cx="124" cy="106" r="5" fill="#86efac"/>
+  <line x1="76" y1="122" x2="744" y2="122" stroke="#eef0f2" stroke-width="1"/>
+
+  <!-- original (typed) text, revealed like typing -->
+  <g clip-path="url(#typing)">
+    <text x="90" y="160" font-size="22" fill="#1f2328">She dont like going their on weekend
+      <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.62;0.66;0.97;1" dur="9s" repeatCount="indefinite"/>
+    </text>
+  </g>
+
+  <!-- corrected text -->
+  <text x="90" y="160" font-size="22" fill="#1f2328" opacity="0">She doesn't like going there on weekends.
+    <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.62;0.66;0.97;1" dur="9s" repeatCount="indefinite"/>
+  </text>
+
+  <!-- wavy underlines -->
+  <g stroke="#e5484d" stroke-width="2" fill="none" opacity="0">
+    <path d="M143 167 q4 5 8 0 t8 0 t8 0 t8 0 t8 0 t8 0"/>
+    <path d="M354 167 q4 5 8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0"/>
+    <path d="M473 167 q4 5 8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0"/>
+    <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.27;0.31;0.60;0.64;1" dur="9s" repeatCount="indefinite"/>
+  </g>
+
+  <!-- suggestion chip -->
+  <g opacity="0">
+    <rect x="142" y="180" width="186" height="38" rx="10" fill="#1f2328"/>
+    <text x="158" y="205" font-size="15">
+      <tspan fill="#f87171" text-decoration="line-through">dont</tspan>
+      <tspan fill="#9ca3af"> → </tspan>
+      <tspan fill="#34d399" font-weight="700">doesn't</tspan>
+    </text>
+    <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.42;0.46;0.58;0.62;1" dur="9s" repeatCount="indefinite"/>
+  </g>
+
+  <!-- badge: issues found -->
+  <g opacity="0">
+    <circle cx="732" cy="224" r="15" fill="#e5484d"/>
+    <text x="732" y="230" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" font-family="system-ui, sans-serif">3</text>
+    <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.28;0.32;0.60;0.64;1" dur="9s" repeatCount="indefinite"/>
+  </g>
+
+  <!-- badge: all clear -->
+  <g opacity="0">
+    <circle cx="732" cy="224" r="15" fill="#10a37f"/>
+    <path d="M725 224 l5 6 l10 -12" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.63;0.67;0.97;1" dur="9s" repeatCount="indefinite"/>
+  </g>
+
+  <!-- caption -->
+  <text x="410" y="292" font-size="15" fill="#7c8794" text-anchor="middle" font-family="system-ui, sans-serif">Works in Gmail · LinkedIn · X · Reddit — any text field, in your language, with your own free Gemini key</text>
+</svg>

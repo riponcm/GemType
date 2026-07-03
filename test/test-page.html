@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>GemType test page</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 760px; margin: 40px auto; padding: 0 20px; }
+    h1 { font-size: 22px; }
+    section { margin-bottom: 36px; }
+    textarea, input[type="text"] {
+      width: 100%; box-sizing: border-box; font-size: 15px;
+      padding: 10px; border: 1px solid #ccc; border-radius: 8px;
+    }
+    [contenteditable] {
+      border: 1px solid #ccc; border-radius: 8px; padding: 12px;
+      min-height: 120px; font-size: 15px; line-height: 1.5;
+    }
+    .scrollbox { height: 220px; overflow-y: scroll; border: 1px dashed #999; padding: 12px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+  <h1>GemType test page</h1>
+  <p>Each field is pre-filled with errors. Focus a field, wait ~1.5s, and underlines + the badge should appear.</p>
+
+  <section>
+    <label>1. Plain textarea</label>
+    <textarea rows="5">She dont like going their on the weekends. Its to far away, and the traffic are terrible. Me and him goes there sometime anyway.</textarea>
+  </section>
+
+  <section>
+    <label>2. Single-line input</label>
+    <input type="text" value="I recieved you're email yesterday" />
+  </section>
+
+  <section>
+    <label>3. contenteditable div (like Gmail compose)</label>
+    <div contenteditable="true">
+      <div>Hi John,</div>
+      <div><br /></div>
+      <div>Thank you for you're quick response. Their are a few thing I want to discussing about the project. Me and the team has finish the first phase.</div>
+      <div><br /></div>
+      <div>Best regard,</div>
+    </div>
+  </section>
+
+  <section>
+    <label>4. Textarea inside a scrolling container (position-sync test)</label>
+    <div class="scrollbox">
+      <p>Scroll me while underlines are visible…</p>
+      <textarea rows="4">This are a test of the overlay positioning when the container scroll. It should stay attach to the text.</textarea>
+      <p style="height:400px">filler content below</p>
+    </div>
+  </section>
+
+  <section>
+    <label>5. Opt-out field (data-gramm="false") — should be ignored</label>
+    <textarea rows="2" data-gramm="false">this field have errors but gemtype must ignoring it</textarea>
+  </section>
+</body>
+</html>

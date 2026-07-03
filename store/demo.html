@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>GemType store demo</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #d1fae5 0%, #e0e7ff 55%, #fce7f3 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .window {
+    width: 780px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, .25);
+    overflow: hidden;
+  }
+  .titlebar {
+    background: #f6f7f9;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #374151;
+  }
+  .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .titlebar span.title { margin-left: 10px; }
+  .meta { padding: 10px 22px; border-bottom: 1px solid #f0f1f3; font-size: 14px; color: #6b7280; }
+  .meta b { color: #1f2328; font-weight: 600; }
+  #body {
+    padding: 20px 22px 60px;
+    min-height: 260px;
+    font-size: 17px;
+    line-height: 1.65;
+    color: #1f2328;
+    outline: none;
+  }
+  .brand {
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 15px;
+    font-weight: 600;
+    color: #334155;
+    display: flex; gap: 8px; align-items: center;
+    background: rgba(255,255,255,.75);
+    padding: 8px 16px;
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+  }
+  .brand img { width: 22px; height: 22px; }
+</style>
+</head>
+<body>
+  <div class="window">
+    <div class="titlebar">
+      <div class="dot" style="background:#fda4af"></div>
+      <div class="dot" style="background:#fcd34d"></div>
+      <div class="dot" style="background:#86efac"></div>
+      <span class="title">New message</span>
+    </div>
+    <div class="meta"><b>To:</b> maha@university.edu &nbsp;&nbsp; <b>Subject:</b> Project kickoff</div>
+    <div id="body" contenteditable="true"><div>Hi Maha,</div><div><br /></div><div>Thanks for inviting me I think its a good idea. Their is alot to discuss about the projekt.</div><div><br /></div><div>Best regard,</div><div>Ripon</div></div>
+  </div>
+  <div class="brand"><img src="../extension/icons/icon48.png" alt="" />GemType — AI writing assistant, powered by your own Gemini key</div>
+
+<script>
+  const CORRECTIONS = [
+    { original: 'inviting me I think', replacement: 'inviting me. I think', explanation: 'Run-on sentence — missing period', type: 'grammar' },
+    { original: 'its a good', replacement: "it's a good", explanation: 'Contraction of "it is"', type: 'grammar' },
+    { original: 'Their is', replacement: 'There is', explanation: 'Wrong homophone', type: 'grammar' },
+    { original: 'alot', replacement: 'a lot', explanation: '"A lot" is two words', type: 'spelling' },
+    { original: 'projekt', replacement: 'project', explanation: 'Spelling', type: 'spelling' },
+    { original: 'Best regard,', replacement: 'Best regards,', explanation: 'Standard closing is plural', type: 'grammar' },
+  ];
+  window.chrome = {
+    runtime: {
+      lastError: null,
+      sendMessage(msg, cb) {
+        setTimeout(() => {
+          if (msg.type === 'GET_SETTINGS') {
+            cb({ ok: true, result: { enabled: true, apiKey: 'DEMO', model: 'demo', disabledSites: [], language: 'auto' } });
+          } else if (msg.type === 'CHECK_TEXT') {
+            cb({ ok: true, result: { corrections: CORRECTIONS.filter(c => msg.text.includes(c.original)) } });
+          } else if (msg.type === 'REFINE_TEXT') {
+            cb({ ok: true, result: { rewritten: msg.text } });
+          } else { cb({ ok: true, result: true }); }
+        }, 120);
+      },
+      onMessage: { addListener() {} },
+    },
+    storage: { local: { get: async () => ({}), set: async () => {} }, onChanged: { addListener() {} } },
+  };
+</script>
+<script src="../extension/src/content/util.js"></script>
+<script src="../extension/src/content/overlay.js"></script>
+<script src="../extension/src/content/refine.js"></script>
+<script src="../extension/src/content/content.js"></script>
+<script>
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+  window.addEventListener('load', async () => {
+    const scene = new URLSearchParams(location.search).get('scene') || 'underlines';
+    const body = document.getElementById('body');
+    body.focus();
+    body.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    await sleep(2200); // initial check + render
+    const root = document.querySelector('gemtype-ext')?.shadowRoot;
+    if (!root) return;
+    if (scene === 'card') {
+      const u = root.querySelectorAll('.gt-underline')[0];
+      if (u) u.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    } else if (scene === 'panel') {
+      root.querySelector('.gt-badge')?.click();
+    } else if (scene === 'toolbar') {
+      // select the run-on phrase to trigger the refine toolbar
+      const walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT);
+      let node;
+      while ((node = walker.nextNode())) {
+        const i = node.data.indexOf('Their is alot to discuss');
+        if (i !== -1) {
+          const range = document.createRange();
+          range.setStart(node, i);
+          range.setEnd(node, i + 'Their is alot to discuss about the projekt.'.length);
+          const sel = getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          document.dispatchEvent(new Event('selectionchange'));
+          break;
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>

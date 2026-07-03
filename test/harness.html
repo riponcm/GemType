@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>GemType harness (mocked backend)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 760px; margin: 40px auto; padding: 0 20px; }
+    textarea { width: 100%; box-sizing: border-box; font-size: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; }
+    [contenteditable] { border: 1px solid #ccc; border-radius: 8px; padding: 12px; min-height: 100px; font-size: 15px; line-height: 1.5; }
+    label { display: block; font-weight: 600; margin: 24px 0 6px; }
+  </style>
+</head>
+<body>
+  <h1>GemType harness — mocked Gemini</h1>
+  <p>Content scripts loaded directly with a fake <code>chrome</code> API. No real API calls.</p>
+
+  <label>Textarea</label>
+  <textarea id="ta" rows="4">She dont like going their on the weekends. Me and him goes there sometime.</textarea>
+
+  <label>contenteditable</label>
+  <div id="ce" contenteditable="true">
+    <div>Thank you for you're quick response.</div>
+    <div>Their are a few thing I want to discuss.</div>
+  </div>
+
+  <script>
+    // ---- fake chrome API -------------------------------------------------
+    const MOCK_CORRECTIONS = {
+      // keyed by a distinctive substring of the checked text
+      'She dont': [
+        { original: 'dont', replacement: "doesn't", explanation: 'Missing apostrophe; subject-verb agreement', type: 'grammar' },
+        { original: 'their', replacement: 'there', explanation: 'Wrong homophone', type: 'spelling' },
+        { original: 'Me and him goes', replacement: 'He and I go', explanation: 'Pronoun case and agreement', type: 'grammar' },
+      ],
+      "you're quick": [
+        { original: "you're", replacement: 'your', explanation: 'Possessive, not contraction', type: 'grammar' },
+        { original: 'Their are a few thing', replacement: 'There are a few things', explanation: 'Homophone and plural', type: 'grammar' },
+      ],
+    };
+
+    window.__mockLog = [];
+    window.chrome = {
+      runtime: {
+        lastError: null,
+        sendMessage(msg, cb) {
+          window.__mockLog.push(msg.type);
+          setTimeout(() => {
+            if (msg.type === 'GET_SETTINGS') {
+              cb({ ok: true, result: { enabled: true, apiKey: 'FAKE', model: 'mock', disabledSites: [], language: 'auto' } });
+            } else if (msg.type === 'CHECK_TEXT') {
+              let corrections = [];
+              for (const key in MOCK_CORRECTIONS) {
+                if (msg.text.includes(key)) corrections = MOCK_CORRECTIONS[key];
+              }
+              cb({ ok: true, result: { corrections } });
+            } else if (msg.type === 'REFINE_TEXT') {
+              cb({ ok: true, result: { rewritten: `[${msg.action.toUpperCase()}] ${msg.text}` } });
+            } else {
+              cb({ ok: true, result: true });
+            }
+          }, 150);
+        },
+        onMessage: { addListener() {} },
+      },
+      storage: {
+        local: { get: async () => ({}), set: async () => {} },
+        onChanged: { addListener() {} },
+      },
+    };
+  </script>
+  <script src="../extension/src/content/util.js"></script>
+  <script src="../extension/src/content/overlay.js"></script>
+  <script src="../extension/src/content/refine.js"></script>
+  <script src="../extension/src/content/content.js"></script>
+</body>
+</html>

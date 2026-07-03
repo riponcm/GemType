@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>GemType Settings</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f6f7f9;
+      color: #1f2328;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+    }
+    .wrap { width: 560px; padding: 32px 16px 64px; }
+    h1 { font-size: 20px; display: flex; align-items: center; gap: 10px; }
+    h1 img { width: 28px; height: 28px; border-radius: 6px; }
+    .card {
+      background: #fff;
+      border: 1px solid #e2e4e8;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .card h2 { font-size: 14px; margin: 0 0 12px; }
+    label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 4px; }
+    input[type="text"], input[type="password"], select, textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 13px;
+      background: #fff;
+    }
+    .row { display: flex; gap: 8px; align-items: center; }
+    .row input { flex: 1; }
+    .hint { font-size: 12px; color: #6b7280; margin-top: 4px; line-height: 1.5; }
+    .hint a { color: #2563eb; }
+    button {
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .primary { background: #10a37f; color: #fff; }
+    .primary:hover { background: #0d8a6a; }
+    .ghost { background: #eef0f2; color: #374151; }
+    .ghost:hover { background: #e2e4e8; }
+    #status { font-size: 13px; margin-left: 10px; }
+    #status.ok { color: #047857; }
+    #status.err { color: #b91c1c; }
+    .footer { display: flex; align-items: center; margin-top: 8px; }
+    ol { font-size: 13px; color: #374151; line-height: 1.7; padding-left: 18px; margin: 8px 0 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1><img src="../icons/icon48.png" alt="" />GemType Settings</h1>
+
+    <div class="card">
+      <h2>Gemini API key</h2>
+      <div class="row">
+        <input type="password" id="apiKey" placeholder="AIza..." autocomplete="off" />
+        <button class="ghost" id="toggleKey" type="button">Show</button>
+      </div>
+      <div class="hint">
+        Your key is stored only on this device (<code>chrome.storage.local</code>)
+        and sent only to <code>generativelanguage.googleapis.com</code>.
+      </div>
+      <label>How to get a free key</label>
+      <ol>
+        <li>Open <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> and sign in with a Google account.</li>
+        <li>Accept the terms (first time only).</li>
+        <li>Click <b>Create API key</b> — no credit card needed for the free tier.</li>
+        <li>Copy the key (starts with <code>AIza</code>) and paste it above.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h2>Model &amp; language</h2>
+      <label for="model">Gemini model</label>
+      <select id="model">
+        <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite (recommended)</option>
+        <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite</option>
+        <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+        <option value="__custom__">Custom…</option>
+      </select>
+      <input type="text" id="customModel" placeholder="custom model id" style="display:none;margin-top:8px" />
+      <label for="language">Writing language</label>
+      <select id="language">
+        <option value="auto">Auto-detect</option>
+        <option value="English">English</option>
+        <option value="Spanish">Spanish</option>
+        <option value="French">French</option>
+        <option value="German">German</option>
+        <option value="Portuguese">Portuguese</option>
+        <option value="Bengali">Bengali</option>
+        <option value="Hindi">Hindi</option>
+        <option value="Arabic">Arabic</option>
+        <option value="Chinese">Chinese</option>
+        <option value="Japanese">Japanese</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <h2>Disabled sites</h2>
+      <textarea id="disabledSites" rows="4" placeholder="one hostname per line, e.g. docs.google.com"></textarea>
+      <div class="hint">GemType stays off on these hostnames. You can also toggle a site from the toolbar popup.</div>
+    </div>
+
+    <div class="footer">
+      <button class="primary" id="save">Save settings</button>
+      <button class="ghost" id="test" style="margin-left:8px">Save &amp; test key</button>
+      <span id="status"></span>
+    </div>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>
