@@ -58,6 +58,6 @@ receive, or store any of your data**. There is no GemType server.
 
 ## Contact
 
-Questions or concerns: email **hello@matily.com**, or open an issue on the
+Questions or concerns: email **support@matily.org**, or open an issue on the
 [GitHub repository](https://github.com/riponcm/GemType/issues) once it is
 public.
