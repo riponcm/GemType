@@ -4,11 +4,14 @@
 
 **Grammarly-style writing assistant for every website — powered by your own free Gemini API key.**
 
-[![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-coming%20soon-4285F4?logo=googlechrome&logoColor=white)](#install)
-[![Version](https://img.shields.io/badge/version-0.1.2-10a37f)](extension/manifest.json)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/linnnamnhkciekgpnegkcajcafmjlhgh?label=Chrome%20Web%20Store&logo=googlechrome&logoColor=white&color=4285F4)](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
+[![Users](https://img.shields.io/chrome-web-store/users/linnnamnhkciekgpnegkcajcafmjlhgh?color=10a37f)](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
+[![Rating](https://img.shields.io/chrome-web-store/rating/linnnamnhkciekgpnegkcajcafmjlhgh?color=f59e0b)](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
 [![Manifest V3](https://img.shields.io/badge/manifest-v3-6366f1)](extension/manifest.json)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](../../pulls)
+
+### [➜ Install GemType free from the Chrome Web Store](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
 
 <img src="assets/hero.svg" alt="GemType demo: typing with mistakes, wavy underlines appear, one click fixes them" width="820" />
 
@@ -61,7 +64,10 @@ use, compared with $144–360 per year for Premium.
 
 ## Install
 
-**Chrome Web Store** — *coming soon.*
+**[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)** — one click, then add your free Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey).
+
+<details>
+<summary><b>Or install manually (developer mode)</b></summary>
 
 **Manual (developer mode):**
 
@@ -70,6 +76,8 @@ use, compared with $144–360 per year for Premium.
 3. Click **Load unpacked** and select the `extension/` folder
 4. Get a free API key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey) (no credit card required)
 5. Open GemType **Settings** from the toolbar icon, paste the key, and click **Save & test**
+
+</details>
 
 **Safari** — the same code base wraps into a Safari App Extension; see [Safari build](#safari) below.
 
@@ -158,9 +166,10 @@ Then in Safari: Settings → Developer → **Allow unsigned extensions** → ena
 
 ## Roadmap
 
-- [ ] Chrome Web Store release
+- [x] **Chrome Web Store release** — [live now](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
 - [ ] Hosted key option (proxy backend) — zero setup for end users
 - [ ] Tone and style preferences per site
+- [ ] Safari App Store release (build ready; needs Apple Developer membership — [sponsor](#sponsor-this-project))
 - [ ] Firefox port
 - [ ] iOS / Android keyboards sharing the same backend
 

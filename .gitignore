@@ -6,6 +6,9 @@ CLAUDE.md
 # store publishing playbook (kept local — contains submission details)
 store/
 
+# launch / marketing kit (kept local — drafts, not public repo content)
+launch/
+
 # build artifacts
 safari/build/
 xcuserdata/
