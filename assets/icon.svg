@@ -1,0 +1,17 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GemType icon">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#10a37f"/>
+      <stop offset="1" stop-color="#6366f1"/>
+    </linearGradient>
+  </defs>
+  <!-- app-icon container -->
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <!-- same faceted gem as the wordmark, in white, with a check -->
+  <g transform="translate(26,28)">
+    <polygon points="20,0 56,0 76,22 38,76 0,22" fill="#ffffff"/>
+    <polygon points="20,0 56,0 38,22" fill="#ffffff" opacity=".55"/>
+    <polygon points="0,22 38,22 38,76" fill="#ffffff" opacity=".82"/>
+    <path d="M24 31 L34 43 L55 19" fill="none" stroke="#10a37f" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
