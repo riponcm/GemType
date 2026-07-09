@@ -1,9 +1,10 @@
 # Trademark notice
 
 The **GemType** name and the GemType logo are not covered by the
-[MIT license](LICENSE) that applies to the source code.
+[Apache License 2.0](LICENSE) that applies to the source code. (Apache 2.0,
+Section 6, explicitly does not grant trademark rights.)
 
-The MIT license lets you freely use, modify, and redistribute the *code*. It
+The Apache license lets you freely use, modify, and redistribute the *code*. It
 does **not** grant permission to use the "GemType" name or logo to promote or
 brand a derivative work in a way that could confuse users about its origin.
 

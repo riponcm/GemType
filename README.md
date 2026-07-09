@@ -8,7 +8,7 @@
 [![Users](https://img.shields.io/chrome-web-store/users/linnnamnhkciekgpnegkcajcafmjlhgh?color=10a37f)](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
 [![Rating](https://img.shields.io/chrome-web-store/rating/linnnamnhkciekgpnegkcajcafmjlhgh?color=f59e0b)](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
 [![Manifest V3](https://img.shields.io/badge/manifest-v3-6366f1)](extension/manifest.json)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
+[![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-D22128.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](../../pulls)
 
 ### [➜ Install GemType free from the Chrome Web Store](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
@@ -43,7 +43,7 @@
 | Trackers and analytics | None | Product analytics and telemetry |
 | Account required | No | Yes |
 | Where your text is processed | Google's Gemini API only, with your key — no middleman server | Grammarly's servers |
-| Open source | Yes (MIT) | No |
+| Open source | Yes (Apache 2.0) | No |
 | Google Docs | Not supported (Google whitelists specific vendors) | Supported |
 
 **What does "bring your own key" really cost?** For a single person typing,
@@ -252,10 +252,10 @@ credited in this README.
 
 ## License
 
-[MIT](LICENSE) © 2026 Matily
+[Apache License 2.0](LICENSE) © 2026 Ripon Chandra Malo (Matily). See [NOTICE](NOTICE).
 
-The GemType name and logo are not covered by the MIT license — see
-[TRADEMARK.md](TRADEMARK.md). Please give forks their own name and icon.
+The GemType name and logo are trademarks and are **not** covered by the Apache
+license — see [TRADEMARK.md](TRADEMARK.md). Please give forks their own name and icon.
 
 ---
 
