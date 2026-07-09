@@ -1,5 +1,7 @@
 'use strict';
 
+if (typeof browser !== 'undefined') globalThis.chrome = browser;
+
 const $ = (id) => document.getElementById(id);
 
 let settings = null;

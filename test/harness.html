@@ -42,23 +42,23 @@
     window.chrome = {
       runtime: {
         lastError: null,
-        sendMessage(msg, cb) {
+        sendMessage(msg) {
           window.__mockLog.push(msg.type);
-          setTimeout(() => {
+          return new Promise((resolve) => setTimeout(() => {
             if (msg.type === 'GET_SETTINGS') {
-              cb({ ok: true, result: { enabled: true, apiKey: 'FAKE', model: 'mock', disabledSites: [], language: 'auto' } });
+              resolve({ ok: true, result: { enabled: true, apiKey: 'FAKE', model: 'mock', disabledSites: [], language: 'auto' } });
             } else if (msg.type === 'CHECK_TEXT') {
               let corrections = [];
               for (const key in MOCK_CORRECTIONS) {
                 if (msg.text.includes(key)) corrections = MOCK_CORRECTIONS[key];
               }
-              cb({ ok: true, result: { corrections } });
+              resolve({ ok: true, result: { corrections } });
             } else if (msg.type === 'REFINE_TEXT') {
-              cb({ ok: true, result: { rewritten: `[${msg.action.toUpperCase()}] ${msg.text}` } });
+              resolve({ ok: true, result: { rewritten: `[${msg.action.toUpperCase()}] ${msg.text}` } });
             } else {
-              cb({ ok: true, result: true });
+              resolve({ ok: true, result: true });
             }
-          }, 150);
+          }, 150));
         },
         onMessage: { addListener() {} },
       },

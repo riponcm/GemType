@@ -2,6 +2,10 @@
 // Owns all Gemini API traffic: the content script never talks to the network
 // directly (page CSP would break it); everything is routed through here.
 
+// Cross-browser: alias Firefox's promise-based `browser` to `chrome`. No-op in
+// Chrome. (In Firefox this file runs as an event-page background script.)
+if (typeof browser !== 'undefined') globalThis.chrome = browser;
+
 const API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
 const DEFAULT_MODEL = 'gemini-3.1-flash-lite';
 

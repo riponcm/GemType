@@ -4,6 +4,11 @@
 
 'use strict';
 
+// Cross-browser: Firefox exposes a promise-based `browser` namespace; Chrome
+// uses `chrome` (also promise-based in MV3). Alias so `chrome.*` returns
+// promises in both. No-op in Chrome (where `browser` is undefined).
+if (typeof browser !== 'undefined') globalThis.chrome = browser;
+
 const GT = {};
 
 // Sites (and rich editors like ProseMirror/Quill) opt out of Grammarly with
@@ -252,20 +257,15 @@ GT.debounce = function (fn, ms) {
   return wrapped;
 };
 
-GT.sendMessage = function (msg) {
-  return new Promise((resolve) => {
-    try {
-      chrome.runtime.sendMessage(msg, (res) => {
-        if (chrome.runtime.lastError || !res) {
-          resolve({ ok: false, error: chrome.runtime.lastError?.message || 'NO_RESPONSE' });
-        } else {
-          resolve(res);
-        }
-      });
-    } catch (e) {
-      resolve({ ok: false, error: String(e) });
-    }
-  });
+// Promise-based so it works in both Chrome (MV3 returns a promise) and Firefox
+// (browser.* returns a promise). Errors surface as rejections, not lastError.
+GT.sendMessage = async function (msg) {
+  try {
+    const res = await chrome.runtime.sendMessage(msg);
+    return res || { ok: false, error: 'NO_RESPONSE' };
+  } catch (e) {
+    return { ok: false, error: String(e?.message || e) };
+  }
 };
 
 // Find offsets for each correction snippet in `text`, first unused occurrence
