@@ -268,13 +268,24 @@ GT.card = (() => {
 
     if (opts.message) {
       const msg = GT.ui.el('div', 'gt-msg', cardEl);
-      msg.innerHTML = opts.message; // internal, static strings only
-      const link = msg.querySelector('[data-open-options]');
-      if (link) {
-        link.addEventListener('click', () => {
-          GT.sendMessage({ type: 'OPEN_OPTIONS' });
-          close();
-        });
+      // Build the message from structured parts (string | {bold} | {link}) with
+      // DOM nodes — no innerHTML, so nothing is ever parsed as markup.
+      const parts = Array.isArray(opts.message) ? opts.message : [opts.message];
+      for (const p of parts) {
+        if (typeof p === 'string') {
+          msg.appendChild(document.createTextNode(p));
+        } else if (p.bold != null) {
+          const b = document.createElement('b');
+          b.textContent = p.bold;
+          msg.appendChild(b);
+        } else if (p.link != null) {
+          const a = GT.ui.el('a', '', msg);
+          a.textContent = p.link;
+          a.addEventListener('click', () => {
+            GT.sendMessage({ type: 'OPEN_OPTIONS' });
+            close();
+          });
+        }
       }
     }
 
@@ -520,17 +531,26 @@ GT.FieldOverlay = class {
     const anchor = this.badge.getBoundingClientRect();
     if (this.state === 'error') {
       const messages = {
-        NO_API_KEY:
-          'Add your free Gemini API key to start checking. <a data-open-options>Open settings</a>.',
-        RATE_LIMITED:
+        NO_API_KEY: [
+          'Add your free Gemini API key to start checking. ',
+          { link: 'Open settings' },
+          '.',
+        ],
+        RATE_LIMITED: [
           'The Gemini API rate limit was hit. Checking will resume automatically in a moment.',
-        EXTENSION_RELOADED:
-          '<b>GemType was updated.</b> Refresh this page (F5 / Cmd+R) to reconnect — no need to restart Chrome.',
+        ],
+        EXTENSION_RELOADED: [
+          { bold: 'GemType was updated.' },
+          ' Refresh this page (F5 / Cmd+R) to reconnect — no need to restart the browser.',
+        ],
       };
-      const message =
-        messages[this.errorKind] ||
-        `Something went wrong (<b>${this.errorKind || 'unknown'}</b>). ` +
-          'Check your key and model in <a data-open-options>settings</a>.';
+      const message = messages[this.errorKind] || [
+        'Something went wrong (',
+        { bold: this.errorKind || 'unknown' },
+        '). Check your key and model in ',
+        { link: 'settings' },
+        '.',
+      ];
       GT.card.open(this, [], anchor, { title: 'GemType', message });
       return;
     }
