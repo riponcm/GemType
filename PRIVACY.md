@@ -52,7 +52,6 @@ receive, or store any of your data**. There is no GemType server.
 |---|---|
 | `storage` | Save your API key and settings locally |
 | `contextMenus` | The right-click "GemType" rewrite menu |
-| `activeTab` | Read the current site's hostname for the per-site toggle |
 | `generativelanguage.googleapis.com` | The Gemini API endpoint — the only network destination |
 | Content scripts on all sites | Grammar checking must run inside the text fields of whatever site you write on; it stays inert until you focus a field |
 
