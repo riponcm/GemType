@@ -2,7 +2,7 @@
 
 <img src="assets/logo.svg" alt="GemType" width="420" />
 
-**Grammarly-style writing assistant for every website — powered by your own free Gemini API key.**
+**A free, open-source Grammarly alternative for your browser and Microsoft Word — powered by your own Gemini API key.**
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/linnnamnhkciekgpnegkcajcafmjlhgh?label=Chrome%20Web%20Store&logo=googlechrome&logoColor=white&color=4285F4)](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
 [![Users](https://img.shields.io/chrome-web-store/users/linnnamnhkciekgpnegkcajcafmjlhgh?color=10a37f)](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
@@ -18,6 +18,27 @@
 </div>
 
 ---
+
+## Watch the tutorial
+
+[**▶ 2-minute tutorial on YouTube**](https://www.youtube.com/watch?v=j7Su-4hvigU) — install GemType, add your free Gemini key, and see grammar checking + rewrites in action.
+
+## Now available
+
+GemType runs everywhere you write — all surfaces share the same private,
+bring-your-own-key core (your text goes straight to Google's Gemini API, never
+through a server of ours):
+
+| Platform | Status |
+|---|---|
+| **Chrome** | [Live on the Chrome Web Store](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh) |
+| **Edge** | Submitted (same package as Chrome) |
+| **Firefox** | Submitted to AMO — see `extension/manifest.firefox.json` |
+| **Microsoft Word** | Office task-pane add-in — see [`msword/`](msword/) |
+| **Safari** | Build ready (needs the Apple Developer fee — [sponsor](#sponsor-this-project)) |
+| **iOS / Android keyboards** | Planned |
+
+Works in **any language** (auto-detected), on any website, and now inside Word.
 
 ## Features
 
@@ -79,6 +100,10 @@ use, compared with $144–360 per year for Premium.
 
 </details>
 
+**Firefox** — the same code base with `extension/manifest.firefox.json` (event-page background + `browser.*` compatibility). AMO listing in review; build steps under [Development](#development).
+
+**Microsoft Word** — a task-pane add-in that checks your document and rewrites selected text right inside Word (Windows, Mac, and the web). See [`msword/`](msword/) and its [README](msword/README.md) to run or install it.
+
 **Safari** — the same code base wraps into a Safari App Extension; see [Safari build](#safari) below.
 
 ## How it works
@@ -129,8 +154,9 @@ use, compared with $144–360 per year for Premium.
 ## Project structure
 
 ```
-extension/              the Chrome extension (MV3, no build step)
-├── manifest.json
+extension/              the browser extension (MV3, no build step) — Chrome, Edge, Firefox
+├── manifest.json           Chrome / Edge manifest
+├── manifest.firefox.json   Firefox (AMO) manifest — event-page background + gecko id
 └── src/
     ├── background.js       Gemini API calls, cache, rate limiting
     ├── content/
@@ -140,11 +166,14 @@ extension/              the Chrome extension (MV3, no build step)
     │   └── util.js         text extraction, offset maps, safe replacement
     ├── options.html/js     API key, model, language, disabled sites
     └── popup.html/js       global + per-site toggles
+msword/                 the Microsoft Word add-in (Office.js task pane)
+├── manifest.xml            Office add-in manifest
+└── src/taskpane/          task pane UI + Office.js integration + Gemini calls
+safari/                 Xcode wrapper project (generated)
 assets/                 logo, hero animation, screenshots
 test/
 ├── test-page.html      manual test fields (incl. scroll + opt-out cases)
 └── harness.html        automated harness with a mocked Gemini backend
-safari/                 Xcode wrapper project (generated)
 ```
 
 ## Development
@@ -154,6 +183,10 @@ safari/                 Xcode wrapper project (generated)
 python3 -m http.server 8377
 open http://localhost:8377/test/harness.html
 ```
+
+**Firefox** — load `extension/` with `manifest.firefox.json` via `about:debugging` → **Load Temporary Add-on**. The code auto-aliases Firefox's promise-based `browser.*` to `chrome.*`, so one codebase runs in both.
+
+**Microsoft Word add-in** — see [`msword/README.md`](msword/README.md): `npm install && npm run certs && npm start`, then sideload `msword/manifest.xml` into Word.
 
 <a name="safari"></a>**Safari build** (requires Xcode):
 
@@ -166,12 +199,14 @@ Then in Safari: Settings → Developer → **Allow unsigned extensions** → ena
 
 ## Roadmap
 
-- [x] **Chrome Web Store release** — [live now](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
-- [ ] Hosted key option (proxy backend) — zero setup for end users
-- [ ] Tone and style preferences per site
-- [ ] Safari App Store release (build ready; needs Apple Developer membership — [sponsor](#sponsor-this-project))
-- [ ] Firefox port
+- [x] **Chrome Web Store** — [live](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
+- [x] **Edge Add-ons** — submitted
+- [x] **Firefox (AMO)** — submitted
+- [x] **Microsoft Word add-in** — working; AppSource submission in progress
+- [ ] Safari App Store (build ready; needs Apple Developer membership — [sponsor](#sponsor-this-project))
 - [ ] iOS / Android keyboards sharing the same backend
+- [ ] Hosted-key option (proxy backend) — zero setup for end users
+- [ ] Tone and style preferences per site
 
 ## Responsible use
 
@@ -229,11 +264,12 @@ roadmap.
 Contributions are welcome — this project went from an empty folder to a
 working extension in a day, and there is plenty of interesting work left:
 
-- Firefox port (WebExtension API is nearly identical)
 - Compatibility fixes for stubborn editors (report a site, ideally with a
   reduced test case in `test/test-page.html`)
 - Translations for the UI
+- The Word add-in's native **annotation API** (inline squiggly underlines in Word)
 - The proxy backend for a zero-setup hosted mode
+- Help with the iOS / Android keyboards
 
 Open an issue to discuss anything bigger before you build it. If GemType
 helped you, starring the repository genuinely helps others find it.
