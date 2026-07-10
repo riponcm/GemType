@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GemType</title>
+  <link rel="stylesheet" href="taskpane.css" />
+  <!-- Office.js host library -->
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+</head>
+<body>
+  <header class="hd">
+    <img src="../../assets/icon-32.png" alt="" class="hd-icon" />
+    <div class="hd-title">GemType</div>
+    <button id="settings-btn" class="hd-gear" title="Settings" aria-label="Settings">⚙︎</button>
+  </header>
+
+  <!-- MAIN VIEW -->
+  <section id="main-view">
+    <div class="panel">
+      <button id="check-btn" class="btn btn-primary btn-block">Check document</button>
+      <div id="status" class="status"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Rewrite selected text</div>
+      <div class="refine-grid">
+        <button class="chip" data-refine="improve">✨ Improve</button>
+        <button class="chip" data-refine="fix">Fix</button>
+        <button class="chip" data-refine="shorten">Shorten</button>
+        <button class="chip" data-refine="formal">Formal</button>
+        <button class="chip" data-refine="casual">Casual</button>
+      </div>
+      <div class="hint">Select text in your document, then choose an action.</div>
+    </div>
+
+    <div id="suggestions" class="suggestions"></div>
+  </section>
+
+  <!-- SETTINGS VIEW -->
+  <section id="settings-view" style="display:none">
+    <div class="panel">
+      <div id="no-key-hint" class="callout" style="display:none">
+        Welcome! Add your free Gemini API key to get started.
+      </div>
+      <label class="lbl">Gemini API key</label>
+      <div class="row">
+        <input type="password" id="apiKey" class="input" placeholder="AIza…" autocomplete="off" />
+        <button id="toggle-key" class="btn btn-ghost">Show</button>
+      </div>
+      <div class="hint">
+        Get a free key at <b>aistudio.google.com/apikey</b> (no credit card).
+        It is stored only on this device and sent only to Google's Gemini API.
+      </div>
+
+      <label class="lbl">Model</label>
+      <select id="model" class="input">
+        <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite (recommended)</option>
+        <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite</option>
+        <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+      </select>
+
+      <label class="lbl">Language</label>
+      <select id="language" class="input">
+        <option value="auto">Auto-detect</option>
+        <option value="English">English</option>
+        <option value="Spanish">Spanish</option>
+        <option value="French">French</option>
+        <option value="German">German</option>
+        <option value="Portuguese">Portuguese</option>
+        <option value="Bengali">Bengali</option>
+        <option value="Hindi">Hindi</option>
+        <option value="Arabic">Arabic</option>
+        <option value="Chinese">Chinese</option>
+        <option value="Japanese">Japanese</option>
+      </select>
+
+      <div class="row" style="margin-top:14px">
+        <button id="save-settings" class="btn btn-primary">Save</button>
+        <button id="test-key" class="btn btn-ghost">Test key</button>
+        <button id="cancel-settings" class="btn btn-ghost">Cancel</button>
+      </div>
+      <div id="test-result" class="hint"></div>
+    </div>
+  </section>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="gemini.js"></script>
+  <script src="taskpane.js"></script>
+</body>
+</html>

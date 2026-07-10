@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GemType Word add-in — mock harness</title>
+  <link rel="stylesheet" href="../src/taskpane/taskpane.css" />
+  <script>
+    // Start already-configured so it opens on the main view.
+    localStorage.setItem('gemtype', JSON.stringify({ apiKey: 'FAKE', model: 'mock', language: 'auto' }));
+
+    // Stub Office.js host.
+    window.Office = { onReady: (cb) => setTimeout(() => cb({ host: 'Word' }), 0) };
+
+    // Fake Word document + selection the adapter will operate on.
+    window.__doc = 'She dont like going their on weekend. Me and him goes there.';
+    window.__sel = 'the quick reply';
+    window.__log = [];
+
+    // Stub the Gemini fetch. Returns the Gemini response envelope with mock JSON.
+    window.fetch = async (url, opts) => {
+      const body = JSON.parse(opts.body);
+      window.__log.push(url.includes('generativelanguage') ? 'gemini' : 'other');
+      const isRefine = !!body.generationConfig.responseSchema.properties.rewritten;
+      let payload;
+      if (isRefine) {
+        payload = { rewritten: 'This is the improved, clearer version.' };
+      } else {
+        payload = { corrections: [
+          { original: 'dont', replacement: "doesn't", explanation: 'Missing apostrophe', type: 'grammar' },
+          { original: 'their', replacement: 'there', explanation: 'Wrong homophone', type: 'spelling' },
+          { original: 'Me and him goes', replacement: 'He and I go', explanation: 'Pronoun case', type: 'grammar' },
+        ]};
+      }
+      return {
+        ok: true, status: 200,
+        json: async () => ({ candidates: [{ content: { parts: [{ text: JSON.stringify(payload) }] } }] }),
+      };
+    };
+  </script>
+</head>
+<body>
+  <header class="hd">
+    <div class="hd-icon" style="width:24px;height:24px;background:#10a37f;border-radius:5px"></div>
+    <div class="hd-title">GemType (mock)</div>
+    <button id="settings-btn" class="hd-gear">⚙︎</button>
+  </header>
+
+  <section id="main-view">
+    <div class="panel">
+      <button id="check-btn" class="btn btn-primary btn-block">Check document</button>
+      <div id="status" class="status"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-label">Rewrite selected text</div>
+      <div class="refine-grid">
+        <button class="chip" data-refine="improve">✨ Improve</button>
+        <button class="chip" data-refine="fix">Fix</button>
+        <button class="chip" data-refine="shorten">Shorten</button>
+        <button class="chip" data-refine="formal">Formal</button>
+        <button class="chip" data-refine="casual">Casual</button>
+      </div>
+      <div class="hint">Select text in your document, then choose an action.</div>
+    </div>
+    <div id="suggestions" class="suggestions"></div>
+  </section>
+
+  <section id="settings-view" style="display:none">
+    <div class="panel">
+      <div id="no-key-hint" class="callout" style="display:none"></div>
+      <label class="lbl">Gemini API key</label>
+      <div class="row"><input type="password" id="apiKey" class="input" /><button id="toggle-key" class="btn btn-ghost">Show</button></div>
+      <label class="lbl">Model</label>
+      <select id="model" class="input"><option value="gemini-3.1-flash-lite">flash-lite</option></select>
+      <label class="lbl">Language</label>
+      <select id="language" class="input"><option value="auto">Auto</option></select>
+      <div class="row"><button id="save-settings" class="btn btn-primary">Save</button><button id="test-key" class="btn btn-ghost">Test</button><button id="cancel-settings" class="btn btn-ghost">Cancel</button></div>
+      <div id="test-result" class="hint"></div>
+    </div>
+  </section>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="../src/taskpane/gemini.js"></script>
+  <script src="../src/taskpane/taskpane.js"></script>
+  <script>
+    // Replace the Office.js adapter with fakes over window.__doc / __sel.
+    window.GemTypeWord.getDocumentText = async () => window.__doc;
+    window.GemTypeWord.getSelectionText = async () => window.__sel;
+    window.GemTypeWord.replaceText = async (o, n) => {
+      if (!window.__doc.includes(o)) return false;
+      window.__doc = window.__doc.replace(o, n);
+      return true;
+    };
+    window.GemTypeWord.replaceSelection = async (t) => { window.__sel = t; window.__lastReplace = t; };
+  </script>
+</body>
+</html>
