@@ -13,7 +13,9 @@
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-D22128.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](../../pulls)
 
-### [➜ Install GemType free from the Chrome Web Store](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
+### [➜ Install free: Chrome](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh) · [Edge](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel) · [Firefox](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/)
+
+**[gemtypems.pages.dev](https://gemtypems.pages.dev)** — the official site, with a live demo and everything in one place.
 
 <img src="assets/hero.svg" alt="GemType demo: typing with mistakes, wavy underlines appear, one click fixes them" width="820" />
 
@@ -102,7 +104,7 @@ use, compared with $144–360 per year for Premium.
 
 </details>
 
-**Firefox** — the same code base with `extension/manifest.firefox.json` (event-page background + `browser.*` compatibility). AMO listing in review; build steps under [Development](#development).
+**Firefox** — [install from Firefox Add-ons](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/). Same code base via `extension/manifest.firefox.json` (event-page background + `browser.*` compatibility); build steps under [Development](#development).
 
 **Microsoft Word** — a task-pane add-in that checks your document and rewrites selected text right inside Word (Windows, Mac, and the web). See [`msword/`](msword/) and its [README](msword/README.md) to run or install it.
 
