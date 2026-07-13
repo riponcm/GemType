@@ -8,6 +8,7 @@
 [![Users](https://img.shields.io/chrome-web-store/users/linnnamnhkciekgpnegkcajcafmjlhgh?color=10a37f)](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
 [![Rating](https://img.shields.io/chrome-web-store/rating/linnnamnhkciekgpnegkcajcafmjlhgh?color=f59e0b)](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
 [![Edge Add-ons](https://img.shields.io/badge/Edge%20Add--ons-Live-0C88DA?logo=microsoftedge&logoColor=white)](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel)
+[![Firefox Add-ons](https://img.shields.io/amo/v/gemtype-ai-writing-assistant?label=Firefox%20Add-ons&logo=firefoxbrowser&logoColor=white&color=FF7139)](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/)
 [![Manifest V3](https://img.shields.io/badge/manifest-v3-6366f1)](extension/manifest.json)
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-D22128.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](../../pulls)
@@ -34,7 +35,7 @@ through a server of ours):
 |---|---|
 | **Chrome** | [Live on the Chrome Web Store](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh) |
 | **Edge** | [Live on Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel) |
-| **Firefox** | Submitted to AMO — see `extension/manifest.firefox.json` |
+| **Firefox** | [Live on Firefox Add-ons](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/) |
 | **Microsoft Word** | Office task-pane add-in — see [`msword/`](msword/) |
 | **Safari** | Build ready (needs the Apple Developer fee — [sponsor](#sponsor-this-project)) |
 | **iOS / Android keyboards** | Planned |
@@ -86,7 +87,7 @@ use, compared with $144–360 per year for Premium.
 
 ## Install
 
-**[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)** or **[from Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel)** — one click, then add your free Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey).
+**[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)**, **[Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel)**, or **[Firefox Add-ons](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/)** — one click, then add your free Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey).
 
 <details>
 <summary><b>Or install manually (developer mode)</b></summary>
@@ -202,7 +203,7 @@ Then in Safari: Settings → Developer → **Allow unsigned extensions** → ena
 
 - [x] **Chrome Web Store** — [live](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
 - [x] **Edge Add-ons** — [live](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel)
-- [x] **Firefox (AMO)** — submitted
+- [x] **Firefox (AMO)** — [live](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/)
 - [x] **Microsoft Word add-in** — working; AppSource submission in progress
 - [ ] Safari App Store (build ready; needs Apple Developer membership — [sponsor](#sponsor-this-project))
 - [ ] iOS / Android keyboards sharing the same backend
