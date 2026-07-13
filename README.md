@@ -15,7 +15,7 @@
 
 ### [➜ Install free: Chrome](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh) · [Edge](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel) · [Firefox](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/)
 
-**[gemtypems.pages.dev](https://gemtypems.pages.dev)** — the official site, with a live demo and everything in one place.
+**[gemtype.matily.org](https://gemtype.matily.org)** — the official site, with a live demo and everything in one place.
 
 <img src="assets/hero.svg" alt="GemType demo: typing with mistakes, wavy underlines appear, one click fixes them" width="820" />
 
