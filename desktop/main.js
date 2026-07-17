@@ -52,9 +52,23 @@ function execP(cmd) {
 async function sendCombo(key) { // key: 'c' | 'v'
   if (isMac) {
     await execP(`osascript -e 'tell application "System Events" to keystroke "${key}" using {command down}'`);
-  } else {
-    await execP(`powershell -NoProfile -Command "$w = New-Object -ComObject wscript.shell; $w.SendKeys('^${key}')"`);
+    return;
   }
+  // Windows: use real key events (keybd_event) rather than WScript SendKeys,
+  // which is unreliable in Office/Electron apps (Word, Outlook, Claude). Send
+  // Ctrl down, <key> down/up, Ctrl up with tiny gaps so the target registers it.
+  const vk = key === 'c' ? '0x43' : '0x56'; // C / V ; Ctrl = 0x11, KEYUP = 2
+  const script =
+    "Add-Type -Namespace N -Name K -MemberDefinition @'\n" +
+    '[DllImport("user32.dll")] public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, System.UIntPtr dwExtraInfo);\n' +
+    "'@\n" +
+    '$z=[System.UIntPtr]::Zero;' +
+    '[N.K]::keybd_event(0x11,0,0,$z); Start-Sleep -Milliseconds 15;' +
+    `[N.K]::keybd_event(${vk},0,0,$z); Start-Sleep -Milliseconds 15;` +
+    `[N.K]::keybd_event(${vk},0,2,$z); Start-Sleep -Milliseconds 15;` +
+    '[N.K]::keybd_event(0x11,0,2,$z)';
+  const b64 = Buffer.from(script, 'utf16le').toString('base64');
+  await execP(`powershell -NoProfile -EncodedCommand ${b64}`);
 }
 
 function ensureMacAccessibility() {
@@ -278,9 +292,9 @@ async function replaceSelection() {
   if (!job || !job.result) return;
   currentJob = null;                     // guard against a double Enter
   hidePopup();
-  await restoreTarget(job.target);       // hand focus back if a click activated us
-  await sleep(140);
-  clipboard.writeText(job.result);
+  clipboard.writeText(job.result);       // may wake a clipboard-manager popup...
+  await restoreTarget(job.target);       // ...so refocus the target AFTER that
+  await sleep(160);
   try { await sendCombo('v'); } catch { /* surfaced on next use */ }
   await sleep(450);
   if (job.previousClipboard) clipboard.writeText(job.previousClipboard);
