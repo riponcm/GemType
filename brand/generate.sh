@@ -41,8 +41,13 @@ fi
 
 echo "== desktop app (Electron .app) =="
 render "$APP" 128 desktop/assets/icon.png
-render "$TB"  128 desktop/assets/tray.png     # tray/menu-bar: full-bleed reads better tiny
-render "$TB"  64  desktop/assets/tray@2x.png
+# menu-bar tray icon: a monochrome TEMPLATE image (black + alpha) so macOS
+# tints it for light/dark automatically. Electron treats a *Template.png name
+# as a template image; we also set it explicitly in main.js.
+TRAY=$BRAND/icon-tray.svg
+render "$TRAY" 18 desktop/assets/trayTemplate.png
+render "$TRAY" 36 desktop/assets/trayTemplate@2x.png
+rm -f desktop/assets/tray.png desktop/assets/tray@2x.png
 ICONSET=desktop/assets/icon.iconset
 rm -rf "$ICONSET"; mkdir -p "$ICONSET"
 for s in 16 32 64 128 256 512 1024; do render "$APP" "$s" "$ICONSET/icon_${s}x${s}.png"; done
