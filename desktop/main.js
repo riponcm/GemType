@@ -63,6 +63,44 @@ function ensureMacAccessibility() {
   return systemPreferences.isTrustedAccessibilityClient(true);
 }
 
+// Remember the frontmost app so we can hand focus back to it right before
+// pasting. Needed for the click path: clicking the popup activates GemType, so
+// the target would otherwise no longer be frontmost when Cmd/Ctrl+V fires.
+async function getFrontTarget() {
+  try {
+    if (isMac) {
+      const out = await execP(
+        `osascript -e 'tell application "System Events" to unix id of first application process whose frontmost is true'`);
+      const pid = parseInt(String(out).trim(), 10);
+      return Number.isFinite(pid) ? { pid } : null;
+    }
+    const script =
+      "Add-Type -Namespace N -Name U -MemberDefinition @'\n" +
+      '[DllImport("user32.dll")] public static extern System.IntPtr GetForegroundWindow();\n' +
+      '[DllImport("user32.dll")] public static extern int GetWindowThreadProcessId(System.IntPtr h, out int pid);\n' +
+      "'@\n" +
+      '$h=[N.U]::GetForegroundWindow(); $p=0; [void][N.U]::GetWindowThreadProcessId($h,[ref]$p); $p';
+    const b64 = Buffer.from(script, 'utf16le').toString('base64');
+    const out = await execP(`powershell -NoProfile -EncodedCommand ${b64}`);
+    const pid = parseInt(String(out).trim(), 10);
+    return Number.isFinite(pid) ? { pid } : null;
+  } catch { return null; }
+}
+
+async function restoreTarget(t) {
+  if (!t || !t.pid) return;
+  try {
+    if (isMac) {
+      await execP(
+        `osascript -e 'tell application "System Events" to set frontmost of (first application process whose unix id is ${t.pid}) to true'`);
+    } else {
+      const script = `(New-Object -ComObject WScript.Shell).AppActivate([int]${t.pid})`;
+      const b64 = Buffer.from(script, 'utf16le').toString('base64');
+      await execP(`powershell -NoProfile -EncodedCommand ${b64}`);
+    }
+  } catch { /* best effort */ }
+}
+
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function pollClipboard() {
@@ -106,13 +144,12 @@ function createPopup() {
   popup = new BrowserWindow({
     width: 460, height: 260, show: false, frame: false, resizable: false,
     alwaysOnTop: true, skipTaskbar: true, transparent: true, hasShadow: true,
-    // Never take focus from the target app. This is the crux of the paste flow:
-    // if the popup stole focus, the target would deactivate and Ctrl/Cmd+V
-    // would have nowhere to land (this is what broke paste on Windows and made
-    // the current window drop to the background on macOS). As a non-focusable
-    // overlay, the target stays active, so paste goes straight into it. Mouse
-    // clicks still work; keyboard is handled via temporary global shortcuts.
-    focusable: false,
+    // Focusable (so mouse clicks on the buttons work — a non-focusable window
+    // can't receive clicks on macOS and just beeps), but shown with
+    // showInactive() so it does NOT steal focus on appear. It only activates on
+    // an explicit click; before pasting we hand focus back to the target app.
+    // acceptFirstMouse lets that activating click also register as a button press.
+    acceptFirstMouse: true,
     webPreferences: { nodeIntegration: true, contextIsolation: false },
   });
   popup.setAlwaysOnTop(true, 'screen-saver');
@@ -193,6 +230,7 @@ async function onHotkey(action = 'fix', fromHotkey = false) {
     return;
   }
 
+  const target = await getFrontTarget();
   const { text, previousClipboard } = await captureSelection(fromHotkey);
   if (!text || !text.trim()) {
     // restore clipboard and tell the user nothing was selected
@@ -203,7 +241,7 @@ async function onHotkey(action = 'fix', fromHotkey = false) {
     return;
   }
 
-  currentJob = { text, previousClipboard, action };
+  currentJob = { text, previousClipboard, action, target };
   showPopupNearCursor();
   popup.webContents.send('state', { kind: 'loading', action, original: text });
   runJob();
@@ -240,7 +278,8 @@ async function replaceSelection() {
   if (!job || !job.result) return;
   currentJob = null;                     // guard against a double Enter
   hidePopup();
-  await sleep(120);
+  await restoreTarget(job.target);       // hand focus back if a click activated us
+  await sleep(140);
   clipboard.writeText(job.result);
   try { await sendCombo('v'); } catch { /* surfaced on next use */ }
   await sleep(450);
