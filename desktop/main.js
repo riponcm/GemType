@@ -229,11 +229,10 @@ if (!app.requestSingleInstanceLock()) app.quit();
 app.whenReady().then(() => {
   if (isMac && app.dock) app.dock.hide(); // pure menu-bar app
 
-  // Menu-bar icon: a template image (black + alpha). setTemplateImage(true)
-  // lets macOS tint it white on a dark bar / black on light, and sizes it like
-  // the other menu-bar glyphs instead of showing a colored tile.
-  const trayIcon = nativeImage.createFromPath(path.join(__dirname, 'assets', 'trayTemplate.png'));
-  trayIcon.setTemplateImage(true);
+  // Menu-bar icon: the colored brand mark (padded so it isn't an edge-to-edge
+  // tile). Not a template image — we want it to stay in brand color. Electron
+  // auto-picks tray@2x.png on Retina from the base path.
+  const trayIcon = nativeImage.createFromPath(path.join(__dirname, 'assets', 'tray.png'));
   tray = new Tray(trayIcon);
   tray.setToolTip('GemType — select text anywhere, press ' + (isMac ? '⌘⇧G' : 'Ctrl+Shift+G'));
   tray.setContextMenu(Menu.buildFromTemplate([

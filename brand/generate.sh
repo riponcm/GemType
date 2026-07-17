@@ -41,13 +41,13 @@ fi
 
 echo "== desktop app (Electron .app) =="
 render "$APP" 128 desktop/assets/icon.png
-# menu-bar tray icon: a monochrome TEMPLATE image (black + alpha) so macOS
-# tints it for light/dark automatically. Electron treats a *Template.png name
-# as a template image; we also set it explicitly in main.js.
-TRAY=$BRAND/icon-tray.svg
-render "$TRAY" 18 desktop/assets/trayTemplate.png
-render "$TRAY" 36 desktop/assets/trayTemplate@2x.png
-rm -f desktop/assets/tray.png desktop/assets/tray@2x.png
+# menu-bar tray icon: the COLORED brand mark (not a template). Use the padded
+# app variant so it has breathing room and doesn't fill the bar edge-to-edge,
+# and render at menu-bar height (22px @1x / 44px @2x) so it's sized like the
+# neighbouring items instead of an oversized tile.
+render "$APP" 22 desktop/assets/tray.png
+render "$APP" 44 desktop/assets/tray@2x.png
+rm -f desktop/assets/trayTemplate.png desktop/assets/trayTemplate@2x.png
 ICONSET=desktop/assets/icon.iconset
 rm -rf "$ICONSET"; mkdir -p "$ICONSET"
 for s in 16 32 64 128 256 512 1024; do render "$APP" "$s" "$ICONSET/icon_${s}x${s}.png"; done
