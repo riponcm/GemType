@@ -26,6 +26,12 @@
   .ok { color: #0d8a6a; } .err { color: #a4262c; }
   .hotkey { margin-top: 18px; padding: 12px; background: #eff6fc; border: 1px solid #c7e0f4; border-radius: 8px; font-size: 13px; line-height: 1.6; }
   kbd { background: #fff; border: 1px solid #d2d0ce; border-bottom-width: 2px; border-radius: 4px; padding: 1px 6px; font-size: 12px; }
+  .about { margin-top: 20px; padding-top: 16px; border-top: 1px solid #e5e3e1; display: flex; align-items: center; gap: 12px; }
+  .about img { width: 40px; height: 40px; border-radius: 9px; }
+  .about .meta { flex: 1; font-size: 12.5px; line-height: 1.5; color: #605e5c; }
+  .about .meta b { color: #1f2328; font-size: 13.5px; }
+  .about .meta a { color: #0d8a6a; text-decoration: none; }
+  .about .meta a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -66,6 +72,16 @@
     <b>How to use:</b> select text in any application, then press
     <kbd id="hk">Ctrl+Shift+G</kbd>. GemType fixes it and can paste the result
     right back. In the popup: <kbd>Enter</kbd> replaces, <kbd>Esc</kbd> closes.
+  </div>
+
+  <div class="about">
+    <img src="assets/icon.png" alt="" />
+    <div class="meta">
+      <b>GemType Desktop</b> <span id="ver">v—</span><br />
+      Made by <a href="#" id="matily">Matily</a> &middot; &copy; 2026 Matily &middot; Apache-2.0<br />
+      <a href="#" id="update">Check for updates</a> &middot;
+      <a href="#" id="repo">Source on GitHub</a>
+    </div>
   </div>
 
 <script>
@@ -111,6 +127,15 @@ $('aistudio').addEventListener('click', (e) => {
   e.preventDefault();
   shell.openExternal('https://aistudio.google.com/apikey');
 });
+
+// About: version + links
+(async () => {
+  const info = await ipcRenderer.invoke('app:info');
+  $('ver').textContent = 'v' + info.version;
+})();
+$('matily').addEventListener('click', (e) => { e.preventDefault(); ipcRenderer.send('app:open', 'matily'); });
+$('update').addEventListener('click', (e) => { e.preventDefault(); ipcRenderer.send('app:open', 'releases'); });
+$('repo').addEventListener('click', (e) => { e.preventDefault(); ipcRenderer.send('app:open', 'repo'); });
 </script>
 </body>
 </html>

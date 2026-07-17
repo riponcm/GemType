@@ -11,7 +11,7 @@
 
 const {
   app, Tray, Menu, BrowserWindow, globalShortcut, clipboard,
-  ipcMain, screen, systemPreferences, nativeImage, shell,
+  ipcMain, screen, systemPreferences, nativeImage, shell, dialog,
 } = require('electron');
 const path = require('path');
 const fs = require('fs');
@@ -20,6 +20,10 @@ const AI = require('./gemini.js');
 
 const isMac = process.platform === 'darwin';
 const HOTKEY = 'CommandOrControl+Shift+G';
+const REPO_URL = 'https://github.com/riponcm/GemType';
+const RELEASES_URL = REPO_URL + '/releases';
+const SITE_URL = 'https://gemtype.matily.org';
+const MATILY_URL = 'https://matily.org';
 
 // ---------------------------------------------------------------------------
 // Settings (plain JSON in userData)
@@ -102,10 +106,35 @@ function createPopup() {
   popup = new BrowserWindow({
     width: 460, height: 260, show: false, frame: false, resizable: false,
     alwaysOnTop: true, skipTaskbar: true, transparent: true, hasShadow: true,
+    // Never take focus from the target app. This is the crux of the paste flow:
+    // if the popup stole focus, the target would deactivate and Ctrl/Cmd+V
+    // would have nowhere to land (this is what broke paste on Windows and made
+    // the current window drop to the background on macOS). As a non-focusable
+    // overlay, the target stays active, so paste goes straight into it. Mouse
+    // clicks still work; keyboard is handled via temporary global shortcuts.
+    focusable: false,
     webPreferences: { nodeIntegration: true, contextIsolation: false },
   });
+  popup.setAlwaysOnTop(true, 'screen-saver');
+  popup.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   popup.loadFile(path.join(__dirname, 'popup.html'));
-  popup.on('blur', () => { if (popup.isVisible() && !popup.webContents.isDevToolsFocused()) hidePopup(); });
+}
+
+// While the popup is up we handle Enter/Escape via temporary global shortcuts
+// (the window is non-focusable, so it can't receive key events itself). They
+// are registered only for the short life of the popup and released on hide.
+let autoDismiss = null;
+function reg(accel, cb) { try { return globalShortcut.register(accel, cb); } catch { return false; } }
+function registerPopupKeys() {
+  unregisterPopupKeys();
+  const accept = () => { if (currentJob && currentJob.result) replaceSelection(); };
+  if (!reg('Enter', accept)) reg('Return', accept);
+  reg('Escape', () => { hidePopup(); currentJob = null; });
+  autoDismiss = setTimeout(() => { hidePopup(); currentJob = null; }, 20000);
+}
+function unregisterPopupKeys() {
+  ['Enter', 'Return', 'Escape'].forEach((a) => { try { globalShortcut.unregister(a); } catch { /* noop */ } });
+  if (autoDismiss) { clearTimeout(autoDismiss); autoDismiss = null; }
 }
 
 function showPopupNearCursor() {
@@ -115,23 +144,42 @@ function showPopupNearCursor() {
   const px = Math.min(Math.max(x - 40, display.workArea.x + 8), display.workArea.x + display.workArea.width - w - 8);
   const py = Math.min(y + 18, display.workArea.y + display.workArea.height - h - 8);
   popup.setPosition(Math.round(px), Math.round(py));
-  popup.show();
-  popup.focus();
+  popup.showInactive();          // show WITHOUT stealing focus from the target
+  registerPopupKeys();
 }
 
 function hidePopup() {
+  unregisterPopupKeys();
   if (popup && popup.isVisible()) popup.hide();
-  if (isMac) app.hide(); // hand focus back to the previous app
 }
 
 function openSettings() {
   if (settingsWin && !settingsWin.isDestroyed()) { settingsWin.show(); settingsWin.focus(); return; }
   settingsWin = new BrowserWindow({
-    width: 460, height: 560, resizable: false, title: 'GemType Settings',
+    width: 460, height: 640, resizable: false, title: 'GemType Settings',
     webPreferences: { nodeIntegration: true, contextIsolation: false },
   });
   settingsWin.setMenuBarVisibility(false);
   settingsWin.loadFile(path.join(__dirname, 'settings.html'));
+}
+
+function showAbout() {
+  const btn = dialog.showMessageBoxSync({
+    type: 'info',
+    title: 'About GemType',
+    message: 'GemType Desktop',
+    detail:
+      `Version ${app.getVersion()}\n\n` +
+      'Fix and rewrite text in any application with your own Gemini API key.\n\n' +
+      'Made by Matily — matily.org\n' +
+      '© 2026 Matily. Licensed under Apache-2.0.',
+    buttons: ['Check for Updates', 'Close'],
+    defaultId: 0,
+    cancelId: 1,
+    noLink: true,
+    icon: nativeImage.createFromPath(path.join(__dirname, 'assets', 'icon.png')),
+  });
+  if (btn === 0) shell.openExternal(RELEASES_URL);
 }
 
 // ---------------------------------------------------------------------------
@@ -184,17 +232,19 @@ function friendly(err) {
   return 'Something went wrong: ' + m;
 }
 
-// Paste the result over the original selection in the previous app.
+// Paste the result over the original selection. The target app kept focus the
+// whole time (the popup never took it), so Ctrl/Cmd+V lands directly — no
+// focus-return dance needed, just a brief settle after hiding the overlay.
 async function replaceSelection() {
   const job = currentJob;
   if (!job || !job.result) return;
+  currentJob = null;                     // guard against a double Enter
   hidePopup();
-  await sleep(isMac ? 300 : 400);        // let focus return to the target app
+  await sleep(120);
   clipboard.writeText(job.result);
   try { await sendCombo('v'); } catch { /* surfaced on next use */ }
-  await sleep(500);
+  await sleep(450);
   if (job.previousClipboard) clipboard.writeText(job.previousClipboard);
-  currentJob = null;
 }
 
 // ---------------------------------------------------------------------------
@@ -214,6 +264,14 @@ ipcMain.on('popup', async (_e, msg) => {
   else if (msg.type === 'openSettings') { hidePopup(); openSettings(); }
 });
 
+ipcMain.handle('app:info', () => ({
+  version: app.getVersion(),
+  repo: REPO_URL, releases: RELEASES_URL, site: SITE_URL, matily: MATILY_URL,
+}));
+ipcMain.on('app:open', (_e, which) => {
+  const url = { releases: RELEASES_URL, site: SITE_URL, matily: MATILY_URL, repo: REPO_URL }[which];
+  if (url) shell.openExternal(url);
+});
 ipcMain.handle('settings:get', () => loadSettings());
 ipcMain.handle('settings:save', (_e, s) => { saveSettings({ ...loadSettings(), ...s }); return true; });
 ipcMain.handle('settings:test', async (_e, s) => {
@@ -239,7 +297,9 @@ app.whenReady().then(() => {
     { label: `Fix selection  (${isMac ? '⌘⇧G' : 'Ctrl+Shift+G'})`, click: () => onHotkey('fix') },
     { type: 'separator' },
     { label: 'Settings…', click: openSettings },
-    { label: 'Website', click: () => shell.openExternal('https://gemtype.matily.org') },
+    { label: 'Check for Updates…', click: () => shell.openExternal(RELEASES_URL) },
+    { label: 'Website', click: () => shell.openExternal(SITE_URL) },
+    { label: 'About GemType', click: showAbout },
     { type: 'separator' },
     { label: 'Quit GemType', role: 'quit' },
   ]));
