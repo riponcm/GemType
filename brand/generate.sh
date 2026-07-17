@@ -39,8 +39,8 @@ if [ -d "safari/GemType/GemType" ]; then
   [ -f safari/GemType/GemType/Resources/Icon.png ] && render "$APP" 512 safari/GemType/GemType/Resources/Icon.png
 fi
 
-echo "== desktop app (Electron .app) =="
-render "$APP" 128 desktop/assets/icon.png
+echo "== desktop app (Electron .app / .exe) =="
+render "$APP" 256 desktop/assets/icon.png   # 256 so Windows .ico is crisp
 # menu-bar tray icon: the COLORED brand mark (not a template). Use the padded
 # app variant so it has breathing room and doesn't fill the bar edge-to-edge,
 # and render at menu-bar height (22px @1x / 44px @2x) so it's sized like the

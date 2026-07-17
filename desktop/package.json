@@ -41,9 +41,18 @@
     },
     "win": {
       "target": [
-        "dir"
+        "nsis",
+        "zip"
       ],
       "icon": "assets/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "GemType"
     }
   }
 }
