@@ -20,3 +20,6 @@ node_modules/
 desktop/node_modules/
 desktop/app.log
 desktop/package-lock.json
+desktop/dist/
+desktop/gemtype-app.log
+desktop/assets/icon.icns

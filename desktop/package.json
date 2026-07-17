@@ -2,13 +2,48 @@
   "name": "gemtype-desktop",
   "version": "0.1.0",
   "private": true,
-  "description": "GemType Desktop — fix and rewrite text in any application on Mac and Windows, powered by your own Gemini API key.",
+  "description": "GemType Desktop \u2014 fix and rewrite text in any application on Mac and Windows, powered by your own Gemini API key.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "node test/gemini.test.js"
+    "test": "node test/gemini.test.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "devDependencies": {
-    "electron": "^33.0.0"
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "org.matily.gemtype",
+    "productName": "GemType",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "main.js",
+      "gemini.js",
+      "popup.html",
+      "settings.html",
+      "assets/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        "dir"
+      ],
+      "icon": "assets/icon.icns",
+      "identity": null,
+      "extendInfo": {
+        "LSUIElement": true
+      }
+    },
+    "win": {
+      "target": [
+        "dir"
+      ],
+      "icon": "assets/icon.png"
+    }
   }
 }
