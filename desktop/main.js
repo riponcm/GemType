@@ -61,17 +61,31 @@ function ensureMacAccessibility() {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+async function pollClipboard() {
+  for (let i = 0; i < 10; i++) {           // poll up to ~600ms
+    await sleep(60);
+    const t = clipboard.readText();
+    if (t) return t;
+  }
+  return '';
+}
+
 // Copy the current selection of the frontmost app via the clipboard.
+// `fromHotkey`: when the flow was triggered by the global shortcut, the user
+// is still physically holding Cmd+Shift. Sending Cmd+C right away makes the OS
+// see Cmd+Shift+C (not copy), so nothing is captured. We wait for the
+// modifiers to release, and retry the copy once if the first attempt is empty.
 // Returns { text, previousClipboard } — text is null if nothing was selected.
-async function captureSelection() {
+async function captureSelection(fromHotkey) {
   const previousClipboard = clipboard.readText();
   clipboard.clear();
+  if (fromHotkey) await sleep(250);        // let Cmd+Shift lift
   await sendCombo('c');
-  let text = '';
-  for (let i = 0; i < 12; i++) {           // poll up to ~720ms
-    await sleep(60);
-    text = clipboard.readText();
-    if (text) break;
+  let text = await pollClipboard();
+  if (!text) {                             // modifiers are surely up now — retry
+    await sleep(120);
+    await sendCombo('c');
+    text = await pollClipboard();
   }
   return { text: text || null, previousClipboard };
 }
@@ -123,7 +137,7 @@ function openSettings() {
 // ---------------------------------------------------------------------------
 // The hotkey flow
 
-async function onHotkey(action = 'fix') {
+async function onHotkey(action = 'fix', fromHotkey = false) {
   const settings = loadSettings();
   if (!settings.apiKey) { openSettings(); return; }
   if (!ensureMacAccessibility()) {
@@ -131,7 +145,7 @@ async function onHotkey(action = 'fix') {
     return;
   }
 
-  const { text, previousClipboard } = await captureSelection();
+  const { text, previousClipboard } = await captureSelection(fromHotkey);
   if (!text || !text.trim()) {
     // restore clipboard and tell the user nothing was selected
     if (previousClipboard) clipboard.writeText(previousClipboard);
@@ -229,7 +243,7 @@ app.whenReady().then(() => {
 
   createPopup();
 
-  const ok = globalShortcut.register(HOTKEY, () => onHotkey('fix'));
+  const ok = globalShortcut.register(HOTKEY, () => onHotkey('fix', true));
   if (!ok) console.error('GemType: failed to register global hotkey', HOTKEY);
 
   if (!loadSettings().apiKey) openSettings();
