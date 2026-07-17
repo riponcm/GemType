@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #faf9f8; color: #1f2328; padding: 22px; font-size: 14px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+  .brand img { width: 28px; height: 28px; border-radius: 6px; }
+  .brand b { font-size: 17px; }
+  .lbl { display: block; font-weight: 600; font-size: 13px; margin: 14px 0 5px; }
+  .row { display: flex; gap: 8px; }
+  input, select {
+    width: 100%; padding: 9px 10px; border: 1px solid #d2d0ce; border-radius: 7px;
+    font-size: 14px; background: #fff;
+  }
+  .hint { font-size: 12px; color: #8a8886; margin-top: 7px; line-height: 1.55; }
+  .hint a { color: #0d8a6a; }
+  .btn { border: none; border-radius: 7px; padding: 9px 16px; font-size: 13.5px; font-weight: 700; cursor: pointer; }
+  .primary { background: #10a37f; color: #fff; } .primary:hover { background: #0d8a6a; }
+  .ghost { background: #edebe9; color: #323130; } .ghost:hover { background: #e1dfdd; }
+  #result { margin-top: 10px; font-size: 13px; min-height: 18px; }
+  .ok { color: #0d8a6a; } .err { color: #a4262c; }
+  .hotkey { margin-top: 18px; padding: 12px; background: #eff6fc; border: 1px solid #c7e0f4; border-radius: 8px; font-size: 13px; line-height: 1.6; }
+  kbd { background: #fff; border: 1px solid #d2d0ce; border-bottom-width: 2px; border-radius: 4px; padding: 1px 6px; font-size: 12px; }
+</style>
+</head>
+<body>
+  <div class="brand"><img src="assets/icon.png" alt="" /><b>GemType Desktop — Settings</b></div>
+
+  <label class="lbl">Gemini API key</label>
+  <div class="row">
+    <input type="password" id="apiKey" placeholder="AIza…" autocomplete="off" />
+    <button class="btn ghost" id="toggle">Show</button>
+  </div>
+  <div class="hint">
+    Get a free key at <a href="#" id="aistudio">aistudio.google.com/apikey</a> (no credit card).
+    Stored only on this computer, sent only to Google's Gemini API.
+  </div>
+
+  <label class="lbl">Model</label>
+  <select id="model">
+    <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite (recommended)</option>
+    <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite</option>
+    <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+  </select>
+
+  <label class="lbl">Language</label>
+  <select id="language">
+    <option value="auto">Auto-detect</option>
+    <option>English</option><option>Spanish</option><option>French</option>
+    <option>German</option><option>Portuguese</option><option>Bengali</option>
+    <option>Hindi</option><option>Arabic</option><option>Chinese</option><option>Japanese</option>
+  </select>
+
+  <div class="row" style="margin-top:16px">
+    <button class="btn primary" id="save">Save</button>
+    <button class="btn ghost" id="test">Save &amp; test key</button>
+  </div>
+  <div id="result"></div>
+
+  <div class="hotkey">
+    <b>How to use:</b> select text in any application, then press
+    <kbd id="hk">Ctrl+Shift+G</kbd>. GemType fixes it and can paste the result
+    right back. In the popup: <kbd>Enter</kbd> replaces, <kbd>Esc</kbd> closes.
+  </div>
+
+<script>
+const { ipcRenderer, shell } = require('electron');
+const $ = (id) => document.getElementById(id);
+if (navigator.platform.includes('Mac')) $('hk').textContent = '⌘⇧G';
+
+(async () => {
+  const s = await ipcRenderer.invoke('settings:get');
+  $('apiKey').value = s.apiKey || '';
+  $('model').value = s.model || 'gemini-3.1-flash-lite';
+  $('language').value = s.language || 'auto';
+})();
+
+const collect = () => ({
+  apiKey: $('apiKey').value.trim(),
+  model: $('model').value,
+  language: $('language').value,
+});
+
+$('toggle').addEventListener('click', () => {
+  const i = $('apiKey');
+  i.type = i.type === 'password' ? 'text' : 'password';
+  $('toggle').textContent = i.type === 'password' ? 'Show' : 'Hide';
+});
+
+$('save').addEventListener('click', async () => {
+  await ipcRenderer.invoke('settings:save', collect());
+  $('result').innerHTML = '<span class="ok">Saved</span>';
+});
+
+$('test').addEventListener('click', async () => {
+  const s = collect();
+  await ipcRenderer.invoke('settings:save', s);
+  $('result').textContent = 'Testing…';
+  const r = await ipcRenderer.invoke('settings:test', s);
+  $('result').innerHTML = r.ok
+    ? '<span class="ok">Key works — you are all set.</span>'
+    : '<span class="err">' + r.error + '</span>';
+});
+
+$('aistudio').addEventListener('click', (e) => {
+  e.preventDefault();
+  shell.openExternal('https://aistudio.google.com/apikey');
+});
+</script>
+</body>
+</html>

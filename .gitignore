@@ -15,3 +15,8 @@ xcuserdata/
 *.xcuserstate
 node_modules/
 .DS_Store
+
+# desktop app local files
+desktop/node_modules/
+desktop/app.log
+desktop/package-lock.json

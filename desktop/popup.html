@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: transparent; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 6px; -webkit-user-select: none; user-select: none;
+  }
+  .card {
+    background: #1f2328; color: #e6edf3; border-radius: 14px;
+    box-shadow: 0 16px 44px rgba(0,0,0,.45); overflow: hidden;
+    display: flex; flex-direction: column; height: calc(100vh - 12px);
+  }
+  .head {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,.08);
+    -webkit-app-region: drag;
+  }
+  .head img { width: 18px; height: 18px; border-radius: 4px; }
+  .head b { font-size: 13px; flex: 1; }
+  .head .x { -webkit-app-region: no-drag; cursor: pointer; color: #8b949e; font-size: 15px; padding: 2px 7px; border-radius: 5px; }
+  .head .x:hover { background: rgba(255,255,255,.08); }
+  .body { flex: 1; overflow-y: auto; padding: 12px 14px; font-size: 13.5px; line-height: 1.55; }
+  .orig { color: #f87171; text-decoration: line-through; opacity: .75; display: block; margin-bottom: 8px; }
+  .res  { color: #7ee2c0; font-weight: 600; display: block; -webkit-user-select: text; user-select: text; }
+  .muted { color: #8b949e; }
+  .spin { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.2); border-top-color: #10a37f;
+    border-radius: 50%; animation: r .8s linear infinite; display: inline-block; vertical-align: -3px; margin-right: 8px; }
+  @keyframes r { to { transform: rotate(360deg); } }
+  .foot { padding: 10px 12px; border-top: 1px solid rgba(255,255,255,.08); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .chip { background: rgba(255,255,255,.08); color: #c9d1d9; border: none; border-radius: 999px;
+    padding: 5px 11px; font-size: 12px; font-weight: 600; cursor: pointer; }
+  .chip:hover { background: rgba(255,255,255,.16); }
+  .chip.active { background: #10a37f; color: #fff; }
+  .grow { flex: 1; }
+  .btn { border: none; border-radius: 7px; padding: 7px 14px; font-size: 12.5px; font-weight: 700; cursor: pointer; }
+  .replace { background: #10a37f; color: #fff; }
+  .replace:hover { background: #0d8a6a; }
+  .copy { background: rgba(255,255,255,.1); color: #e6edf3; }
+  .copy:hover { background: rgba(255,255,255,.18); }
+  .hint { font-size: 11px; color: #8b949e; padding: 0 14px 9px; }
+  a { color: #7ee2c0; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="head">
+    <img src="assets/icon.png" alt="" />
+    <b>GemType</b>
+    <span class="x" id="close">✕</span>
+  </div>
+  <div class="body" id="body"><span class="muted"><span class="spin"></span>Working…</span></div>
+  <div class="foot" id="foot" style="display:none">
+    <button class="chip" data-action="fix">Fix</button>
+    <button class="chip" data-action="improve">✨ Improve</button>
+    <button class="chip" data-action="shorten">Shorten</button>
+    <button class="chip" data-action="formal">Formal</button>
+    <button class="chip" data-action="casual">Casual</button>
+    <span class="grow"></span>
+    <button class="btn copy" id="copy">Copy</button>
+    <button class="btn replace" id="replace">Replace ⏎</button>
+  </div>
+  <div class="hint" id="hint">Enter = replace · Esc = close</div>
+</div>
+<script>
+const { ipcRenderer } = require('electron');
+const $ = (id) => document.getElementById(id);
+const esc = (s) => s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+let hasResult = false;
+
+ipcRenderer.on('state', (_e, s) => {
+  const body = $('body'), foot = $('foot');
+  hasResult = false;
+  document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.action === s.action));
+  if (s.kind === 'loading') {
+    foot.style.display = 'flex';
+    body.innerHTML = '<span class="muted"><span class="spin"></span>' +
+      (s.action === 'fix' ? 'Fixing…' : 'Rewriting (' + s.action + ')…') + '</span>' +
+      '<div style="margin-top:8px" class="muted">' + esc(s.original.slice(0, 220)) + (s.original.length > 220 ? '…' : '') + '</div>';
+  } else if (s.kind === 'result') {
+    hasResult = true;
+    foot.style.display = 'flex';
+    const same = s.original.trim() === s.result.trim();
+    body.innerHTML = (same
+      ? '<span class="muted">No changes needed — looks good.</span><div style="margin-top:8px"><span class="res">' + esc(s.result) + '</span></div>'
+      : '<span class="orig">' + esc(s.original.slice(0, 220)) + (s.original.length > 220 ? '…' : '') + '</span>' +
+        '<span class="res">' + esc(s.result) + '</span>');
+  } else if (s.kind === 'empty') {
+    foot.style.display = 'none';
+    body.innerHTML = '<span class="muted">Nothing selected. Select some text in any app, then press the hotkey.</span>';
+  } else if (s.kind === 'error') {
+    foot.style.display = 'none';
+    body.innerHTML = '<span class="muted">' + esc(s.message) + ' <a id="os">Open Settings</a></span>';
+    const os = document.getElementById('os');
+    if (os) os.addEventListener('click', () => ipcRenderer.send('popup', { type: 'openSettings' }));
+  }
+});
+
+$('close').addEventListener('click', () => ipcRenderer.send('popup', { type: 'close' }));
+$('replace').addEventListener('click', () => { if (hasResult) ipcRenderer.send('popup', { type: 'replace' }); });
+$('copy').addEventListener('click', () => { if (hasResult) ipcRenderer.send('popup', { type: 'copy' }); });
+document.querySelectorAll('.chip').forEach(c =>
+  c.addEventListener('click', () => ipcRenderer.send('popup', { type: 'rerun', action: c.dataset.action })));
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && hasResult) ipcRenderer.send('popup', { type: 'replace' });
+  else if (e.key === 'Escape') ipcRenderer.send('popup', { type: 'close' });
+});
+</script>
+</body>
+</html>
