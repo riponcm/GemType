@@ -1,25 +1,20 @@
 <svg width="480" height="104" viewBox="0 0 480 104" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GemType logo">
   <defs>
     <linearGradient id="gem" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#10a37f"/>
-      <stop offset="1" stop-color="#6366f1"/>
+      <stop offset="0" stop-color="#1a99b0"/>
+      <stop offset=".5" stop-color="#3282c8"/>
+      <stop offset="1" stop-color="#496adf"/>
     </linearGradient>
     <linearGradient id="word" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#0ea47f"/>
-      <stop offset="1" stop-color="#6366f1"/>
+      <stop offset="0" stop-color="#1a99b0"/>
+      <stop offset="1" stop-color="#496adf"/>
     </linearGradient>
   </defs>
 
-  <!-- faceted gem mark -->
-  <g transform="translate(10,14)">
-    <polygon points="20,0 56,0 76,22 38,76 0,22" fill="url(#gem)"/>
-    <!-- facets -->
-    <polygon points="20,0 38,22 0,22" fill="#ffffff" opacity=".18"/>
-    <polygon points="56,0 76,22 38,22" fill="#000000" opacity=".10"/>
-    <polygon points="20,0 56,0 38,22" fill="#ffffff" opacity=".30"/>
-    <polygon points="0,22 38,22 38,76" fill="#ffffff" opacity=".10"/>
-    <!-- check mark inside -->
-    <path d="M24 30 L35 43 L54 20" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- blue-check brand mark -->
+  <g transform="translate(10,16)">
+    <rect x="0" y="0" width="72" height="72" rx="17" fill="url(#gem)"/>
+    <path d="M20 38 L32 50 L54 24" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 
   <!-- wordmark -->
