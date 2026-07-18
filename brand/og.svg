@@ -1,0 +1,39 @@
+<svg width="1000" height="420" viewBox="0 0 1000 420" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#eef4fb"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1a99b0"/>
+      <stop offset="0.5" stop-color="#3282c8"/>
+      <stop offset="1" stop-color="#496adf"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="420" fill="url(#bg)"/>
+
+  <!-- logo -->
+  <g transform="translate(96,120)">
+    <rect width="150" height="150" rx="34" fill="url(#brand)"/>
+    <path d="M42 80 L66 104 L110 52" fill="none" stroke="#fff" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- wordmark + tagline -->
+  <text x="286" y="176" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="72" font-weight="800" fill="#0f172a" letter-spacing="-1.5">GemType</text>
+  <text x="290" y="228" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="30" font-weight="600" fill="url(#brand)">Free, open-source Grammarly alternative</text>
+  <text x="290" y="272" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="23" font-weight="500" fill="#475569">Grammar &amp; AI rewrites on any website — and in Microsoft Word.</text>
+
+  <!-- trust chips -->
+  <g font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="20" font-weight="600" fill="#334155">
+    <g transform="translate(290,320)">
+      <path d="M0 12 L8 20 L24 2" fill="none" stroke="#1a99b0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="34" y="19">Your own free Gemini key</text>
+    </g>
+    <g transform="translate(600,320)">
+      <path d="M0 12 L8 20 L24 2" fill="none" stroke="#1a99b0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="34" y="19">No account · no tracking</text>
+    </g>
+  </g>
+
+  <rect x="0" y="414" width="1000" height="6" fill="url(#brand)"/>
+</svg>

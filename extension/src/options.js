@@ -94,4 +94,10 @@ $('test').addEventListener('click', async () => {
   }
 });
 
+// About: show the installed version next to the name
+try {
+  const v = chrome.runtime.getManifest().version;
+  if ($('ver')) $('ver').textContent = 'v' + v;
+} catch (_) { /* ignore */ }
+
 load();

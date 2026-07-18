@@ -54,6 +54,22 @@
     #status.err { color: #b91c1c; }
     .footer { display: flex; align-items: center; margin-top: 8px; }
     ol { font-size: 13px; color: #374151; line-height: 1.7; padding-left: 18px; margin: 8px 0 0; }
+    .about-row { display: flex; align-items: center; gap: 12px; }
+    .about-row img { width: 42px; height: 42px; border-radius: 9px; }
+    .about-name { font-size: 15px; font-weight: 700; }
+    .about-name span { color: #6b7280; font-weight: 600; font-size: 13px; }
+    .about-meta { font-size: 12.5px; color: #6b7280; margin-top: 2px; }
+    .about-meta a { color: #2563eb; text-decoration: none; }
+    .about-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+    .about-actions a {
+      display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+      font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 8px;
+    }
+    .btn-star { background: #1f2328; color: #fff; }
+    .btn-star:hover { background: #000; }
+    .btn-star .s { color: #ffd54a; }
+    .btn-link { background: #eef0f2; color: #374151; }
+    .btn-link:hover { background: #e2e4e8; }
   </style>
 </head>
 <body>
@@ -115,6 +131,21 @@
       <button class="primary" id="save">Save settings</button>
       <button class="ghost" id="test" style="margin-left:8px">Save &amp; test key</button>
       <span id="status"></span>
+    </div>
+
+    <div class="card">
+      <div class="about-row">
+        <img src="../icons/icon128.png" alt="" />
+        <div>
+          <div class="about-name">GemType <span id="ver"></span></div>
+          <div class="about-meta">Made by <a href="https://matily.org" target="_blank" rel="noopener">Matily</a> &middot; &copy; 2026 &middot; Apache-2.0</div>
+        </div>
+      </div>
+      <div class="about-actions">
+        <a class="btn-star" href="https://github.com/riponcm/GemType" target="_blank" rel="noopener"><span class="s">&#9733;</span> Star on GitHub</a>
+        <a class="btn-link" href="https://github.com/riponcm/GemType/releases" target="_blank" rel="noopener">Check for updates</a>
+        <a class="btn-link" href="https://gemtype.matily.org" target="_blank" rel="noopener">Website</a>
+      </div>
     </div>
   </div>
   <script src="options.js"></script>
