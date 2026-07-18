@@ -1,6 +1,6 @@
 {
   "name": "gemtype-desktop",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "private": true,
   "description": "GemType Desktop \u2014 fix and rewrite text in any application on Mac and Windows, powered by your own Gemini API key.",
   "main": "main.js",
@@ -31,7 +31,8 @@
     "mac": {
       "category": "public.app-category.productivity",
       "target": [
-        "dir"
+        "dmg",
+        "zip"
       ],
       "icon": "assets/icon.icns",
       "identity": null,
@@ -53,6 +54,13 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "GemType"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Office",
+      "icon": "assets/icon.png"
     }
   }
 }

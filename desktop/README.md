@@ -49,15 +49,31 @@ desktop/
 └── test/            plain-node tests: `npm test`
 ```
 
-## Packaging (later)
+## Download
 
-`electron-builder` can produce a Windows installer and a macOS dmg. Notes:
+Prebuilt apps are attached to the [latest release](../../releases/latest):
+macOS (`.dmg` / `.zip`), Windows (`.exe` installer / `.zip`), Linux
+(`.AppImage`).
+
+## Packaging
+
+`electron-builder` builds all three platforms:
+
+```bash
+npm run dist -- --mac     # dmg + zip
+npm run dist -- --win     # nsis installer + zip
+npm run dist -- --linux   # AppImage
+```
+
+Notes:
 
 - **Windows**: distributable immediately; unsigned builds show a SmartScreen
-  warning (code-signing certificate removes it — optional).
-- **macOS**: distribution outside the App Store requires notarization, which
-  needs the Apple Developer Program ($99/yr) — the same membership that
-  unlocks the Safari extension.
+  warning (a code-signing certificate removes it — optional).
+- **Linux**: the AppImage is portable — `chmod +x` and run.
+- **macOS**: builds run unsigned for local/direct distribution (Gatekeeper
+  shows an "unidentified developer" notice). App Store / notarized distribution
+  needs the Apple Developer Program ($99/yr) — the same membership that unlocks
+  the Safari extension.
 
 ## Roadmap
 

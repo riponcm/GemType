@@ -2,7 +2,7 @@
 
 <img src="assets/logo.svg" alt="GemType" width="420" />
 
-**A free, open-source Grammarly alternative for your browser and Microsoft Word — powered by your own Gemini API key.**
+**A free, open-source Grammarly alternative for your browser, Microsoft Word, and the whole desktop — powered by your own Gemini API key.**
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/linnnamnhkciekgpnegkcajcafmjlhgh?label=Chrome%20Web%20Store&logo=googlechrome&logoColor=white&color=4285F4)](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
 [![Users](https://img.shields.io/chrome-web-store/users/linnnamnhkciekgpnegkcajcafmjlhgh?color=10a37f)](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
@@ -39,10 +39,11 @@ through a server of ours):
 | **Edge** | [Live on Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel) |
 | **Firefox** | [Live on Firefox Add-ons](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/) |
 | **Microsoft Word** | Office task-pane add-in — see [`msword/`](msword/) |
+| **Desktop (macOS · Windows · Linux)** | Menu-bar/tray app — works in **any** application via a global hotkey. [Download the latest release](../../releases/latest) · see [`desktop/`](desktop/) |
 | **Safari** | Build ready (needs the Apple Developer fee — [sponsor](#sponsor-this-project)) |
 | **iOS / Android keyboards** | Planned |
 
-Works in **any language** (auto-detected), on any website, and now inside Word.
+Works in **any language** (auto-detected), on any website, inside Word, and now anywhere on your desktop.
 
 ## Features
 
@@ -107,6 +108,16 @@ use, compared with $144–360 per year for Premium.
 **Firefox** — [install from Firefox Add-ons](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/). Same code base via `extension/manifest.firefox.json` (event-page background + `browser.*` compatibility); build steps under [Development](#development).
 
 **Microsoft Word** — a task-pane add-in that checks your document and rewrites selected text right inside Word (Windows, Mac, and the web). See [`msword/`](msword/) and its [README](msword/README.md) to run or install it.
+
+**Desktop app (macOS · Windows · Linux)** — a menu-bar/tray app that works in **every application**, not just the browser. Select text anywhere — Word, Slack, Outlook, an editor, an email — press the global hotkey (**⌘⇧G** on Mac, **Ctrl+Shift+G** on Windows/Linux), and GemType fixes or rewrites it and pastes the result back in place.
+
+> **[⬇ Download the latest release](../../releases/latest)** — macOS (`.dmg`), Windows (`.exe` installer), and Linux (`.AppImage`).
+
+- **macOS**: open the `.dmg`, drag GemType to Applications. First hotkey press asks for **Accessibility** permission (System Settings → Privacy & Security → Accessibility) — that's what lets it send copy/paste, the same as Grammarly Desktop and Raycast.
+- **Windows**: run the installer; unsigned builds show a SmartScreen notice (**More info → Run anyway**).
+- **Linux**: `chmod +x GemType-*.AppImage` and run it.
+
+Unsigned for now (code-signing certificates cost money — see [sponsor](#sponsor-this-project)). Source and build steps are in [`desktop/`](desktop/).
 
 **Safari** — the same code base wraps into a Safari App Extension; see [Safari build](#safari) below.
 
@@ -173,6 +184,12 @@ extension/              the browser extension (MV3, no build step) — Chrome, E
 msword/                 the Microsoft Word add-in (Office.js task pane)
 ├── manifest.xml            Office add-in manifest
 └── src/taskpane/          task pane UI + Office.js integration + Gemini calls
+desktop/                the menu-bar/tray app (Electron) — macOS, Windows, Linux
+├── main.js                tray, global hotkey, clipboard capture, paste-back
+├── gemini.js              Gemini API calls (Node; unit-tested)
+├── popup.html             result overlay (Replace / Copy / rewrite chips)
+└── settings.html          API key, model, language, About
+brand/                  icon source vectors + generate.sh (all surface icons)
 safari/                 Xcode wrapper project (generated)
 assets/                 logo, hero animation, screenshots
 test/
@@ -207,6 +224,7 @@ Then in Safari: Settings → Developer → **Allow unsigned extensions** → ena
 - [x] **Edge Add-ons** — [live](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel)
 - [x] **Firefox (AMO)** — [live](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/)
 - [x] **Microsoft Word add-in** — working; AppSource submission in progress
+- [x] **Desktop app (macOS · Windows · Linux)** — menu-bar/tray app, works in any application via a global hotkey ([download](../../releases/latest))
 - [ ] Safari App Store (build ready; needs Apple Developer membership — [sponsor](#sponsor-this-project))
 - [ ] iOS / Android keyboards sharing the same backend
 - [ ] Hosted-key option (proxy backend) — zero setup for end users
