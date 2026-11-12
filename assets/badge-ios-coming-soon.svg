@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="568" height="172" viewBox="0 0 568 172" role="img" aria-label="Coming soon to iPhone and iPad">
+  <rect x="2" y="2" width="564" height="168" rx="22" fill="#000" stroke="#a6a6a6" stroke-width="3"/>
+  <g fill="none" stroke="#fff" stroke-width="7" stroke-linejoin="round">
+    <rect x="52" y="38" width="62" height="98" rx="12"/>
+  </g>
+  <rect x="72" y="47" width="22" height="6" rx="3" fill="#fff"/>
+  <circle cx="83" cy="124" r="5" fill="#fff"/>
+  <text x="152" y="76" fill="#fff" font-family="-apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="34" font-weight="500" letter-spacing="1">COMING SOON TO</text>
+  <text x="150" y="142" fill="#fff" font-family="-apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="62" font-weight="600">iPhone &amp; iPad</text>
+</svg>

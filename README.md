@@ -2,20 +2,24 @@
 
 <img src="assets/logo.svg" alt="GemType" width="420" />
 
-**A free, open-source Grammarly alternative for your browser, Microsoft Word, and the whole desktop — powered by your own Gemini API key.**
+**A free, open-source Grammarly alternative for your browser, Microsoft Word, the whole desktop, and Android — powered by your own Gemini API key.**
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/linnnamnhkciekgpnegkcajcafmjlhgh?label=Chrome%20Web%20Store&logo=googlechrome&logoColor=white&color=4285F4)](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
 [![Users](https://img.shields.io/chrome-web-store/users/linnnamnhkciekgpnegkcajcafmjlhgh?color=10a37f)](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
 [![Rating](https://img.shields.io/chrome-web-store/rating/linnnamnhkciekgpnegkcajcafmjlhgh?color=f59e0b)](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
 [![Edge Add-ons](https://img.shields.io/badge/Edge%20Add--ons-Live-0C88DA?logo=microsoftedge&logoColor=white)](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel)
 [![Firefox Add-ons](https://img.shields.io/amo/v/gemtype-ai-writing-assistant?label=Firefox%20Add-ons&logo=firefoxbrowser&logoColor=white&color=FF7139)](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/)
+[![Google Play](https://img.shields.io/badge/Google%20Play-Live-34A853?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=org.matily.gemtype)
 [![Manifest V3](https://img.shields.io/badge/manifest-v3-6366f1)](extension/manifest.json)
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-D22128.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](../../pulls)
 
-### [➜ Install free: Chrome](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh) · [Edge](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel) · [Firefox](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/)
+### [➜ Install free: Chrome](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh) · [Edge](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel) · [Firefox](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/) · [Android](https://play.google.com/store/apps/details?id=org.matily.gemtype)
 
 **[gemtype.matily.org](https://gemtype.matily.org)** — the official site, with a live demo and everything in one place.
+
+<a href="https://play.google.com/store/apps/details?id=org.matily.gemtype"><img src="assets/badge-google-play.png" alt="Get it on Google Play" height="60" /></a>&nbsp;&nbsp;
+<a href="#ios"><img src="assets/badge-ios-coming-soon.svg" alt="Coming soon to iPhone and iPad" height="60" /></a>
 
 <img src="assets/hero.svg" alt="GemType demo: typing with mistakes, wavy underlines appear, one click fixes them" width="820" />
 
@@ -40,10 +44,11 @@ through a server of ours):
 | **Firefox** | [Live on Firefox Add-ons](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/) |
 | **Microsoft Word** | Office task-pane add-in — see [`msword/`](msword/) |
 | **Desktop (macOS · Windows · Linux)** | Menu-bar/tray app — works in **any** application via a global hotkey. [Download the latest release](../../releases/latest) · see [`desktop/`](desktop/) |
-| **Safari** | Build ready (needs the Apple Developer fee — [sponsor](#sponsor-this-project)) |
-| **iOS / Android keyboards** | Planned |
+| **Safari** | Build ready — App Store release coming |
+| **Android** | [Live on Google Play](https://play.google.com/store/apps/details?id=org.matily.gemtype) — the GemType Keyboard, with fixes and rewrites built in · source: [GemType-Keyboard](https://github.com/MatilyLabs/GemType-Keyboard) |
+| **iOS keyboard** | In development — coming soon |
 
-Works in **any language** (auto-detected), on any website, inside Word, and now anywhere on your desktop.
+Works in **any language** (auto-detected), on any website, inside Word, anywhere on your desktop, and in every Android app.
 
 ## Features
 
@@ -118,6 +123,10 @@ use, compared with $144–360 per year for Premium.
 - **Linux**: `chmod +x GemType-*.AppImage` and run it.
 
 Unsigned for now (code-signing certificates cost money — see [sponsor](#sponsor-this-project)). Source and build steps are in [`desktop/`](desktop/).
+
+**Android** — **[get GemType on Google Play](https://play.google.com/store/apps/details?id=org.matily.gemtype)**. It's a full keyboard with GemType built in: tap the GemType button to fix, improve, shorten, or change the tone of what you've typed, in any app, using your own free Gemini key. Open source under AGPL-3.0 at [MatilyLabs/GemType-Keyboard](https://github.com/MatilyLabs/GemType-Keyboard).
+
+<a name="ios"></a>**iOS** — a GemType keyboard for iPhone and iPad is in development and coming soon to the App Store.
 
 **Safari** — the same code base wraps into a Safari App Extension; see [Safari build](#safari) below.
 
@@ -232,8 +241,9 @@ Full notes on the [releases page](../../releases).
 - [x] **Firefox (AMO)** — [live](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/)
 - [x] **Microsoft Word add-in** — working; AppSource submission in progress
 - [x] **Desktop app (macOS · Windows · Linux)** — menu-bar/tray app, works in any application via a global hotkey ([download](../../releases/latest))
-- [ ] Safari App Store (build ready; needs Apple Developer membership — [sponsor](#sponsor-this-project))
-- [ ] iOS / Android keyboards sharing the same backend
+- [ ] Safari App Store (build ready)
+- [x] **Android keyboard** — [live on Google Play](https://play.google.com/store/apps/details?id=org.matily.gemtype) ([source](https://github.com/MatilyLabs/GemType-Keyboard))
+- [ ] iOS keyboard — in development
 - [ ] Hosted-key option (proxy backend) — zero setup for end users
 - [ ] Tone and style preferences per site
 
@@ -298,22 +308,17 @@ working extension in a day, and there is plenty of interesting work left:
 - Translations for the UI
 - The Word add-in's native **annotation API** (inline squiggly underlines in Word)
 - The proxy backend for a zero-setup hosted mode
-- Help with the iOS / Android keyboards
+- Help with the [Android keyboard](https://github.com/MatilyLabs/GemType-Keyboard) or the upcoming iOS keyboard
 
 Open an issue to discuss anything bigger before you build it. If GemType
 helped you, starring the repository genuinely helps others find it.
 
 ## Sponsor this project
 
-GemType is free, open source, and unfunded. The Safari version is built and
-working — but shipping it to the App Store requires the **Apple Developer
-Program fee of $99/year**, which is currently the only thing standing between
-this project and Safari users (and, later, the iOS keyboard).
-
-If you or your company find GemType useful, consider sponsoring:
-**[github.com/sponsors/riponcm](https://github.com/sponsors/riponcm)** — the
-first goal is exactly one thing: the Apple Developer fee. Every sponsor is
-credited in this README.
+GemType is free, open source, and unfunded. If you or your company find it
+useful, consider sponsoring:
+**[github.com/sponsors/riponcm](https://github.com/sponsors/riponcm)**. Every
+sponsor is credited in this README.
 
 ## License
 
