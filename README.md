@@ -10,16 +10,17 @@
 [![Edge Add-ons](https://img.shields.io/badge/Edge%20Add--ons-Live-0C88DA?logo=microsoftedge&logoColor=white)](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel)
 [![Firefox Add-ons](https://img.shields.io/amo/v/gemtype-ai-writing-assistant?label=Firefox%20Add-ons&logo=firefoxbrowser&logoColor=white&color=FF7139)](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/)
 [![Google Play](https://img.shields.io/badge/Google%20Play-Live-34A853?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=org.matily.gemtype)
+[![App Store](https://img.shields.io/badge/App%20Store-Live-0D96F6?logo=appstore&logoColor=white)](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396)
 [![Manifest V3](https://img.shields.io/badge/manifest-v3-6366f1)](extension/manifest.json)
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-D22128.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](../../pulls)
 
-### [➜ Install free: Chrome](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh) · [Edge](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel) · [Firefox](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/) · [Android](https://play.google.com/store/apps/details?id=org.matily.gemtype)
+### [➜ Install free: Chrome](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh) · [Edge](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel) · [Firefox](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/) · [Android](https://play.google.com/store/apps/details?id=org.matily.gemtype) · [iPhone](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396)
 
 **[gemtype.matily.org](https://gemtype.matily.org)** — the official site, with a live demo and everything in one place.
 
 <a href="https://play.google.com/store/apps/details?id=org.matily.gemtype"><img src="assets/badge-google-play.png" alt="Get it on Google Play" height="60" /></a>&nbsp;&nbsp;
-<a href="https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396"><img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us" alt="Download on the App Store" height="60" /></a>
+<a href="https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396"><img src="assets/badge-app-store.svg" alt="Download on the App Store" height="60" /></a>
 
 <img src="assets/hero.svg" alt="GemType demo: typing with mistakes, wavy underlines appear, one click fixes them" width="820" />
 
