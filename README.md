@@ -19,7 +19,7 @@
 **[gemtype.matily.org](https://gemtype.matily.org)** — the official site, with a live demo and everything in one place.
 
 <a href="https://play.google.com/store/apps/details?id=org.matily.gemtype"><img src="assets/badge-google-play.png" alt="Get it on Google Play" height="60" /></a>&nbsp;&nbsp;
-<a href="#ios"><img src="assets/badge-ios-coming-soon.svg" alt="Coming soon to iPhone and iPad" height="60" /></a>
+<a href="https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396"><img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us" alt="Download on the App Store" height="60" /></a>
 
 <img src="assets/hero.svg" alt="GemType demo: typing with mistakes, wavy underlines appear, one click fixes them" width="820" />
 
@@ -46,7 +46,7 @@ through a server of ours):
 | **Desktop (macOS · Windows · Linux)** | Menu-bar/tray app — works in **any** application via a global hotkey. [Download the latest release](../../releases/latest) · see [`desktop/`](desktop/) |
 | **Safari** | Build ready — App Store release coming |
 | **Android** | [Live on Google Play](https://play.google.com/store/apps/details?id=org.matily.gemtype) — the GemType Keyboard, with fixes and rewrites built in · source: [GemType-Keyboard](https://github.com/MatilyLabs/GemType-Keyboard) |
-| **iOS keyboard** | In development — coming soon |
+| **iOS keyboard** | [Live on the App Store](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396) (iPhone) |
 
 Works in **any language** (auto-detected), on any website, inside Word, anywhere on your desktop, and in every Android app.
 
@@ -126,7 +126,7 @@ Unsigned for now (code-signing certificates cost money — see [sponsor](#sponso
 
 **Android** — **[get GemType on Google Play](https://play.google.com/store/apps/details?id=org.matily.gemtype)**. It's a full keyboard with GemType built in: tap the GemType button to fix, improve, shorten, or change the tone of what you've typed, in any app, using your own free Gemini key. Open source under AGPL-3.0 at [MatilyLabs/GemType-Keyboard](https://github.com/MatilyLabs/GemType-Keyboard).
 
-<a name="ios"></a>**iOS** — a GemType keyboard for iPhone and iPad is in development and coming soon to the App Store.
+<a name="ios"></a>**iOS** — **[get GemType on the App Store](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396)**. A GemType keyboard for iPhone: tap the GemType button to fix or rewrite what you've typed, in any app, using your own free Gemini key.
 
 **Safari** — the same code base wraps into a Safari App Extension; see [Safari build](#safari) below.
 
@@ -243,7 +243,7 @@ Full notes on the [releases page](../../releases).
 - [x] **Desktop app (macOS · Windows · Linux)** — menu-bar/tray app, works in any application via a global hotkey ([download](../../releases/latest))
 - [ ] Safari App Store (build ready)
 - [x] **Android keyboard** — [live on Google Play](https://play.google.com/store/apps/details?id=org.matily.gemtype) ([source](https://github.com/MatilyLabs/GemType-Keyboard))
-- [ ] iOS keyboard — in development
+- [x] **iOS keyboard** — [live on the App Store](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396)
 - [ ] Hosted-key option (proxy backend) — zero setup for end users
 - [ ] Tone and style preferences per site
 
@@ -308,7 +308,7 @@ working extension in a day, and there is plenty of interesting work left:
 - Translations for the UI
 - The Word add-in's native **annotation API** (inline squiggly underlines in Word)
 - The proxy backend for a zero-setup hosted mode
-- Help with the [Android keyboard](https://github.com/MatilyLabs/GemType-Keyboard) or the upcoming iOS keyboard
+- Help with the [Android keyboard](https://github.com/MatilyLabs/GemType-Keyboard) or the iOS keyboard
 
 Open an issue to discuss anything bigger before you build it. If GemType
 helped you, starring the repository genuinely helps others find it.
