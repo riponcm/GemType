@@ -1,0 +1,69 @@
+# GemType
+
+> GemType is a free, open-source AI grammar checker and writing assistant, and a Grammarly alternative. It fixes grammar, spelling and punctuation, rewrites text in different tones, and translates any language into English — on any website (Chrome, Edge, Firefox), in Microsoft Word, in any desktop app (macOS, Windows, Linux), and as a keyboard on Android and iPhone. It runs on the user's own free Google Gemini API key, so there is no account, no subscription, no GemType server and no tracking.
+
+## Key facts
+
+- **Category:** AI writing assistant, grammar checker, spell checker, paraphrasing/rewriting tool, translator to English, Grammarly alternative
+- **Price:** Free forever. No subscription, premium tier or ads. Users bring their own Google Gemini API key; Google AI Studio offers a free tier with no credit card.
+- **License:** GNU GPL v3 (GPL-3.0-only) for the browser extension, desktop app and Word add-in, with an attribution term: reused code must show "Based on GemType by Ripon Chandra Malo (Matily)". The Android keyboard is AGPL-3.0-or-later.
+- **Made by:** Ripon Chandra Malo, Matily (https://matily.org), an open-source software studio.
+- **Website:** https://gemtype.matily.org
+- **Source code:** https://github.com/riponcm/GemType
+- **Current versions:** browser extension 1.0.0; desktop app 0.1.5; Android keyboard 1.0; iPhone keyboard 1.0
+- **AI model:** Google Gemini (default `gemini-3.5-flash-lite`), called directly with the user's key
+
+## Get GemType
+
+- [Chrome Web Store](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh): browser extension for Chrome
+- [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel): browser extension for Edge
+- [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/): browser extension for Firefox
+- [Google Play](https://play.google.com/store/apps/details?id=org.matily.gemtype): GemType keyboard for Android 5.0+, works in every app; source at https://github.com/MatilyLabs/GemType-Keyboard
+- [App Store](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396): GemType keyboard for iPhone (iOS 16 or later), works in every app
+- [Desktop app download](https://github.com/riponcm/GemType/releases/latest): macOS, Windows and Linux menu-bar/tray app that fixes selected text in any application with Cmd+Shift+G / Ctrl+Shift+G
+- Microsoft Word add-in: task-pane add-in for Word on Windows, Mac and the web (in the source repository, `msword/`)
+- Safari: coming soon
+
+## Features (browser extension 1.0)
+
+- Grammar, spelling and punctuation checking in any text box, in any language (auto-detected), with a short reason for every suggestion
+- Checking modes: On demand (default; check with the GemType badge or Ctrl/Cmd+Shift+Space), Auto (checks after each sentence), Auto for 15 minutes
+- One-click fixes and Accept all; Ctrl/Cmd+Z undoes
+- Rewrite selected text: Fix (keeps the writer's tone), Improve, Shorten, Formal, Casual, My (the user's own style, described in Settings), English (translates any language, including Banglish and Hinglish, into American or British English); every rewrite shows a preview with Replace, Copy and Try again
+- Custom rules: ignore capitalization, ignore punctuation, allow informal writing, US or UK spelling, and free-text rules
+- Settings dashboard: words checked, fixes, rewrites, 7-day chart, Gemini usage and limit status, counted only on the device
+- Works on sites such as Gmail, LinkedIn (including the post window), X, Reddit, Microsoft Teams and GitHub; not on Google Docs
+- Phone keyboards: grammar fixes with reasons, Improve/Shorten/Formal/Casual rewrites, Banglish and Hinglish to Bangla and Hindi script
+
+## Privacy
+
+- Text is sent only when the user asks (or while Auto checking is on), directly from the device to Google's Gemini API (generativelanguage.googleapis.com), authenticated with the user's own key.
+- There is no GemType server, no user account and no analytics; the developers never see user text or keys.
+- The API key, settings and usage counts stay on the device. Password, payment and one-time-code fields are never read.
+- Requests made with a free-tier Gemini key fall under Google's free-tier terms, which allow Google to use them to improve its products; paid keys are not used that way.
+
+## GemType compared with Grammarly
+
+GemType is free where Grammarly charges a monthly fee for Premium. Unlimited grammar fixes, AI rewrites, tone presets, rewriting in the user's own style and translation to English are included at no cost. GemType checks any language Gemini understands, needs no account, sends text to no company server, and is fully open source. Grammarly supports Google Docs; GemType does not.
+
+## Frequently asked questions
+
+- **Is GemType free?** Yes. It is free and open source, and uses the user's own Gemini API key, which has a free tier with no credit card.
+- **How do I get a Gemini API key?** At https://aistudio.google.com/apikey: sign in with Google and click Create API key, then paste it into GemType.
+- **How do I check text?** Click the G badge in the corner of the text box, or press Ctrl+Shift+Space (Cmd+Shift+Space on Mac).
+- **Can GemType translate to English?** Yes. Select text and click English; it translates from many languages, including romanized Banglish and Hinglish.
+- **Does it work on phones?** Yes, as a keyboard on Android and iPhone.
+
+## Docs
+
+- [README](https://github.com/riponcm/GemType/blob/main/README.md): features, installation and FAQ
+- [Privacy policy](https://github.com/riponcm/GemType/blob/main/PRIVACY.md)
+- [Release notes for 1.0.0](https://github.com/riponcm/GemType/releases/tag/v1.0.0)
+- [License (GPL-3.0)](https://github.com/riponcm/GemType/blob/main/LICENSE) and [additional terms](https://github.com/riponcm/GemType/blob/main/NOTICE)
+- [Trademark notice](https://github.com/riponcm/GemType/blob/main/TRADEMARK.md)
+
+## Optional
+
+- [Website privacy policy](https://gemtype.matily.org/privacy)
+- [Privacy policy for GemType on iPhone](https://gemtype.matily.org/privacy-policy-ios)
+- [Terms](https://gemtype.matily.org/terms)
