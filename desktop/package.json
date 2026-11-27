@@ -1,6 +1,7 @@
 {
   "name": "gemtype-desktop",
   "version": "0.1.5",
+  "license": "GPL-3.0-only",
   "private": true,
   "description": "GemType Desktop \u2014 fix and rewrite text in any application on Mac and Windows, powered by your own Gemini API key.",
   "main": "main.js",

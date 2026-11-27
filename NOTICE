@@ -1,10 +1,46 @@
 GemType — AI Writing Assistant
-Copyright 2026 Ripon Chandra Malo (Matily)
+Copyright (C) 2026 Ripon Chandra Malo (Matily)
 https://matily.org · https://github.com/riponcm/GemType
 
 Created and maintained by Ripon Chandra Malo under the Matily studio.
 
-This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, version 3 (see LICENSE), together with the additional terms below.
 
-"GemType" and the GemType logo are trademarks of Ripon Chandra Malo / Matily
-and are not licensed under the Apache License — see TRADEMARK.md.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+Versions 0.1.5 and earlier were released under the Apache License 2.0; those
+releases remain available under that license. GemType is licensed under the
+GNU GPL version 3 from version 1.0.0. Contributions made under the
+Apache License 2.0 keep their original notices and are included in this
+GPL-3.0 work as that license permits.
+
+
+ADDITIONAL TERMS (GNU GPL version 3, section 7)
+-----------------------------------------------
+
+The following additional terms apply to this program and to every copy or
+modified version of it that you convey:
+
+1. Attribution (section 7(b)). Any copy or modified version that has a user
+   interface must show, in a place where users can reasonably find it (for
+   example an About, Settings, Help or credits screen, or the store listing
+   when the interface has no such screen), this attribution:
+
+       Based on GemType by Ripon Chandra Malo (Matily)
+       https://github.com/riponcm/GemType
+
+   You must also keep this NOTICE file, including these additional terms,
+   with every copy of the source code.
+
+2. Modified versions (section 7(c)). A modified version must be clearly
+   marked as different from the original GemType, and must not be presented
+   as the official GemType or as made or endorsed by Matily.
+
+3. Names and marks (section 7(e)). This license does not grant any right to
+   use the "GemType" name, the "Matily" name, or the GemType logo, except to
+   give the attribution required above or to describe compatibility. See
+   TRADEMARK.md.

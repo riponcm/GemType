@@ -12,7 +12,7 @@
 [![Google Play](https://img.shields.io/badge/Google%20Play-Live-34A853?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=org.matily.gemtype)
 [![App Store](https://img.shields.io/badge/App%20Store-Live-0D96F6?logo=appstore&logoColor=white)](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396)
 [![Manifest V3](https://img.shields.io/badge/manifest-v3-6366f1)](extension/manifest.json)
-[![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-D22128.svg)](LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/license-GPL%20v3-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](../../pulls)
 
 ### [➜ Install free: Chrome](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh) · [Edge](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel) · [Firefox](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/) · [Android](https://play.google.com/store/apps/details?id=org.matily.gemtype) · [iPhone](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396)
@@ -53,10 +53,12 @@ Works in **any language** (auto-detected), on any website, inside Word, anywhere
 
 ## Features
 
-- **Live grammar and spelling checking** — underlines appear in any text field about a second after you stop typing: Gmail, LinkedIn, X, Reddit, GitHub, anywhere
+- **Grammar and spelling checking, when you want it** — click the GemType badge or press **Ctrl/⌘ + Shift + Space** to check any text field: Gmail, LinkedIn, X, Reddit, GitHub, anywhere. Prefer live checking? Switch to **Auto** (checks after each sentence) or **Auto for 15 min**
+- **Custom rules** — ignore capitalization or punctuation, allow informal writing, pick US or UK spelling, or write your own rules
+- **Dashboard** — words checked, fixes accepted, rewrites, and your Gemini usage and limits, counted only in your browser
 - **One-click fixes** — click an underline and accept the correction; `Ctrl/Cmd+Z` always undoes
-- **Sentence verification** — after every accepted fix, the surrounding sentence is automatically re-checked, so word-level fixes never leave broken sentences behind
-- **Rewrite on demand** — select text for a floating toolbar with *Improve, Fix, Shorten, Formal,* and *Casual* actions, also available from the right-click menu
+- **Sentence verification** — in Auto mode, after every accepted fix the surrounding sentence is re-checked, so word-level fixes never leave broken sentences behind
+- **Rewrite on demand** — select text for a floating toolbar with *Fix* (keeps your tone), *Improve, Shorten, Formal, Casual*, *My* (your own style, described in Settings) and *English* (translates any language into the American or British English you pick in Settings), also available from the right-click menu
 - **Context-aware suggestions** — an LLM judges whole sentences in any language, not just pattern rules
 - **Bring your own key** — uses your free [Google AI Studio](https://aistudio.google.com/apikey) key; no account, no subscription, no middleman server
 - **Private by design** — text goes only to Google's Gemini API; no tracking, no analytics, nothing else phones home
@@ -75,7 +77,7 @@ Works in **any language** (auto-detected), on any website, inside Word, anywhere
 | Trackers and analytics | None | Product analytics and telemetry |
 | Account required | No | Yes |
 | Where your text is processed | Google's Gemini API only, with your key — no middleman server | Grammarly's servers |
-| Open source | Yes (Apache 2.0) | No |
+| Open source | Yes (GPL-3.0) | No |
 | Google Docs | Not supported (Google whitelists specific vendors) | Supported |
 
 **What does "bring your own key" really cost?** For a single person typing,
@@ -157,7 +159,7 @@ Unsigned for now (code-signing certificates cost money — see [sponsor](#sponso
 
 - **Overlay, not injection** — underline positions come from `Range.getClientRects()` (rich editors) or a mirror element (plain fields); the page's DOM is never modified, so React, Vue, and ProseMirror editors stay stable
 - **Snippet anchoring** — the model returns exact text snippets, located client-side and re-anchored live as you type (LLM character offsets are unreliable)
-- **Token-frugal** — debounced checks, unchanged-text skipping, response caching, and sentence-scoped re-checks keep free-tier quota comfortable for daily use
+- **Token-frugal** — on-demand checking by default, per-paragraph caching (only changed paragraphs are sent), response caching, and a fail-fast stop once Google reports the daily limit keep free-tier quota comfortable for daily use
 
 ## Site support
 
@@ -232,6 +234,7 @@ Then in Safari: Settings → Developer → **Allow unsigned extensions** → ena
 
 Full notes on the [releases page](../../releases).
 
+- **v1.0.0** (browser extension) — **GemType 1.0, now GPL-3.0 and free forever.** **On demand checking** (new default: check with the badge or **Ctrl/⌘ + Shift + Space**; Auto and "Auto for 15 min" modes too) to save your free Gemini quota; only changed paragraphs are re-sent; **custom rules**; new **My** (rewrite in your own style) and **English** (translate any language, American or British) buttons, with **Fix** first and keeping your tone; **Accept all**; rewrites now show a **preview** (Replace, Copy, Try again) before changing your text; a **welcome page** for new installs; a **dashboard** in Settings with words checked, fixes, rewrites, Gemini usage and limit status (all stored locally); clear daily-limit messages; Teams/CKEditor fix on Chromium (thanks [@mantriyogesh](https://github.com/mantriyogesh)); new Gemini models (`gemini-3.5-flash-lite` default).
 - **v0.1.5** — Works in LinkedIn's post composer and other pop-up / shadow-DOM editors (grammar checking *and* the rewrite toolbar); new **About** section in Settings (version, star on GitHub, check for updates); refreshed icon.
 - **v0.1.4** — **Desktop app** (macOS · Windows · Linux) and **Microsoft Word** add-in; unified blue-check icon across every surface.
 
@@ -323,10 +326,13 @@ sponsor is credited in this README.
 
 ## License
 
-[Apache License 2.0](LICENSE) © 2026 Ripon Chandra Malo (Matily). See [NOTICE](NOTICE).
+[GNU GPL v3](LICENSE) © 2026 Ripon Chandra Malo (Matily), with the additional terms in [NOTICE](NOTICE).
 
-The GemType name and logo are trademarks and are **not** covered by the Apache
-license — see [TRADEMARK.md](TRADEMARK.md). Please give forks their own name and icon.
+GemType is free forever. You can use, study, change and share the code, and your versions must stay open source under the GPL. **If you reuse GemType's code, credit it:** any copy or modified version with a user interface must show *"Based on GemType by Ripon Chandra Malo (Matily)"* with a link to this repository, for example on its About screen ([NOTICE](NOTICE), GPL-3.0 section 7(b)).
+
+The GemType name and logo are trademarks and are **not** covered by the license — see [TRADEMARK.md](TRADEMARK.md). Please give forks their own name and icon.
+
+Versions up to 0.1.5 were released under the Apache License 2.0 and stay available under it; GemType is GPL-3.0 from v1.0.0.
 
 ---
 

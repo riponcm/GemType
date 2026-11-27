@@ -17,15 +17,26 @@ receive, or store any of your data**. There is no GemType server.
   Google's handling of this data is governed by the
   [Google API Terms](https://developers.google.com/terms) and the
   [Gemini API Additional Terms](https://ai.google.dev/gemini-api/terms).
+  On Google's **free tier**, Google may use your requests to improve its
+  products; requests made with a paid key are not used that way.
 - **Your Gemini API key.** Stored only on your device in
   `chrome.storage.local`. It is not synced through your Google account and is
   sent only to `generativelanguage.googleapis.com` as authentication.
-- **Your settings** (model choice, language, disabled sites, on/off state).
-  Stored only on your device in `chrome.storage.local`.
+- **Your settings** (model choice, language, checking mode, custom rules,
+  disabled sites, on/off state). Stored only on your device in
+  `chrome.storage.local`.
+- **Usage counts for your dashboard** (words checked, fixes accepted,
+  rewrites, Gemini requests and tokens per day, and the last rate limit Google
+  reported). Numbers only — never your text. Stored only on your device in
+  `chrome.storage.local`, never uploaded, and you can reset them in Settings.
+- **The date you installed GemType and whether you've answered the "rate
+  GemType" prompt**, so the prompt appears at most twice. Stored only on your
+  device.
 
 ## What we do NOT do
 
-- No analytics, telemetry, or usage tracking of any kind
+- No analytics, telemetry, or usage tracking of any kind — the dashboard
+  counts above never leave your browser
 - No accounts, no sign-up, no cookies
 - No data sold, shared, or transmitted to anyone other than Google's Gemini
   API as described above

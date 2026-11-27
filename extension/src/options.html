@@ -4,150 +4,397 @@
   <meta charset="utf-8" />
   <title>GemType Settings</title>
   <style>
+    :root {
+      --bg: #f4f6f9; --card: #fff; --line: #e2e6ec; --line2: #eef0f3;
+      --text: #1b2330; --muted: #5a6472; --soft: #f6f8fb; --chip: #eef1f5;
+      --accent: #2f74c0; --accent-soft: #f2f7fd; --bar: #b9cde6;
+      --ok-fg: #0b6b4c; --ok-bg: #dcf3ea; --warn-fg: #6b3f00; --warn-bg: #fff7e8; --warn-line: #f3d49a;
+    }
+    * { box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f6f7f9;
-      color: #1f2328;
-      margin: 0;
-      display: flex;
-      justify-content: center;
+      background: var(--bg); color: var(--text); margin: 0; font-size: 14px;
     }
-    .wrap { width: 560px; padding: 32px 16px 64px; }
-    h1 { font-size: 20px; display: flex; align-items: center; gap: 10px; }
-    h1 img { width: 28px; height: 28px; border-radius: 6px; }
-    .card {
-      background: #fff;
-      border: 1px solid #e2e4e8;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-    .card h2 { font-size: 14px; margin: 0 0 12px; }
-    label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 4px; }
+    a { color: #1f63b0; }
+    header { background: var(--card); border-bottom: 1px solid var(--line); }
+    .top { max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .top img { width: 32px; height: 32px; border-radius: 8px; }
+    .brand { font-size: 18px; font-weight: 700; }
+    .crumb { color: var(--muted); }
+    .grow { flex: 1; }
+    .ver { font-size: 12px; font-weight: 600; color: #4b5563; background: var(--chip); border-radius: 999px; padding: 4px 10px; }
+    .btn-star { display: inline-flex; align-items: center; gap: 6px; background: var(--text); color: #fff; text-decoration: none; font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 8px; }
+    .btn-star .s { color: #ffd54a; }
+    .layout { max-width: 1200px; margin: 0 auto; padding: 24px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+    nav { flex: 1 1 200px; max-width: 240px; display: flex; flex-direction: column; gap: 2px; position: sticky; top: 16px; }
+    nav a { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; color: #374151; font-weight: 500; text-decoration: none; }
+    nav a:hover { background: #e9edf2; }
+    nav a.on { background: #e6eef8; color: #174d8a; font-weight: 600; }
+    nav svg { width: 16px; height: 16px; flex: none; }
+    main { flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+    h1 { margin: 0; font-size: 26px; letter-spacing: -.01em; }
+    .lede { margin: 4px 0 0; color: var(--muted); }
+    .headrow { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
+    .keypill { display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px 6px 10px; font-size: 13px; }
+    .keypill b { font-weight: 600; }
+    .keypill code { font-size: 12px; color: #374151; }
+    .dot { width: 8px; height: 8px; border-radius: 4px; background: #16a34a; flex: none; }
+    .dot.warn { background: #d48806; }
+    .dot.bad { background: #b91c1c; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 16px; }
+    .card h2 { margin: 0; font-size: 16px; }
+    .cardhead { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .cardhead h2 { flex: 1; }
+    .note { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin: 0; }
+    .banner { display: none; flex-wrap: wrap; align-items: center; gap: 14px; background: var(--warn-bg); border: 1px solid var(--warn-line); border-radius: 12px; padding: 14px 16px; color: var(--warn-fg); }
+    .banner .msg { flex: 1 1 320px; }
+    .banner b { display: block; margin-bottom: 2px; }
+    .banner a { color: var(--warn-fg); font-weight: 600; }
+    .modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+    .mode { text-align: left; border: 2px solid var(--line); background: var(--card); border-radius: 12px; padding: 12px 14px; font: inherit; color: var(--text); display: flex; flex-direction: column; gap: 4px; cursor: pointer; }
+    .mode[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+    .mode .t { font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .mode .d { font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+    .mode .burn { display: flex; align-items: center; gap: 5px; margin-top: 2px; font-size: 12px; font-weight: 600; color: #9a3412; }
+    .mode .burn svg { flex: none; }
+    .tag { font-size: 11px; font-weight: 600; color: var(--ok-fg); background: var(--ok-bg); border-radius: 999px; padding: 2px 8px; }
+    .shortcut { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; background: var(--soft); border-radius: 10px; padding: 12px 14px; font-size: 13px; color: #374151; }
+    kbd { font-family: inherit; font-size: 12px; font-weight: 600; background: #fff; border: 1px solid #cfd6df; border-bottom-width: 2px; border-radius: 6px; padding: 3px 8px; }
+    .seg { display: flex; background: var(--chip); border-radius: 9px; padding: 3px; gap: 2px; }
+    .seg button { border: none; background: transparent; color: var(--muted); border-radius: 7px; padding: 6px 12px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .seg button[aria-pressed="true"] { background: #fff; color: var(--text); box-shadow: 0 1px 2px rgba(16,24,40,.12); }
+    .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+    .tile { border: 1px solid #e8ebf0; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+    .tile span { font-size: 12.5px; color: var(--muted); font-weight: 500; }
+    .tile b { font-size: 28px; letter-spacing: -.02em; }
+    .tile:first-child b { color: var(--accent); }
+    .charthead { display: flex; align-items: baseline; gap: 8px; font-size: 13px; }
+    .charthead span { font-size: 12px; color: var(--muted); }
+    .chart { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 14px; align-items: end; height: 170px; border-bottom: 1px solid #dfe3e9; padding: 0 4px; }
+    .bar { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px; height: 100%; }
+    .bar i { display: block; width: 100%; max-width: 44px; background: var(--bar); border-radius: 6px 6px 2px 2px; min-height: 2px; }
+    .bar.today i { background: var(--accent); }
+    .bar span { font-size: 11.5px; font-weight: 600; color: #374151; }
+    .days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 14px; padding: 0 4px; }
+    .days span { text-align: center; font-size: 12px; color: var(--muted); }
+    .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+    .mini { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .mini div { background: var(--soft); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; }
+    .mini span { font-size: 12px; color: var(--muted); }
+    .mini b { font-size: 22px; }
+    .lines div { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line2); font-size: 13px; }
+    .lines div:last-child { border-bottom: none; }
+    .lines span:first-child { flex: 1; color: #374151; }
+    .chip { font-weight: 600; border-radius: 999px; padding: 3px 10px; font-size: 12px; color: var(--ok-fg); background: var(--ok-bg); }
+    .chip.warn { color: var(--warn-fg); background: #ffedc7; }
+    .stores { display: flex; flex-wrap: wrap; gap: 10px; }
+    .store { display: inline-flex; align-items: center; gap: 10px; background: #000; color: #fff; text-decoration: none; border-radius: 10px; padding: 8px 16px 8px 12px; min-width: 170px; }
+    .store small { display: block; font-size: 10px; letter-spacing: .04em; }
+    .store strong { display: block; font-size: 17px; font-weight: 600; line-height: 1.1; }
+    .also { border-top: 1px solid var(--line2); padding-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .also .lbl { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pills a { font-size: 13px; font-weight: 600; text-decoration: none; background: var(--chip); color: #374151; border-radius: 999px; padding: 6px 12px; }
+    .sharerow { display: flex; flex-wrap: wrap; gap: 8px; }
+    .sbtn { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); background: #fff; color: #1f2328; border-radius: 9px; padding: 8px 13px; font: inherit; font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; }
+    .sbtn:hover { background: var(--soft); }
+    .raterow { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; border-top: 1px solid var(--line2); padding-top: 14px; }
+    .btn-rate { display: inline-flex; align-items: center; gap: 6px; background: var(--text); color: #fff; text-decoration: none; font-size: 13px; font-weight: 600; padding: 9px 15px; border-radius: 9px; }
+    .btn-rate .s { color: #ffd54a; }
+    .privacy { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 12.5px; color: var(--muted); padding: 4px 2px; }
+    label { display: block; font-size: 13px; font-weight: 600; margin: 4px 0 6px; }
     input[type="text"], input[type="password"], select, textarea {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 8px 10px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      font-size: 13px;
-      background: #fff;
+      width: 100%; padding: 9px 11px; border: 1px solid #d1d5db; border-radius: 8px; font: inherit; font-size: 13px; background: #fff;
     }
+    textarea { resize: vertical; }
     .row { display: flex; gap: 8px; align-items: center; }
     .row input { flex: 1; }
-    .hint { font-size: 12px; color: #6b7280; margin-top: 4px; line-height: 1.5; }
-    .hint a { color: #2563eb; }
-    button {
-      border: none;
-      border-radius: 8px;
-      padding: 8px 16px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-    }
+    .hint { font-size: 12px; color: #6b7280; margin-top: 6px; line-height: 1.5; }
+    ol { font-size: 13px; color: #374151; line-height: 1.7; padding-left: 18px; margin: 0; }
+    button.primary, button.ghost { border: none; border-radius: 8px; padding: 9px 16px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
     .primary { background: #10a37f; color: #fff; }
     .primary:hover { background: #0d8a6a; }
-    .ghost { background: #eef0f2; color: #374151; }
+    .ghost { background: var(--chip); color: #374151; }
     .ghost:hover { background: #e2e4e8; }
-    #status { font-size: 13px; margin-left: 10px; }
+    .toggles { display: flex; flex-direction: column; }
+    .toggle { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line2); font-weight: 400; margin: 0; cursor: pointer; }
+    .toggle .txt { flex: 1; }
+    .toggle .txt b { display: block; font-size: 14px; }
+    .toggle .txt span { font-size: 12.5px; color: var(--muted); }
+    .switch { position: relative; width: 40px; height: 22px; flex: none; }
+    .switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+    .slider { position: absolute; inset: 0; background: #d1d5db; border-radius: 22px; transition: background .15s; pointer-events: none; }
+    .slider::before { content: ""; position: absolute; width: 18px; height: 18px; border-radius: 50%; background: #fff; top: 2px; left: 2px; transition: transform .15s; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+    .switch input:checked + .slider { background: #10a37f; }
+    .switch input:checked + .slider::before { transform: translateX(18px); }
+    .switch input:focus-visible + .slider { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .savebar { padding: 4px 0; display: flex; align-items: center; gap: 8px; border-top: 1px solid var(--line); }
+    #status { font-size: 13px; margin-left: 6px; }
     #status.ok { color: #047857; }
     #status.err { color: #b91c1c; }
-    .footer { display: flex; align-items: center; margin-top: 8px; }
-    ol { font-size: 13px; color: #374151; line-height: 1.7; padding-left: 18px; margin: 8px 0 0; }
-    .about-row { display: flex; align-items: center; gap: 12px; }
-    .about-row img { width: 42px; height: 42px; border-radius: 9px; }
+    .about { display: flex; align-items: center; gap: 12px; }
+    .about img { width: 42px; height: 42px; border-radius: 9px; }
     .about-name { font-size: 15px; font-weight: 700; }
-    .about-name span { color: #6b7280; font-weight: 600; font-size: 13px; }
     .about-meta { font-size: 12.5px; color: #6b7280; margin-top: 2px; }
-    .about-meta a { color: #2563eb; text-decoration: none; }
-    .about-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
-    .about-actions a {
-      display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
-      font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 8px;
-    }
-    .btn-star { background: #1f2328; color: #fff; }
-    .btn-star:hover { background: #000; }
-    .btn-star .s { color: #ffd54a; }
-    .btn-link { background: #eef0f2; color: #374151; }
-    .btn-link:hover { background: #e2e4e8; }
+    .about-meta a { text-decoration: none; }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1><img src="../icons/icon48.png" alt="" />GemType Settings</h1>
-
-    <div class="card">
-      <h2>Gemini API key</h2>
-      <div class="row">
-        <input type="password" id="apiKey" placeholder="AIza..." autocomplete="off" />
-        <button class="ghost" id="toggleKey" type="button">Show</button>
-      </div>
-      <div class="hint">
-        Your key is stored only on this device (<code>chrome.storage.local</code>)
-        and sent only to <code>generativelanguage.googleapis.com</code>.
-      </div>
-      <label>How to get a free key</label>
-      <ol>
-        <li>Open <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> and sign in with a Google account.</li>
-        <li>Accept the terms (first time only).</li>
-        <li>Click <b>Create API key</b> — no credit card needed for the free tier.</li>
-        <li>Copy the key (starts with <code>AIza</code>) and paste it above.</li>
-      </ol>
+  <header>
+    <div class="top">
+      <img src="../icons/icon48.png" alt="" />
+      <span class="brand">GemType</span>
+      <span class="crumb">Settings</span>
+      <span class="grow"></span>
+      <span class="ver" id="ver"></span>
+      <a class="btn-star" href="https://github.com/riponcm/GemType" target="_blank" rel="noopener"><span class="s">&#9733;</span> Star on GitHub</a>
     </div>
+  </header>
 
-    <div class="card">
-      <h2>Model &amp; language</h2>
-      <label for="model">Gemini model</label>
-      <select id="model">
-        <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite (recommended)</option>
-        <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite</option>
-        <option value="gemini-2.5-flash">gemini-2.5-flash</option>
-        <option value="__custom__">Custom…</option>
-      </select>
-      <input type="text" id="customModel" placeholder="custom model id" style="display:none;margin-top:8px" />
-      <label for="language">Writing language</label>
-      <select id="language">
-        <option value="auto">Auto-detect</option>
-        <option value="English">English</option>
-        <option value="Spanish">Spanish</option>
-        <option value="French">French</option>
-        <option value="German">German</option>
-        <option value="Portuguese">Portuguese</option>
-        <option value="Bengali">Bengali</option>
-        <option value="Hindi">Hindi</option>
-        <option value="Arabic">Arabic</option>
-        <option value="Chinese">Chinese</option>
-        <option value="Japanese">Japanese</option>
-      </select>
-    </div>
+  <div class="layout">
+    <nav aria-label="Settings sections">
+      <a href="#dashboard" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</a>
+      <a href="#checking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg>Checking</a>
+      <a href="#rules"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h10"/><path d="M4 12h16"/><path d="M4 18h7"/><circle cx="18" cy="6" r="2"/><circle cx="15" cy="18" r="2"/></svg>Custom rules</a>
+      <a href="#key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9"/><path d="M17 6l3 3"/></svg>Gemini key &amp; model</a>
+      <a href="#sites"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg>Disabled sites</a>
+      <a href="#about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><path d="M12 7.5v.01"/></svg>About</a>
+    </nav>
 
-    <div class="card">
-      <h2>Disabled sites</h2>
-      <textarea id="disabledSites" rows="4" placeholder="one hostname per line, e.g. docs.google.com"></textarea>
-      <div class="hint">GemType stays off on these hostnames. You can also toggle a site from the toolbar popup.</div>
-    </div>
-
-    <div class="footer">
-      <button class="primary" id="save">Save settings</button>
-      <button class="ghost" id="test" style="margin-left:8px">Save &amp; test key</button>
-      <span id="status"></span>
-    </div>
-
-    <div class="card">
-      <div class="about-row">
-        <img src="../icons/icon128.png" alt="" />
-        <div>
-          <div class="about-name">GemType <span id="ver"></span></div>
-          <div class="about-meta">Made by <a href="https://matily.org" target="_blank" rel="noopener">Matily</a> &middot; &copy; 2026 &middot; Apache-2.0</div>
+    <main>
+      <div class="headrow" id="dashboard">
+        <div class="grow">
+          <h1>Dashboard</h1>
+          <p class="lede">Your stats stay in this browser. GemType never sends them anywhere.</p>
         </div>
+        <div class="keypill"><span class="dot" id="keyDot"></span><b id="keyLabel">Gemini key connected</b><span>·</span><code id="keyModel"></code></div>
       </div>
-      <div class="about-actions">
-        <a class="btn-star" href="https://github.com/riponcm/GemType" target="_blank" rel="noopener"><span class="s">&#9733;</span> Star on GitHub</a>
-        <a class="btn-link" href="https://github.com/riponcm/GemType/releases" target="_blank" rel="noopener">Check for updates</a>
-        <a class="btn-link" href="https://gemtype.matily.org" target="_blank" rel="noopener">Website</a>
+
+      <div class="banner" id="limitBanner" role="status">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <div class="msg"><b>Daily free limit reached</b><span id="limitMsg"></span></div>
+        <a href="#key">Switch model</a>
+        <a href="https://aistudio.google.com/usage" target="_blank" rel="noopener">See usage in AI Studio</a>
       </div>
-    </div>
+
+      <section class="card" id="checking" aria-labelledby="modeTitle">
+        <div class="cardhead">
+          <h2 id="modeTitle">Checking mode</h2>
+          <span class="note">Fewer checks = more of your free Gemini quota left</span>
+        </div>
+        <div class="modes" role="group" aria-label="Checking mode">
+          <button class="mode" data-mode="demand" aria-pressed="false"><span class="t">On demand <span class="tag">Default</span></span><span class="d">Checks only when you press the shortcut or click the badge. Uses the least quota.</span></button>
+          <button class="mode" data-mode="auto" aria-pressed="false"><span class="t">Auto</span><span class="d">Checks as you type, after each sentence.</span><span class="burn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-6 1-9z"/></svg>Burns your free Gemini quota fast</span></button>
+          <button class="mode" data-mode="timed" aria-pressed="false"><span class="t">Auto for 15 min</span><span class="d" id="timedDesc">Checks as you type for 15 minutes, then goes back to on demand.</span><span class="burn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-6 1-9z"/></svg>Burns quota fast, but only for 15 min</span></button>
+        </div>
+        <div class="shortcut">
+          <b>Check now:</b>
+          <span id="keys"></span>
+          <span class="note">or click the GemType badge in any text box</span>
+          <span class="grow"></span>
+          <a href="#" id="changeShortcut">Change shortcut</a>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="statsTitle">
+        <div class="cardhead">
+          <h2 id="statsTitle">Your writing</h2>
+          <div class="seg" role="group" aria-label="Time range">
+            <button data-range="today" aria-pressed="true">Today</button>
+            <button data-range="week" aria-pressed="false">7 days</button>
+            <button data-range="all" aria-pressed="false">All time</button>
+          </div>
+        </div>
+        <div class="tiles">
+          <div class="tile"><span>Words checked</span><b id="tWords">0</b></div>
+          <div class="tile"><span>Fixes accepted</span><b id="tFixes">0</b></div>
+          <div class="tile"><span>Rewrites</span><b id="tRewrites">0</b></div>
+          <div class="tile"><span>Favourite rewrite</span><b id="tTop">—</b></div>
+        </div>
+        <div>
+          <div class="charthead"><b>Words checked per day</b><span>last 7 days</span></div>
+          <div class="chart" id="chart" role="img"></div>
+          <div class="days" id="days"></div>
+        </div>
+      </section>
+
+      <div class="two">
+        <section class="card" aria-labelledby="usageTitle">
+          <div class="cardhead"><h2 id="usageTitle">Gemini usage today</h2><span class="note">this browser</span></div>
+          <div class="mini">
+            <div><span>Requests</span><b id="uReq">0</b></div>
+            <div><span>Tokens</span><b id="uTok">0</b></div>
+          </div>
+          <div class="lines">
+            <div><span>Per-minute limit</span><span class="chip" id="uMinute">OK</span></div>
+            <div><span>Daily limit</span><span class="chip" id="uDay">Not reached</span></div>
+            <div><span>Average reply time</span><b id="uMs">—</b></div>
+          </div>
+          <p class="note">Google doesn't share how much quota is left, and your phone or the desktop app may use the same key. <a href="https://aistudio.google.com/usage" target="_blank" rel="noopener"><b>Exact usage in Google AI Studio</b></a></p>
+        </section>
+
+        <section class="card" aria-labelledby="appsTitle">
+          <h2 id="appsTitle">GemType on your phone</h2>
+          <p class="note">The GemType keyboard fixes and rewrites in any app. Use the same free Gemini key.</p>
+          <div class="stores">
+            <a class="store" href="https://play.google.com/store/apps/details?id=org.matily.gemtype" target="_blank" rel="noopener">
+              <svg width="26" height="28" viewBox="0 0 26 28" aria-hidden="true"><path d="M1 1.5 L14.5 14 L1 26.5 Z" fill="#2196f3"/><path d="M1 1.5 L19.5 9.4 L14.5 14 Z" fill="#34a853"/><path d="M1 26.5 L14.5 14 L19.5 18.6 Z" fill="#ea4335"/><path d="M19.5 9.4 L25 12.3 Q26 14 25 15.7 L19.5 18.6 L14.5 14 Z" fill="#fbbc04"/></svg>
+              <span><small>GET IT ON</small><strong>Google Play</strong></span>
+            </a>
+            <a class="store" href="https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396" target="_blank" rel="noopener">
+              <svg width="24" height="28" viewBox="0 0 384 512" fill="#fff" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+              <span><small>Download on the</small><strong>App Store</strong></span>
+            </a>
+          </div>
+          <div class="also">
+            <span class="lbl">Also on</span>
+            <div class="pills">
+              <a href="https://github.com/riponcm/GemType/releases/latest" target="_blank" rel="noopener">Desktop app</a>
+              <a href="https://github.com/riponcm/GemType/tree/main/msword" target="_blank" rel="noopener">Microsoft Word</a>
+              <a href="https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh" target="_blank" rel="noopener">Chrome</a>
+              <a href="https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel" target="_blank" rel="noopener">Edge</a>
+              <a href="https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/" target="_blank" rel="noopener">Firefox</a>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="card" id="share" aria-labelledby="shareTitle">
+        <div class="cardhead">
+          <h2 id="shareTitle">Share GemType</h2>
+          <span class="note" id="shareStat"></span>
+        </div>
+        <p class="note">Know someone paying for a grammar checker? GemType is free, open source and has no ads. Sharing it, or rating it, is the best way to help it grow.</p>
+        <div class="sharerow">
+          <a class="sbtn" id="shX" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.7 8 10.3h-6.3l-4.9-6.4L5.3 21H2.2l7.2-8.3L1.8 3h6.4l4.4 5.9L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z"/></svg>X</a>
+          <a class="sbtn" id="shLinkedin" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.1c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7V21h-4z"/></svg>LinkedIn</a>
+          <a class="sbtn" id="shFacebook" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8.5V6.8c0-.8.5-1 .9-1h2.4V2.1L14 2c-3.6 0-4.4 2.7-4.4 4.4v2.1H7.5v3.8h2.1V22H14v-9.7h2.9l.4-3.8z"/></svg>Facebook</a>
+          <a class="sbtn" id="shWhatsapp" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l1.9.9c.3.1.4.2.5.3.1.2.1.7-.1 1.3z"/></svg>WhatsApp</a>
+          <a class="sbtn" id="shEmail"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Email</a>
+          <button class="sbtn" id="shCopy" type="button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span id="shCopyLabel">Copy link</span></button>
+        </div>
+        <div class="raterow">
+          <a class="btn-rate" id="rateLink" target="_blank" rel="noopener"><span class="s">&#9733;</span> <span id="rateLabel">Rate GemType</span></a>
+          <span class="note">Takes 30 seconds and helps others find GemType.</span>
+        </div>
+      </section>
+
+      <div class="privacy">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span class="grow">Counts only — never your text. Stored in this browser and never uploaded.</span>
+        <button class="ghost" id="resetStats">Reset stats</button>
+      </div>
+
+      <section class="card" id="rules" aria-labelledby="rulesTitle">
+        <div class="cardhead"><h2 id="rulesTitle">Custom rules</h2><span class="note">Used for checks and rewrites</span></div>
+        <div class="toggles">
+          <label class="toggle"><span class="txt"><b>Ignore capitalization</b><span>Never suggest changing upper or lower case, e.g. sentence starts or "i".</span></span><span class="switch"><input type="checkbox" id="rIgnoreCase" /><span class="slider"></span></span></label>
+          <label class="toggle"><span class="txt"><b>Ignore punctuation</b><span>Never suggest adding, removing or changing punctuation.</span></span><span class="switch"><input type="checkbox" id="rIgnorePunct" /><span class="slider"></span></span></label>
+          <label class="toggle"><span class="txt"><b>Allow informal writing</b><span>Keep slang, contractions, abbreviations and chat style.</span></span><span class="switch"><input type="checkbox" id="rInformal" /><span class="slider"></span></span></label>
+        </div>
+        <div>
+          <label for="rSpelling">Spelling</label>
+          <select id="rSpelling">
+            <option value="auto">Match my writing</option>
+            <option value="us">American English (color, organize)</option>
+            <option value="uk">British English (colour, organise)</option>
+          </select>
+        </div>
+        <div>
+          <label for="rEnglish">English button translates to</label>
+          <select id="rEnglish">
+            <option value="us">American English (color, organize)</option>
+            <option value="uk">British English (colour, organise)</option>
+          </select>
+          <div class="hint">The <b>English</b> rewrite button translates any language, including Banglish or Hinglish, into this English.</div>
+        </div>
+        <div>
+          <label for="rStyle">My style</label>
+          <textarea id="rStyle" rows="3" maxlength="2000" placeholder="Describe how you write, e.g.&#10;Friendly and direct, short sentences, no emojis, sign off with &quot;Cheers&quot;."></textarea>
+          <div class="hint">Used by the <b>My</b> rewrite button: select text, click My, and GemType rewrites it the way you write.</div>
+        </div>
+        <div>
+          <label for="rCustom">Your own rules</label>
+          <textarea id="rCustom" rows="4" maxlength="2000" placeholder="One rule per line, e.g.&#10;Don't change product names like iPhone or eBay.&#10;Use the Oxford comma."></textarea>
+          <div class="hint">These override GemType's defaults. The two "Ignore" switches are always enforced; your own rules are followed by Gemini and work almost always.</div>
+        </div>
+      </section>
+
+      <section class="card" id="key" aria-labelledby="keyTitle">
+        <h2 id="keyTitle">Gemini API key</h2>
+        <div class="row">
+          <input type="password" id="apiKey" placeholder="AIza..." autocomplete="off" aria-label="Gemini API key" />
+          <button class="ghost" id="toggleKey" type="button">Show</button>
+        </div>
+        <div class="hint">
+          Your key is stored only on this device and sent only to <code>generativelanguage.googleapis.com</code>.
+          On Google's free tier, Google may use your requests to improve its products; a paid key doesn't.
+        </div>
+        <div>
+          <label>How to get a free key</label>
+          <ol>
+            <li>Open <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> and sign in with a Google account.</li>
+            <li>Accept the terms (first time only).</li>
+            <li>Click <b>Create API key</b> — no credit card needed for the free tier.</li>
+            <li>Copy the key (starts with <code>AIza</code>) and paste it above.</li>
+          </ol>
+        </div>
+        <div>
+          <label for="model">Gemini model</label>
+          <select id="model">
+            <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite (recommended)</option>
+            <option value="gemini-3.8-flash">gemini-3.8-flash (newest, slower on the free tier)</option>
+            <option value="__custom__">Custom…</option>
+          </select>
+          <input type="text" id="customModel" placeholder="custom model id" style="display:none;margin-top:8px" aria-label="Custom model id" />
+        </div>
+        <div>
+          <label for="language">Writing language</label>
+          <select id="language">
+            <option value="auto">Auto-detect</option>
+            <option value="English">English</option>
+            <option value="Spanish">Spanish</option>
+            <option value="French">French</option>
+            <option value="German">German</option>
+            <option value="Portuguese">Portuguese</option>
+            <option value="Bengali">Bengali</option>
+            <option value="Hindi">Hindi</option>
+            <option value="Arabic">Arabic</option>
+            <option value="Chinese">Chinese</option>
+            <option value="Japanese">Japanese</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="card" id="sites" aria-labelledby="sitesTitle">
+        <h2 id="sitesTitle">Disabled sites</h2>
+        <textarea id="disabledSites" rows="4" placeholder="one hostname per line, e.g. docs.google.com" aria-label="Disabled sites"></textarea>
+        <div class="hint">GemType stays off on these hostnames. You can also toggle a site from the toolbar popup.</div>
+      </section>
+
+      <div class="savebar">
+        <button class="primary" id="save">Save settings</button>
+        <button class="ghost" id="test">Save &amp; test key</button>
+        <span id="status"></span>
+      </div>
+
+      <section class="card" id="about" aria-label="About">
+        <div class="about">
+          <img src="../icons/icon128.png" alt="" />
+          <div>
+            <div class="about-name">GemType <span id="ver2"></span></div>
+            <div class="about-meta">Made by <a href="https://matily.org" target="_blank" rel="noopener">Matily</a> &middot; &copy; 2026 &middot; GPL-3.0 &middot; Free forever</div>
+          </div>
+        </div>
+        <div class="pills">
+          <a href="https://github.com/riponcm/GemType/releases" target="_blank" rel="noopener">Check for updates</a>
+          <a href="https://gemtype.matily.org" target="_blank" rel="noopener">Website</a>
+          <a href="https://github.com/riponcm/GemType/issues" target="_blank" rel="noopener">Report a problem</a>
+        </div>
+      </section>
+    </main>
   </div>
+  <script src="shared.js"></script>
   <script src="options.js"></script>
 </body>
 </html>

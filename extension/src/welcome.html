@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Welcome to GemType</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f4f6f9; color: #1b2330; margin: 0; font-size: 15px; line-height: 1.5;
+    }
+    a { color: #1f63b0; }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 40px 20px 64px; display: flex; flex-direction: column; gap: 18px; }
+    .hero { display: flex; align-items: center; gap: 16px; }
+    .hero img { width: 56px; height: 56px; border-radius: 14px; }
+    h1 { margin: 0; font-size: 28px; letter-spacing: -.01em; }
+    .lede { margin: 2px 0 0; color: #5a6472; }
+    .step { background: #fff; border: 1px solid #e2e6ec; border-radius: 14px; padding: 22px; display: flex; gap: 16px; }
+    .num { width: 32px; height: 32px; flex: none; border-radius: 16px; background: #2f74c0; color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .step.done .num { background: #10a37f; }
+    .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+    h2 { margin: 4px 0 0; font-size: 17px; }
+    .note { font-size: 13.5px; color: #5a6472; margin: 0; }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; }
+    input { flex: 1 1 260px; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 9px; font: inherit; font-size: 14px; }
+    button { border: none; border-radius: 9px; padding: 10px 16px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .primary { background: #10a37f; color: #fff; }
+    .primary:hover { background: #0d8a6a; }
+    #status { font-size: 13.5px; }
+    #status.ok { color: #047857; }
+    #status.err { color: #b91c1c; }
+    .how { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+    .how div { background: #f6f8fb; border-radius: 10px; padding: 12px 14px; font-size: 13.5px; color: #374151; display: flex; flex-direction: column; gap: 8px; }
+    .badge { width: 26px; height: 26px; border-radius: 13px; background: #9ca3af; color: #fff; font-weight: 600; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; }
+    kbd { font-family: inherit; font-size: 12px; font-weight: 600; background: #fff; border: 1px solid #cfd6df; border-bottom-width: 2px; border-radius: 6px; padding: 2px 7px; }
+    .tb { display: inline-flex; gap: 2px; background: #1f2328; border-radius: 7px; padding: 3px; align-self: flex-start; }
+    .tb span { color: #e5e7eb; font-size: 11.5px; padding: 3px 7px; }
+    .modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+    .mode { text-align: left; border: 2px solid #e2e6ec; background: #fff; border-radius: 12px; padding: 12px 14px; font: inherit; color: #1b2330; display: flex; flex-direction: column; gap: 4px; cursor: pointer; }
+    .mode[aria-pressed="true"] { border-color: #2f74c0; background: #f2f7fd; }
+    .mode b { font-size: 14px; }
+    .mode span { font-size: 12.5px; color: #5a6472; }
+    .mode .burn { color: #9a3412; font-weight: 600; }
+    .foot { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .pill { font-size: 13px; font-weight: 600; text-decoration: none; background: #eef1f5; color: #374151; border-radius: 999px; padding: 7px 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <img src="../icons/icon128.png" alt="" />
+      <div>
+        <h1>Welcome to GemType</h1>
+        <p class="lede">Free grammar checking and rewriting on any website, with your own Gemini key. Three quick steps.</p>
+      </div>
+    </div>
+
+    <section class="step" id="step1">
+      <div class="num">1</div>
+      <div class="body">
+        <h2>Add your free Gemini API key</h2>
+        <p class="note">Open <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>, sign in with Google, click <b>Create API key</b> (no credit card), and paste it here. It stays on this device.</p>
+        <div class="row">
+          <input type="password" id="apiKey" placeholder="AIza..." autocomplete="off" aria-label="Gemini API key" />
+          <button class="primary" id="save">Save &amp; test</button>
+        </div>
+        <span id="status" role="status"></span>
+      </div>
+    </section>
+
+    <section class="step">
+      <div class="num">2</div>
+      <div class="body">
+        <h2>Check your writing when you want</h2>
+        <div class="how">
+          <div><span class="badge">G</span>Click the GemType badge in the corner of any text box.</div>
+          <div><span><kbd id="k1">Ctrl</kbd> <kbd>Shift</kbd> <kbd>Space</kbd></span>Or press the shortcut while you type.</div>
+          <div><span class="tb"><span>Fix</span><span>Improve</span><span>English</span></span>Select text to fix, rewrite or translate it.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step">
+      <div class="num">3</div>
+      <div class="body">
+        <h2>Pick how often GemType checks</h2>
+        <div class="modes" role="group" aria-label="Checking mode">
+          <button class="mode" data-mode="demand" aria-pressed="true"><b>On demand</b><span>Only when you ask. Saves your free quota.</span></button>
+          <button class="mode" data-mode="auto" aria-pressed="false"><b>Auto</b><span>Checks after each sentence.</span><span class="burn">Burns your free Gemini quota fast</span></button>
+          <button class="mode" data-mode="timed" aria-pressed="false"><b>Auto for 15 min</b><span>Then back to on demand.</span></button>
+        </div>
+        <p class="note">You can change this any time from the GemType button in your toolbar.</p>
+        <p class="note" id="safariNote" hidden><b>Safari:</b> click the GemType button next to the address bar and choose <b>Always Allow on Every Website</b>, so GemType can check your writing on any site.</p>
+      </div>
+    </section>
+
+    <div class="foot">
+      <a class="pill" href="options.html">All settings</a>
+      <a class="pill" href="https://play.google.com/store/apps/details?id=org.matily.gemtype" target="_blank" rel="noopener">GemType for Android</a>
+      <a class="pill" href="https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396" target="_blank" rel="noopener">GemType for iPhone</a>
+      <a class="pill" href="https://github.com/riponcm/GemType" target="_blank" rel="noopener">&#9733; Star on GitHub</a>
+    </div>
+  </div>
+  <script src="shared.js"></script>
+  <script src="welcome.js"></script>
+</body>
+</html>

@@ -21,6 +21,17 @@ const GT = {};
 // want to exclude GemType can use data-gemtype="false".
 GT.OPT_OUT_ATTRS = ['data-gemtype'];
 
+// Rewrite actions, in the order every menu shows them.
+GT.REWRITE_ACTIONS = [
+  ['fix', 'Fix'],
+  ['improve', '✨ Improve'],
+  ['shorten', 'Shorten'],
+  ['formal', 'Formal'],
+  ['casual', 'Casual'],
+  ['my', 'My'],
+  ['english', 'English'],
+];
+
 GT.isTextarea = (el) => el instanceof HTMLTextAreaElement;
 
 GT.isTextInput = (el) =>
@@ -173,7 +184,9 @@ GT.setNativeValue = function (el, value) {
 
 // CKEditor 5 on Chromium (Teams) reverts execCommand edits: Chromium fires no
 // beforeinput for them. It does apply a synthetic beforeinput with targetRanges.
-// Returns true: applied; false: untouched, use execCommand; null: wrong edit.
+// Returns true: applied; false: untouched, use execCommand; null: wrong edit;
+// 'pending': the editor took the event (preventDefault) but renders later, as
+// Slate (Discord) and Lexical (WhatsApp Web) do.
 GT.dispatchInsertText = function (field, range, start, end, replacement, before) {
   let ev;
   try {
@@ -189,13 +202,29 @@ GT.dispatchInsertText = function (field, range, start, end, replacement, before)
   }
   // Without targetRanges the editor uses its own, stale selection.
   if (!ev.getTargetRanges().length) return false;
-  field.dispatchEvent(ev);
+  const taken = !field.dispatchEvent(ev);
   const after = GT.extract(field).text;
-  if (after === before) return false;
+  if (after === before) return taken ? 'pending' : false;
   // CKEditor renders runs of spaces as NBSP.
   const norm = (t) => t.replace(/\u00a0/g, ' ');
   const expected = before.slice(0, start) + replacement + before.slice(end);
   return norm(after) === norm(expected) ? true : null;
+};
+
+// execCommand path on a fresh selection of [start,end).
+GT.insertViaExecCommand = function (field, start, end, replacement) {
+  const { map } = GT.extract(field);
+  const range = GT.textRangeToDomRange(map, start, end);
+  if (!range) return false;
+  field.focus();
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  try {
+    return document.execCommand('insertText', false, replacement);
+  } catch {
+    return false;
+  }
 };
 
 // Replace [start,end) in the field with `replacement`.
@@ -231,6 +260,15 @@ GT.replaceRange = function (field, start, end, replacement) {
   sel.removeAllRanges();
   sel.addRange(range);
   const applied = GT.dispatchInsertText(field, range, start, end, replacement, before);
+  if (applied === 'pending') {
+    // Give the editor a moment to render; fall back only if it never did, so
+    // the fix is never typed twice.
+    setTimeout(() => {
+      if (!field.isConnected || GT.extract(field).text !== before) return;
+      GT.insertViaExecCommand(field, start, end, replacement);
+    }, 80);
+    return true;
+  }
   if (applied !== false) return applied === true;
   let ok = false;
   try {
@@ -289,12 +327,20 @@ GT.debounce = function (fn, ms) {
 
 // Promise-based so it works in both Chrome (MV3 returns a promise) and Firefox
 // (browser.* returns a promise). Errors surface as rejections, not lastError.
+// After the extension is updated or reloaded, this old copy of the content
+// script keeps running in open tabs but has lost its connection: chrome.runtime
+// goes away or throws. Report that one way so the page can say "refresh".
 GT.sendMessage = async function (msg) {
+  if (!globalThis.chrome?.runtime?.id) return { ok: false, error: 'EXTENSION_RELOADED' };
   try {
     const res = await chrome.runtime.sendMessage(msg);
     return res || { ok: false, error: 'NO_RESPONSE' };
   } catch (e) {
-    return { ok: false, error: String(e?.message || e) };
+    const error = String(e?.message || e);
+    if (/context invalidated|receiving end does not exist|reading 'sendMessage'/i.test(error)) {
+      return { ok: false, error: 'EXTENSION_RELOADED' };
+    }
+    return { ok: false, error };
   }
 };
 

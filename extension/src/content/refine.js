@@ -5,17 +5,13 @@
 'use strict';
 
 GT.refine = (() => {
-  const ACTIONS = [
-    ['improve', '✨ Improve'],
-    ['fix', 'Fix'],
-    ['shorten', 'Shorten'],
-    ['formal', 'Formal'],
-    ['casual', 'Casual'],
-  ];
+  const ACTIONS = GT.REWRITE_ACTIONS;
 
   let bar = null;
+  let preview = null; // the rewrite preview panel
   let pending = null; // { field, start, end, text }
   let busy = false;
+  const LABELS = Object.fromEntries(ACTIONS.map(([a, l]) => [a, l.replace('✨ ', '')]));
 
   // Editors like LinkedIn's post composer live inside a shadow root. Two helpers
   // pierce it: document.activeElement returns the shadow host, and
@@ -100,7 +96,7 @@ GT.refine = (() => {
     const anchor = selectionAnchorRect();
     if (!anchor) return;
 
-    const root = GT.ui.ensureRoot();
+    const root = GT.ui.mountFor(deepActiveElement());
     if (!bar) {
       bar = GT.ui.el('div', 'gt-toolbar', root);
       // preventDefault on mousedown keeps the page selection alive.
@@ -118,11 +114,21 @@ GT.refine = (() => {
       top > innerHeight - 50 ? `${anchor.top - 44}px` : `${top}px`;
   }
 
-  async function run(action, captured = null) {
+  function hidePreview() {
+    if (preview) preview.remove();
+    preview = null;
+  }
+
+  async function run(action, captured = null, fresh = false) {
     const job = captured || pending;
     if (!job || busy) return;
     busy = true;
-    if (bar) {
+    const anchor = (preview || bar)?.getBoundingClientRect() || null;
+    if (preview) {
+      const t = preview.querySelector('.gt-pv-text');
+      t.classList.add('gt-busy');
+      t.textContent = 'Rewriting…';
+    } else if (bar) {
       bar.textContent = '';
       GT.ui.el('div', 'gt-tb-spin', bar);
       const label = GT.ui.el('button', '', bar);
@@ -135,16 +141,23 @@ GT.refine = (() => {
       type: 'REFINE_TEXT',
       text: job.text,
       action,
+      fresh,
     });
     busy = false;
 
     if (!res.ok) {
       hide();
+      hidePreview();
       if (res.error === 'NO_API_KEY') {
         GT.ui.toast('GemType: add your Gemini API key in the extension settings');
+      } else if (res.error === 'NO_STYLE') {
+        GT.ui.toast('GemType: describe your style first (Settings → Custom rules → My style)');
+        GT.sendMessage({ type: 'OPEN_OPTIONS', hash: 'rules' });
       } else if (res.error === 'RATE_LIMITED') {
         GT.ui.toast('GemType: rate limited — try again in a moment');
-      } else if (/context invalidated|receiving end does not exist/i.test(res.error)) {
+      } else if (res.error === 'DAILY_LIMIT') {
+        GT.ui.toast("GemType: today's free Gemini limit is used up — it resets at midnight Pacific");
+      } else if (res.error === 'EXTENSION_RELOADED') {
         GT.ui.toast('GemType was updated — refresh this page to reconnect');
       } else {
         GT.ui.toast('GemType: rewrite failed');
@@ -152,22 +165,68 @@ GT.refine = (() => {
       return;
     }
 
+    hide();
+    showPreview(job, action, res.result.rewritten, anchor);
+  }
+
+  // Show the rewrite first; nothing changes in the page until Replace.
+  function showPreview(job, action, rewritten, anchor) {
+    const root = GT.ui.mountFor(job.field);
+    hidePreview();
+    preview = GT.ui.el('div', 'gt-preview', root);
+    preview.addEventListener('mousedown', (e) => e.preventDefault()); // keep focus
+
+    const header = GT.ui.el('div', 'gt-card-header', preview);
+    GT.ui.el('span', 'gt-grow', header).textContent = `${LABELS[action] || 'Rewrite'} — preview`;
+    const close = GT.ui.el('span', 'gt-close', header);
+    close.textContent = '✕';
+    close.addEventListener('click', hidePreview);
+
+    GT.ui.el('div', 'gt-pv-text', preview).textContent = rewritten;
+
+    const actions = GT.ui.el('div', 'gt-pv-actions', preview);
+    const replace = GT.ui.el('button', 'gt-btn gt-btn-accept', actions);
+    replace.textContent = 'Replace';
+    replace.addEventListener('click', () => {
+      hidePreview();
+      apply(job, rewritten);
+    });
+    const copy = GT.ui.el('button', 'gt-btn gt-btn-dismiss', actions);
+    copy.textContent = 'Copy';
+    copy.addEventListener('click', () => {
+      navigator.clipboard.writeText(rewritten).then(
+        () => GT.ui.toast('Copied'),
+        () => GT.ui.toast('GemType: could not copy here')
+      );
+    });
+    const again = GT.ui.el('button', 'gt-btn gt-btn-dismiss', actions);
+    again.textContent = '↻ Try again';
+    again.addEventListener('click', () => run(action, job, true));
+
+    const fr = job.field.getBoundingClientRect();
+    const box = anchor || new DOMRect(fr.left, fr.bottom + 8, 0, 0);
+    const W = 360;
+    preview.style.left = `${Math.min(Math.max(box.left, 8), innerWidth - W - 8)}px`;
+    const h = preview.getBoundingClientRect().height;
+    let top = box.top;
+    if (top + h > innerHeight - 8) top = Math.max(8, innerHeight - h - 8);
+    preview.style.top = `${top}px`;
+  }
+
+  function apply(job, rewritten) {
     // Verify the selected text is still where it was before replacing.
     const { text: nowText } = GT.extract(job.field);
     let { start, end } = job;
     if (nowText.slice(start, end) !== job.text) {
       const idx = nowText.indexOf(job.text);
       if (idx === -1) {
-        hide();
         GT.ui.toast('GemType: text changed — rewrite not applied');
         return;
       }
       start = idx;
       end = idx + job.text.length;
     }
-
-    hide();
-    if (GT.replaceRange(job.field, start, end, res.result.rewritten)) {
+    if (GT.replaceRange(job.field, start, end, rewritten)) {
       GT.ui.toast('Rewritten — press Ctrl/Cmd+Z to undo');
     } else {
       GT.ui.toast('GemType: could not apply the rewrite here');
@@ -176,7 +235,7 @@ GT.refine = (() => {
 
   function init() {
     const maybeShow = GT.debounce(() => {
-      if (busy) return;
+      if (busy || preview) return;
       if (!GT.state.enabledHere()) return hide();
       show();
     }, 250);
@@ -187,8 +246,18 @@ GT.refine = (() => {
     document.addEventListener(
       'mousedown',
       (e) => {
-        // Any click on the page (not our shadow UI) dismisses an idle toolbar.
-        if (!busy && bar && e.target.tagName !== 'GEMTYPE-EXT') hide();
+        // Any click on the page (not our shadow UI) dismisses an idle toolbar
+        // or preview.
+        if (busy || e.target.tagName === 'GEMTYPE-EXT') return;
+        if (bar) hide();
+        hidePreview();
+      },
+      true
+    );
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        if (e.key === 'Escape' && preview) hidePreview();
       },
       true
     );

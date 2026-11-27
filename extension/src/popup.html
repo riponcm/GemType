@@ -5,7 +5,7 @@
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      width: 260px;
+      width: 320px;
       margin: 0;
       background: #fff;
       color: #1f2328;
@@ -18,8 +18,15 @@
       padding: 12px 14px;
       border-bottom: 1px solid #eef0f2;
       font-weight: 700;
+      font-size: 14px;
     }
     .header img { width: 22px; height: 22px; border-radius: 5px; }
+    .header .grow { flex: 1; }
+    .pill {
+      font-size: 11px; font-weight: 600; border-radius: 999px; padding: 3px 9px;
+      background: #dcf3ea; color: #0b6b4c;
+    }
+    .pill.off { background: #eef0f2; color: #4b5563; }
     .row {
       display: flex;
       align-items: center;
@@ -28,7 +35,7 @@
       border-bottom: 1px solid #f3f4f6;
     }
     .row .label { font-weight: 600; }
-    .row .sub { color: #6b7280; font-size: 11px; margin-top: 2px; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .row .sub { color: #6b7280; font-size: 11px; margin-top: 2px; max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .switch { position: relative; width: 36px; height: 20px; flex: none; }
     .switch input { display: none; }
     .slider {
@@ -45,24 +52,61 @@
     }
     input:checked + .slider { background: #10a37f; }
     input:checked + .slider::before { transform: translateX(16px); }
-    .warn {
-      margin: 10px 14px;
+    input:disabled + .slider { opacity: .5; cursor: default; }
+    .warn, .tip {
+      margin: 10px 14px 0;
       padding: 8px 10px;
-      background: #fef3c7;
-      border: 1px solid #fde68a;
       border-radius: 8px;
       font-size: 12px;
-      color: #92400e;
+      line-height: 1.45;
       display: none;
     }
+    .warn { background: #fef3c7; border: 1px solid #fde68a; color: #92400e; }
     .warn a { color: #92400e; font-weight: 600; cursor: pointer; }
-    .footer { padding: 10px 14px; }
-    .footer a { color: #2563eb; cursor: pointer; text-decoration: none; font-size: 12px; }
+    .tip { background: #eef5fd; border: 1px solid #cfe0f5; color: #1e4f86; }
+    .tip .acts { display: flex; gap: 6px; margin-top: 6px; }
+    .tip button { font: inherit; font-weight: 600; border: none; border-radius: 6px; padding: 5px 10px; cursor: pointer; }
+    .tip .yes { background: #2f74c0; color: #fff; }
+    .tip .no { background: transparent; color: #1e4f86; }
+    .body { padding: 12px 14px; display: flex; flex-direction: column; gap: 12px; }
+    .body.dim { opacity: .45; pointer-events: none; }
+    .check {
+      height: 42px; border: none; border-radius: 10px; background: #2f74c0; color: #fff;
+      font: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
+    }
+    .check:hover { background: #255f9f; }
+    .hint { font-size: 11.5px; color: #6b7280; text-align: center; margin-top: -6px; }
+    .section { font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+    .seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; background: #eef1f5; border-radius: 9px; padding: 3px; }
+    .seg button {
+      border: none; background: transparent; color: #5a6472; border-radius: 7px;
+      padding: 7px 4px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    .seg button[aria-pressed="true"] { background: #fff; color: #1f2328; box-shadow: 0 1px 2px rgba(16,24,40,.12); }
+    .modehint { font-size: 11.5px; color: #6b7280; margin-top: 6px; line-height: 1.4; }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+    .stat { background: #f6f8fb; border-radius: 9px; padding: 8px 10px; }
+    .stat b { display: block; font-size: 16px; }
+    .stat span { font-size: 11px; color: #6b7280; }
+    .stat:first-child b { color: #2f74c0; }
+    .limit { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #374151; margin-top: 8px; }
+    .dot { width: 8px; height: 8px; border-radius: 4px; background: #16a34a; flex: none; }
+    .dot.warnd { background: #d48806; }
+    .footer { padding: 10px 14px; border-top: 1px solid #eef0f2; display: flex; justify-content: flex-end; }
+    .footer a { color: #2563eb; cursor: pointer; text-decoration: none; font-size: 12px; font-weight: 600; }
   </style>
 </head>
 <body>
-  <div class="header"><img src="../icons/icon48.png" alt="" />GemType</div>
+  <div class="header"><img src="../icons/icon48.png" alt="" /><span class="grow">GemType</span><span class="pill" id="pill">On demand</span></div>
   <div class="warn" id="noKey">No API key set — <a id="setKey">add your free Gemini key</a></div>
+  <div class="tip" id="tip">
+    <b>New: On demand checking.</b> Check only when you ask (badge or Ctrl/⌘ + Shift + Space) to save your free Gemini quota.
+    <div class="acts"><button class="yes" id="tipYes">Switch to On demand</button><button class="no" id="tipNo">Keep Auto</button></div>
+  </div>
+  <div class="tip" id="rate">
+    <b>Enjoying GemType?</b> <span id="rateText"></span> A rating helps other people find this free tool.
+    <div class="acts"><button class="yes" id="rateYes">Rate GemType</button><button class="no" id="rateShare">Share</button><button class="no" id="rateLater">Not now</button></div>
+  </div>
   <div class="row">
     <div>
       <div class="label">Enabled</div>
@@ -77,7 +121,30 @@
     </div>
     <label class="switch"><input type="checkbox" id="site" /><span class="slider"></span></label>
   </div>
-  <div class="footer"><a id="options">⚙︎ Settings</a></div>
+  <div class="body" id="body">
+    <button class="check" id="checkNow">Check this text box</button>
+    <div class="hint" id="checkHint">or press Ctrl/⌘ + Shift + Space while typing</div>
+    <div>
+      <div class="section">Checking</div>
+      <div class="seg" role="group" aria-label="Checking mode">
+        <button data-mode="demand" aria-pressed="false">On demand</button>
+        <button data-mode="auto" aria-pressed="false">Auto</button>
+        <button data-mode="timed" aria-pressed="false">Auto 15 min</button>
+      </div>
+      <div class="modehint" id="modeHint"></div>
+    </div>
+    <div>
+      <div class="section">Today</div>
+      <div class="stats">
+        <div class="stat"><b id="sWords">0</b><span>words</span></div>
+        <div class="stat"><b id="sFixes">0</b><span>fixes</span></div>
+        <div class="stat"><b id="sReq">0</b><span>requests</span></div>
+      </div>
+      <div class="limit"><span class="dot" id="limitDot"></span><span id="limitText">Gemini limits OK</span></div>
+    </div>
+  </div>
+  <div class="footer"><a id="options">Open dashboard</a></div>
+  <script src="shared.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

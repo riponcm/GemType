@@ -1,6 +1,7 @@
 {
   "name": "gemtype-word",
   "version": "0.1.0",
+  "license": "GPL-3.0-only",
   "private": true,
   "description": "GemType for Microsoft Word — grammar checking and AI rewrites, powered by your own Gemini API key.",
   "scripts": {

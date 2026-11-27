@@ -49,9 +49,10 @@ GT.ui = (() => {
       cursor: pointer;
       user-select: none;
       z-index: 3;
-      transition: transform .12s ease;
+      transition: transform .12s ease, opacity .15s ease;
     }
     .gt-badge:hover { transform: scale(1.1); }
+    .gt-badge.gt-near { opacity: .25; }
     .gt-badge.gt-count { background: #e5484d; }
     .gt-badge.gt-clean { background: #10a37f; }
     .gt-badge.gt-error { background: #b45309; }
@@ -90,6 +91,35 @@ GT.ui = (() => {
       color: #6b7280;
     }
     .gt-card-header .gt-close { cursor: pointer; padding: 2px 6px; border-radius: 4px; }
+    .gt-card-header .gt-grow { flex: 1; }
+    .gt-acceptall {
+      border: none; border-radius: 6px; padding: 3px 10px; margin-right: 6px;
+      background: #10a37f; color: #fff; font-size: 11.5px; font-weight: 600; cursor: pointer;
+    }
+    .gt-acceptall:hover { background: #0d8a6a; }
+
+    .gt-preview {
+      position: fixed;
+      z-index: 4;
+      width: 360px;
+      background: #fff;
+      color: #1f2328;
+      border: 1px solid #e2e4e8;
+      border-radius: 10px;
+      box-shadow: 0 8px 28px rgba(0,0,0,.18);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .gt-pv-text {
+      padding: 10px 12px;
+      max-height: 220px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .gt-pv-text.gt-busy { color: #9ca3af; }
+    .gt-pv-actions { display: flex; gap: 6px; padding: 8px 12px 10px; border-top: 1px solid #f3f4f6; }
+    .gt-pv-actions .gt-btn { padding: 6px 12px; }
     .gt-card-header .gt-close:hover { background: #f3f4f6; }
     .gt-item { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; }
     .gt-item:last-child { border-bottom: none; }
@@ -187,8 +217,46 @@ GT.ui = (() => {
     @keyframes gt-fade { from { opacity: 0 } to { opacity: 1 } }
   `;
 
+  // The open modal <dialog> holding `node` (across shadow roots), if any. A
+  // modal dialog sits in the browser's top layer and makes the rest of the page
+  // inert, so our UI must live inside it to be seen and clicked (LinkedIn's
+  // post composer is one).
+  function modalDialogOf(node) {
+    for (let n = node; n; n = n.parentNode || n.host) {
+      if (n.tagName === 'DIALOG' && n.open && n.matches(':modal')) return n;
+    }
+    return null;
+  }
+
+  // Keep the shared host next to the field being worked on: inside its modal
+  // dialog, or back on the page once the dialog is gone.
+  function mountFor(node) {
+    ensureRoot();
+    const container = modalDialogOf(node) || document.body || document.documentElement;
+    if (host.parentNode !== container) {
+      container.appendChild(host); // moves it; the shadow root and UI come along
+      host.style.setProperty('top', '0', 'important');
+      host.style.setProperty('left', '0', 'important');
+      // A transformed dialog re-bases position:fixed; shift back to the viewport.
+      const r = host.getBoundingClientRect();
+      if (r.left || r.top) {
+        host.style.setProperty('left', `${-r.left}px`, 'important');
+        host.style.setProperty('top', `${-r.top}px`, 'important');
+      }
+    }
+    return root;
+  }
+
   function ensureRoot() {
-    if (root && host.isConnected) return root;
+    if (root && host.isConnected) {
+      // Our dialog closed: come back to the page.
+      if (host.parentNode?.tagName === 'DIALOG' && !host.parentNode.open) {
+        (document.body || document.documentElement).appendChild(host);
+        host.style.setProperty('top', '0', 'important');
+        host.style.setProperty('left', '0', 'important');
+      }
+      return root;
+    }
     host = document.createElement('gemtype-ext');
     // The host takes no space and no events. Every declaration is inline
     // !important because web-component sites (Reddit et al.) ship rules like
@@ -235,7 +303,7 @@ GT.ui = (() => {
     toastTimer = setTimeout(() => t.remove(), 2500);
   }
 
-  return { ensureRoot, el, toast };
+  return { ensureRoot, mountFor, el, toast };
 })();
 
 // ---------------------------------------------------------------------------
@@ -253,15 +321,23 @@ GT.card = (() => {
 
   // items: corrections to show; owner: FieldOverlay; anchor: DOMRect (viewport)
   function open(owner, items, anchor, opts = {}) {
-    const root = GT.ui.ensureRoot();
+    const root = GT.ui.mountFor(owner.field);
     close();
     currentOwner = owner;
     cardEl = GT.ui.el('div', 'gt-card', root);
     cardEl.addEventListener('mousedown', (e) => e.preventDefault()); // keep field focus
 
     const header = GT.ui.el('div', 'gt-card-header', cardEl);
-    const title = GT.ui.el('span', '', header);
+    const title = GT.ui.el('span', 'gt-grow', header);
     title.textContent = opts.title || 'GemType suggestions';
+    if (items.length > 1) {
+      const all = GT.ui.el('button', 'gt-acceptall', header);
+      all.textContent = `Accept all (${items.length})`;
+      all.addEventListener('click', () => {
+        owner.controller.acceptAll(items);
+        close();
+      });
+    }
     const closeBtn = GT.ui.el('span', 'gt-close', header);
     closeBtn.textContent = '✕';
     closeBtn.addEventListener('click', close);
@@ -321,13 +397,7 @@ GT.card = (() => {
       const row = GT.ui.el('div', 'gt-refine-row', cardEl);
       GT.ui.el('div', 'gt-refine-label', row).textContent = 'Refine the whole text';
       const chips = GT.ui.el('div', 'gt-chips', row);
-      for (const [action, label] of [
-        ['improve', '✨ Improve'],
-        ['fix', 'Fix grammar'],
-        ['shorten', 'Shorten'],
-        ['formal', 'Formal'],
-        ['casual', 'Casual'],
-      ]) {
+      for (const [action, label] of GT.REWRITE_ACTIONS) {
         const chip = GT.ui.el('button', 'gt-chip', chips);
         chip.textContent = label;
         chip.addEventListener('click', () => {
@@ -384,6 +454,18 @@ GT.FieldOverlay = class {
     window.addEventListener('resize', this.scheduleReposition, true);
     field.addEventListener('scroll', this.scheduleReposition, true);
 
+    // A quiet badge (✓ or idle G) fades while the pointer is near it, so it
+    // never hides the last words of a line.
+    this.onPointerMove = (e) => {
+      if (this.badge.style.display === 'none') return;
+      const quiet = this.state === 'clean' || this.state === 'idle';
+      const r = this.badge.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width / 2);
+      const dy = e.clientY - (r.top + r.height / 2);
+      this.badge.classList.toggle('gt-near', quiet && dx * dx + dy * dy < 48 * 48);
+    };
+    window.addEventListener('mousemove', this.onPointerMove, { passive: true });
+
     // Reconciliation poll: layout can change in ways we can't observe.
     this.poll = setInterval(() => {
       if (!this.field.isConnected) {
@@ -432,6 +514,7 @@ GT.FieldOverlay = class {
       this.badge.style.display = 'none';
       return;
     }
+    if (this.controller.isFocused()) GT.ui.mountFor(this.field);
     const rect = this.field.getBoundingClientRect();
     this.layer.style.display = 'block';
     this.layer.style.left = `${rect.left}px`;
@@ -499,7 +582,8 @@ GT.FieldOverlay = class {
     this.badge.style.left = `${Math.max(0, rect.right - 34)}px`;
     this.badge.style.top = `${Math.min(innerHeight - 34, rect.bottom - 34)}px`;
 
-    this.badge.className = 'gt-badge';
+    const near = this.badge.classList.contains('gt-near');
+    this.badge.className = near ? 'gt-badge gt-near' : 'gt-badge';
     this.badge.textContent = '';
     this.badge.title = 'GemType';
     if (this.state === 'checking') {
@@ -512,7 +596,9 @@ GT.FieldOverlay = class {
     } else if (this.state === 'clean') {
       this.badge.classList.add('gt-clean');
       this.badge.textContent = '✓';
-      this.badge.title = 'Looks good';
+      this.badge.title = this.controller.needsCheck()
+        ? 'Click to check new text'
+        : 'Looks good';
     } else if (this.state === 'error') {
       this.badge.classList.add('gt-error');
       this.badge.textContent = '!';
@@ -520,40 +606,65 @@ GT.FieldOverlay = class {
     } else {
       this.badge.classList.add('gt-off');
       this.badge.textContent = 'G';
+      this.badge.title = 'Click to check (Ctrl/⌘ + Shift + Space)';
     }
   }
 
   onBadgeClick() {
-    if (GT.card.ownedBy(this)) {
+    // New text since the last check: the click checks it, even with the card open.
+    const pending =
+      this.state !== 'error' && this.state !== 'checking' && this.controller.needsCheck();
+    if (GT.card.ownedBy(this) && !pending) {
       GT.card.close();
       return;
     }
-    const anchor = this.badge.getBoundingClientRect();
     if (this.state === 'error') {
-      const messages = {
-        NO_API_KEY: [
-          'Add your free Gemini API key to start checking. ',
-          { link: 'Open settings' },
-          '.',
-        ],
-        RATE_LIMITED: [
-          'The Gemini API rate limit was hit. Checking will resume automatically in a moment.',
-        ],
-        EXTENSION_RELOADED: [
-          { bold: 'GemType was updated.' },
-          ' Refresh this page (F5 / Cmd+R) to reconnect — no need to restart the browser.',
-        ],
-      };
-      const message = messages[this.errorKind] || [
-        'Something went wrong (',
-        { bold: this.errorKind || 'unknown' },
-        '). Check your key and model in ',
-        { link: 'settings' },
-        '.',
-      ];
-      GT.card.open(this, [], anchor, { title: 'GemType', message });
+      this.showError();
       return;
     }
+    if (pending) {
+      this.controller.check({ open: true });
+      return;
+    }
+    this.openCard();
+  }
+
+  showError() {
+    if (!this.visible()) return;
+    const anchor = this.badge.getBoundingClientRect();
+    const messages = {
+      NO_API_KEY: [
+        'Add your free Gemini API key to start checking. ',
+        { link: 'Open settings' },
+        '.',
+      ],
+      RATE_LIMITED: [
+        'The Gemini API rate limit was hit. Checking will resume automatically in a moment.',
+      ],
+      DAILY_LIMIT: [
+        { bold: "Today's free Gemini limit is used up" },
+        ' for this model. It resets at midnight Pacific time. You can switch model in ',
+        { link: 'settings' },
+        '.',
+      ],
+      EXTENSION_RELOADED: [
+        { bold: 'GemType was updated.' },
+        ' Refresh this page (F5 / Cmd+R) to reconnect — no need to restart the browser.',
+      ],
+    };
+    const message = messages[this.errorKind] || [
+      'Something went wrong (',
+      { bold: this.errorKind || 'unknown' },
+      '). Check your key and model in ',
+      { link: 'settings' },
+      '.',
+    ];
+    GT.card.open(this, [], anchor, { title: 'GemType', message });
+  }
+
+  openCard() {
+    if (!this.visible()) return;
+    const anchor = this.badge.getBoundingClientRect();
     if (this.corrections.length) {
       GT.card.open(this, this.corrections, anchor, { refineField: this.field });
     } else {
@@ -570,6 +681,7 @@ GT.FieldOverlay = class {
 
   destroy() {
     clearInterval(this.poll);
+    window.removeEventListener('mousemove', this.onPointerMove);
     window.removeEventListener('scroll', this.scheduleReposition, true);
     window.removeEventListener('resize', this.scheduleReposition, true);
     this.field.removeEventListener('scroll', this.scheduleReposition, true);

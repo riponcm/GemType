@@ -223,7 +223,7 @@ function showAbout() {
       `Version ${app.getVersion()}\n\n` +
       'Fix and rewrite text in any application with your own Gemini API key.\n\n' +
       'Made by Matily — matily.org\n' +
-      '© 2026 Matily. Licensed under Apache-2.0.',
+      '© 2026 Matily. Licensed under GPL-3.0.',
     buttons: ['Check for Updates', 'Close'],
     defaultId: 0,
     cancelId: 1,

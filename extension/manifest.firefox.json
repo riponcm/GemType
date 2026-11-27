@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "GemType — AI Writing Assistant",
-  "version": "0.1.5",
+  "version": "1.0.0",
   "description": "Grammarly-style grammar checking and text refinement on any website, powered by the Gemini API (bring your own key).",
   "browser_specific_settings": {
     "gecko": {
@@ -40,6 +40,15 @@
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png"
+    }
+  },
+  "commands": {
+    "check-now": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Space",
+        "mac": "Command+Shift+Space"
+      },
+      "description": "Check the text box you're typing in"
     }
   },
   "options_ui": {
