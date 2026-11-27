@@ -2,7 +2,9 @@
 
 <img src="assets/logo.svg" alt="GemType" width="420" />
 
-**A free, open-source Grammarly alternative for your browser, Microsoft Word, the whole desktop, and Android — powered by your own Gemini API key.**
+# GemType — free AI grammar checker and writing assistant
+
+**A free, open-source Grammarly alternative. Fix grammar and spelling, rewrite, and translate to English on any website, in Microsoft Word, on your desktop, and on your phone — with your own free Gemini API key.**
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/linnnamnhkciekgpnegkcajcafmjlhgh?label=Chrome%20Web%20Store&logo=googlechrome&logoColor=white&color=4285F4)](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
 [![Users](https://img.shields.io/chrome-web-store/users/linnnamnhkciekgpnegkcajcafmjlhgh?color=10a37f)](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
@@ -11,16 +13,14 @@
 [![Firefox Add-ons](https://img.shields.io/amo/v/gemtype-ai-writing-assistant?label=Firefox%20Add-ons&logo=firefoxbrowser&logoColor=white&color=FF7139)](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/)
 [![Google Play](https://img.shields.io/badge/Google%20Play-Live-34A853?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=org.matily.gemtype)
 [![App Store](https://img.shields.io/badge/App%20Store-Live-0D96F6?logo=appstore&logoColor=white)](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396)
-[![Manifest V3](https://img.shields.io/badge/manifest-v3-6366f1)](extension/manifest.json)
 [![License: GPL v3](https://img.shields.io/badge/license-GPL%20v3-blue.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](../../pulls)
 
 ### [➜ Install free: Chrome](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh) · [Edge](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel) · [Firefox](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/) · [Android](https://play.google.com/store/apps/details?id=org.matily.gemtype) · [iPhone](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396)
 
-**[gemtype.matily.org](https://gemtype.matily.org)** — the official site, with a live demo and everything in one place.
+**[gemtype.matily.org](https://gemtype.matily.org)** — the official site, with a live demo.
 
-<a href="https://play.google.com/store/apps/details?id=org.matily.gemtype"><img src="assets/badge-google-play.png" alt="Get it on Google Play" height="60" /></a>&nbsp;&nbsp;
-<a href="https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396"><img src="assets/badge-app-store.svg" alt="Download on the App Store" height="60" /></a>
+<a href="https://play.google.com/store/apps/details?id=org.matily.gemtype"><img src="assets/badge-google-play.png" alt="Get GemType on Google Play" height="60" /></a>&nbsp;&nbsp;
+<a href="https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396"><img src="assets/badge-app-store.svg" alt="Download GemType on the App Store" height="60" /></a>
 
 <img src="assets/hero.svg" alt="GemType demo: typing with mistakes, wavy underlines appear, one click fixes them" width="820" />
 
@@ -28,316 +28,172 @@
 
 ---
 
-## Watch the tutorial
+## What is GemType?
 
-[**▶ 2-minute tutorial on YouTube**](https://www.youtube.com/watch?v=j7Su-4hvigU) — install GemType, add your free Gemini key, and see grammar checking + rewrites in action.
+**GemType is a free, open-source AI writing assistant and Grammarly alternative.** It checks grammar, spelling and punctuation, rewrites text in different tones, and translates any language into English — on any website, in Microsoft Word, in any desktop app, and on Android and iPhone. It runs on Google's Gemini AI using **your own free Gemini API key**, so there is no subscription, no account, and no GemType server: your text goes straight from your device to Google.
 
-## Now available
+GemType is made by [Matily](https://matily.org) (Ripon Chandra Malo) and is free forever under the GPL-3.0 license.
 
-GemType runs everywhere you write — all surfaces share the same private,
-bring-your-own-key core (your text goes straight to Google's Gemini API, never
-through a server of ours):
+[**▶ Watch the 2-minute tutorial on YouTube**](https://www.youtube.com/watch?v=j7Su-4hvigU)
 
-| Platform | Status |
+## Get GemType
+
+| Where you write | Get it |
 |---|---|
-| **Chrome** | [Live on the Chrome Web Store](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh) |
-| **Edge** | [Live on Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel) |
-| **Firefox** | [Live on Firefox Add-ons](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/) |
-| **Microsoft Word** | Office task-pane add-in — see [`msword/`](msword/) |
-| **Desktop (macOS · Windows · Linux)** | Menu-bar/tray app — works in **any** application via a global hotkey. [Download the latest release](../../releases/latest) · see [`desktop/`](desktop/) |
-| **Safari** | Build ready — App Store release coming |
-| **Android** | [Live on Google Play](https://play.google.com/store/apps/details?id=org.matily.gemtype) — the GemType Keyboard, with fixes and rewrites built in · source: [GemType-Keyboard](https://github.com/MatilyLabs/GemType-Keyboard) |
-| **iOS keyboard** | [Live on the App Store](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396) (iPhone) |
+| **Chrome** | [Chrome Web Store](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh) |
+| **Microsoft Edge** | [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel) |
+| **Firefox** | [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/) |
+| **Android** (keyboard, works in every app) | [Google Play](https://play.google.com/store/apps/details?id=org.matily.gemtype) |
+| **iPhone** (keyboard, works in every app) | [App Store](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396) |
+| **Mac, Windows, Linux** (works in any app) | [Download the desktop app](../../releases/latest) |
+| **Microsoft Word** | Word add-in — see [`msword/`](msword/) |
+| **Safari** | Coming soon |
 
-Works in **any language** (auto-detected), on any website, inside Word, anywhere on your desktop, and in every Android app.
+## Get started in 3 steps
 
-## Features
+1. **Install** GemType for your browser or phone from the links above.
+2. **Get a free Gemini API key** at [aistudio.google.com/apikey](https://aistudio.google.com/apikey): sign in with Google, click **Create API key** — no credit card. Paste it on GemType's welcome page and click **Save & test**.
+3. **Write anywhere.** Click the GemType badge in the corner of a text box (or press **Ctrl/⌘ + Shift + Space**) to check it, and select any text to rewrite it.
 
-- **Grammar and spelling checking, when you want it** — click the GemType badge or press **Ctrl/⌘ + Shift + Space** to check any text field: Gmail, LinkedIn, X, Reddit, GitHub, anywhere. Prefer live checking? Switch to **Auto** (checks after each sentence) or **Auto for 15 min**
-- **Custom rules** — ignore capitalization or punctuation, allow informal writing, pick US or UK spelling, or write your own rules
-- **Dashboard** — words checked, fixes accepted, rewrites, and your Gemini usage and limits, counted only in your browser
-- **One-click fixes** — click an underline and accept the correction; `Ctrl/Cmd+Z` always undoes
-- **Sentence verification** — in Auto mode, after every accepted fix the surrounding sentence is re-checked, so word-level fixes never leave broken sentences behind
-- **Rewrite on demand** — select text for a floating toolbar with *Fix* (keeps your tone), *Improve, Shorten, Formal, Casual*, *My* (your own style, described in Settings) and *English* (translates any language into the American or British English you pick in Settings), also available from the right-click menu
-- **Context-aware suggestions** — an LLM judges whole sentences in any language, not just pattern rules
-- **Bring your own key** — uses your free [Google AI Studio](https://aistudio.google.com/apikey) key; no account, no subscription, no middleman server
-- **Private by design** — text goes only to Google's Gemini API; no tracking, no analytics, nothing else phones home
-- **Full control** — per-site disable, global toggle, model picker, language setting; sites can exclude a field with `data-gemtype="false"`
+## What GemType does
 
-## Comparison with Grammarly
+- **Grammar, spelling and punctuation checking** in any text box — Gmail, LinkedIn, X, Reddit, GitHub, web mail, forums and more. Every suggestion comes with a short reason.
+- **One-click fixes** — accept one fix, or **Accept all** at once. `Ctrl/⌘ + Z` always undoes.
+- **Check when you want** — **On demand** (the default) checks only when you click the badge or press the shortcut, so your free quota lasts. Prefer live checking? Choose **Auto** (checks after each sentence) or **Auto for 15 min**.
+- **Rewrite any text** — select it and pick:
 
-| | GemType | Grammarly |
-|---|---|---|
-| Price | Free — bring your own Gemini key ([free tier](https://aistudio.google.com/apikey), no card required) | Free plan is limited; Premium $12–30 per month |
-| Grammar and spelling fixes | Unlimited | Full corrections require Premium |
-| Sentence re-check after each accepted fix | Automatic | Not available |
-| AI rewrites (Improve, Shorten) | Included | Premium |
-| Preset styles (Formal, Casual) | Included | Premium |
-| Languages | Any language Gemini understands, auto-detected | English and a small set of variants |
-| Trackers and analytics | None | Product analytics and telemetry |
-| Account required | No | Yes |
-| Where your text is processed | Google's Gemini API only, with your key — no middleman server | Grammarly's servers |
-| Open source | Yes (GPL-3.0) | No |
-| Google Docs | Not supported (Google whitelists specific vendors) | Supported |
+  | Button | What it does |
+  |---|---|
+  | **Fix** | Fixes grammar and spelling, keeps your own words and tone |
+  | **Improve** | Clearer, better-written version with the same meaning |
+  | **Shorten** | Says the same thing in fewer words |
+  | **Formal** | Professional tone for work and business |
+  | **Casual** | Friendly, relaxed tone |
+  | **My** | Rewrites it in *your* style, which you describe once in Settings |
+  | **English** | Translates any language — Bangla, Hindi, Spanish, Banglish, Hinglish and more — into natural American or British English |
 
-**What does "bring your own key" really cost?** For a single person typing,
-the free Gemini tier is more than enough — GemType checks only after you
-pause, skips unchanged text, and caches results, so even a heavy writing day
-stays comfortably inside the free quota. On the paid tier, a typical check
-costs around $0.0003 — roughly one dollar per month for very heavy daily
-use, compared with $144–360 per year for Premium.
+  Every rewrite shows a **preview** first: Replace, Copy, or Try again.
+- **Custom rules** — ignore capitalization or punctuation, allow informal writing, choose US or UK spelling, or write your own rules.
+- **Any language** — GemType detects the language you write in and checks it in that language.
+- **Your dashboard** — words checked, fixes accepted, rewrites, a 7-day chart, and your Gemini usage and limits, counted only on your device.
+- **Private by design** — no account, no tracking, no analytics; your key and settings stay on your device.
 
 ## Screenshots
 
 | | |
 |---|---|
-| ![Live checking with underlines and the issue-count badge](assets/screenshots/underlines.png) | ![Suggestion card with one-click Accept](assets/screenshots/card.png) |
-| *Live checking — underlines and issue-count badge* | *Click an underline, accept the fix* |
-| ![All suggestions in one panel](assets/screenshots/panel.png) | ![Rewrite toolbar on selected text](assets/screenshots/toolbar.png) |
-| *Review all suggestions from the badge* | *Select text to rewrite: Improve, Fix, Shorten, Formal, Casual* |
+| ![GemType suggestions card with Accept all on an email draft](assets/screenshots/v1-1-check.png) | ![GemType rewrite toolbar: Fix, Improve, Shorten, Formal, Casual, My, English](assets/screenshots/v1-2-rewrite.png) |
+| *Check your text and fix every mistake in one click* | *Select text to rewrite it in seven ways* |
+| ![GemType translating Banglish into English with a preview](assets/screenshots/v1-3-english.png) | ![GemType settings dashboard with words checked and Gemini usage](assets/screenshots/v1-4-dashboard.png) |
+| *Write in any language, send in English* | *Your dashboard, stored only on your device* |
 
-## Install
+## GemType vs Grammarly
 
-**[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)**, **[Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel)**, or **[Firefox Add-ons](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/)** — one click, then add your free Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey).
+| | GemType | Grammarly |
+|---|---|---|
+| Price | Free — with your own free Gemini key | Free plan is limited; Premium is paid monthly |
+| Grammar and spelling fixes | Unlimited, with a reason for each | Full corrections need Premium |
+| AI rewrites (improve, shorten, tone) | Included | Premium |
+| Rewrite in your own style | Included (**My**) | — |
+| Translate any language into English | Included (**English**) | — |
+| Languages checked | Any language Gemini understands, auto-detected | English and a few variants |
+| Account required | No | Yes |
+| Tracking and analytics | None | Yes |
+| Where your text goes | Google's Gemini API only, with your key | Grammarly's servers |
+| Phone keyboards | Android and iPhone | Yes |
+| Open source | Yes (GPL-3.0) | No |
+| Google Docs | Not supported | Supported |
 
-<details>
-<summary><b>Or install manually (developer mode)</b></summary>
+**What does "bring your own key" cost?** For one person, nothing: Google's free Gemini tier covers everyday writing, and GemType's On demand mode only sends text when you ask. On a paid Gemini key, a typical check costs a fraction of a cent.
 
-**Manual (developer mode):**
+## Desktop app (Mac, Windows, Linux)
 
-1. Download or clone this repository
-2. Open `chrome://extensions` and enable **Developer mode**
-3. Click **Load unpacked** and select the `extension/` folder
-4. Get a free API key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey) (no credit card required)
-5. Open GemType **Settings** from the toolbar icon, paste the key, and click **Save & test**
+The GemType desktop app works in **every application** — Word, Outlook, Slack, Notes, any editor. Select text, press **⌘⇧G** (Mac) or **Ctrl+Shift+G** (Windows/Linux), and GemType fixes or rewrites it and pastes it back.
 
-</details>
+> **[⬇ Download the desktop app](../../releases/latest)** — macOS (`.dmg`), Windows (`.exe`), Linux (`.AppImage`).
 
-**Firefox** — [install from Firefox Add-ons](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/). Same code base via `extension/manifest.firefox.json` (event-page background + `browser.*` compatibility); build steps under [Development](#development).
+- **macOS:** open the `.dmg` and drag GemType to Applications. The first time you press the shortcut, allow **Accessibility** (System Settings → Privacy & Security → Accessibility) so GemType can copy and paste for you.
+- **Windows:** run the installer. If SmartScreen appears, click **More info → Run anyway**.
+- **Linux:** make the `.AppImage` executable and run it.
 
-**Microsoft Word** — a task-pane add-in that checks your document and rewrites selected text right inside Word (Windows, Mac, and the web). See [`msword/`](msword/) and its [README](msword/README.md) to run or install it.
+## Phone keyboards (Android and iPhone)
 
-**Desktop app (macOS · Windows · Linux)** — a menu-bar/tray app that works in **every application**, not just the browser. Select text anywhere — Word, Slack, Outlook, an editor, an email — press the global hotkey (**⌘⇧G** on Mac, **Ctrl+Shift+G** on Windows/Linux), and GemType fixes or rewrites it and pastes the result back in place.
+GemType is also a keyboard: tap the GemType button to fix, improve, shorten or change the tone of what you typed, **in any app** — messages, email, social media — with the same free Gemini key.
 
-> **[⬇ Download the latest release](../../releases/latest)** — macOS (`.dmg`), Windows (`.exe` installer), and Linux (`.AppImage`).
-
-- **macOS**: open the `.dmg`, drag GemType to Applications. First hotkey press asks for **Accessibility** permission (System Settings → Privacy & Security → Accessibility) — that's what lets it send copy/paste, the same as Grammarly Desktop and Raycast.
-- **Windows**: run the installer; unsigned builds show a SmartScreen notice (**More info → Run anyway**).
-- **Linux**: `chmod +x GemType-*.AppImage` and run it.
-
-Unsigned for now (code-signing certificates cost money — see [sponsor](#sponsor-this-project)). Source and build steps are in [`desktop/`](desktop/).
-
-**Android** — **[get GemType on Google Play](https://play.google.com/store/apps/details?id=org.matily.gemtype)**. It's a full keyboard with GemType built in: tap the GemType button to fix, improve, shorten, or change the tone of what you've typed, in any app, using your own free Gemini key. Open source under AGPL-3.0 at [MatilyLabs/GemType-Keyboard](https://github.com/MatilyLabs/GemType-Keyboard).
-
-<a name="ios"></a>**iOS** — **[get GemType on the App Store](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396)**. A GemType keyboard for iPhone: tap the GemType button to fix or rewrite what you've typed, in any app, using your own free Gemini key.
-
-**Safari** — the same code base wraps into a Safari App Extension; see [Safari build](#safari) below.
-
-## How it works
-
-```
-             page (any website)
-┌──────────────────────────────────────────┐
-│  content script                          │
-│  ├─ detects textarea / contenteditable   │
-│  ├─ draws underline overlay (shadow DOM, │
-│  │   never touches the page's editor)    │
-│  └─ applies fixes via execCommand        │
-│      (native undo + framework-safe)      │
-└──────────────┬───────────────────────────┘
-               │ chrome.runtime messaging
-┌──────────────▼───────────────────────────┐
-│  background service worker               │
-│  ├─ queue + cache + 429 backoff          │
-│  └─ Gemini generateContent               │
-│      (structured JSON output)            │
-└──────────────┬───────────────────────────┘
-               ▼
-   generativelanguage.googleapis.com
-        (your API key, your data)
-```
-
-- **Overlay, not injection** — underline positions come from `Range.getClientRects()` (rich editors) or a mirror element (plain fields); the page's DOM is never modified, so React, Vue, and ProseMirror editors stay stable
-- **Snippet anchoring** — the model returns exact text snippets, located client-side and re-anchored live as you type (LLM character offsets are unreliable)
-- **Token-frugal** — on-demand checking by default, per-paragraph caching (only changed paragraphs are sent), response caching, and a fail-fast stop once Google reports the daily limit keep free-tier quota comfortable for daily use
-
-## Site support
-
-| Editor type | Status |
-|---|---|
-| Plain `textarea` / `input` (GitHub, forums, most forms) | Supported |
-| `contenteditable` rich editors (Gmail, LinkedIn, X) | Supported |
-| Shadow-DOM web components (Reddit) | Supported |
-| Google Docs (canvas rendering; requires a Google-whitelisted extension ID) | Not supported — use the right-click rewrite instead |
+- **Android:** [Get it on Google Play](https://play.google.com/store/apps/details?id=org.matily.gemtype) (open source: [GemType-Keyboard](https://github.com/MatilyLabs/GemType-Keyboard))
+- **iPhone:** [Download on the App Store](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396)
 
 ## Privacy
 
-- The text you are editing is sent **only** to `generativelanguage.googleapis.com` (Google's Gemini API) using your own key — see [PRIVACY.md](PRIVACY.md)
-- Your API key lives in `chrome.storage.local` on your device; it is never synced or transmitted anywhere else
-- Password fields are never read, and payment or one-time-code fields are skipped at the code level
-- No accounts, no telemetry, no third-party servers
-- Sites can exclude a field from GemType with `data-gemtype="false"` (GemType does not honor Grammarly's `data-gramm` attributes, since it draws an overlay and never modifies the editor)
-
-## Project structure
-
-```
-extension/              the browser extension (MV3, no build step) — Chrome, Edge, Firefox
-├── manifest.json           Chrome / Edge manifest
-├── manifest.firefox.json   Firefox (AMO) manifest — event-page background + gecko id
-└── src/
-    ├── background.js       Gemini API calls, cache, rate limiting
-    ├── content/
-    │   ├── content.js      field discovery + checking loop
-    │   ├── overlay.js      underlines, badge, suggestion card
-    │   ├── refine.js       selection rewrite toolbar
-    │   └── util.js         text extraction, offset maps, safe replacement
-    ├── options.html/js     API key, model, language, disabled sites
-    └── popup.html/js       global + per-site toggles
-msword/                 the Microsoft Word add-in (Office.js task pane)
-├── manifest.xml            Office add-in manifest
-└── src/taskpane/          task pane UI + Office.js integration + Gemini calls
-desktop/                the menu-bar/tray app (Electron) — macOS, Windows, Linux
-├── main.js                tray, global hotkey, clipboard capture, paste-back
-├── gemini.js              Gemini API calls (Node; unit-tested)
-├── popup.html             result overlay (Replace / Copy / rewrite chips)
-└── settings.html          API key, model, language, About
-brand/                  icon source vectors + generate.sh (all surface icons)
-safari/                 Xcode wrapper project (generated)
-assets/                 logo, hero animation, screenshots
-test/
-├── test-page.html      manual test fields (incl. scroll + opt-out cases)
-└── harness.html        automated harness with a mocked Gemini backend
-```
-
-## Development
-
-```bash
-# run the mock harness (no API key needed)
-python3 -m http.server 8377
-open http://localhost:8377/test/harness.html
-```
-
-**Firefox** — load `extension/` with `manifest.firefox.json` via `about:debugging` → **Load Temporary Add-on**. The code auto-aliases Firefox's promise-based `browser.*` to `chrome.*`, so one codebase runs in both.
-
-**Microsoft Word add-in** — see [`msword/README.md`](msword/README.md): `npm install && npm run certs && npm start`, then sideload `msword/manifest.xml` into Word.
-
-<a name="safari"></a>**Safari build** (requires Xcode):
-
-```bash
-xcrun safari-web-extension-converter extension --project-location safari --app-name GemType --macos-only
-xcodebuild -project safari/GemType/GemType.xcodeproj -scheme GemType -configuration Debug build
-```
-
-Then in Safari: Settings → Developer → **Allow unsigned extensions** → enable GemType.
-
-## Changelog
-
-Full notes on the [releases page](../../releases).
-
-- **v1.0.0** (browser extension) — **GemType 1.0, now GPL-3.0 and free forever.** **On demand checking** (new default: check with the badge or **Ctrl/⌘ + Shift + Space**; Auto and "Auto for 15 min" modes too) to save your free Gemini quota; only changed paragraphs are re-sent; **custom rules**; new **My** (rewrite in your own style) and **English** (translate any language, American or British) buttons, with **Fix** first and keeping your tone; **Accept all**; rewrites now show a **preview** (Replace, Copy, Try again) before changing your text; a **welcome page** for new installs; a **dashboard** in Settings with words checked, fixes, rewrites, Gemini usage and limit status (all stored locally); clear daily-limit messages; Teams/CKEditor fix on Chromium (thanks [@mantriyogesh](https://github.com/mantriyogesh)); new Gemini models (`gemini-3.5-flash-lite` default).
-- **v0.1.5** — Works in LinkedIn's post composer and other pop-up / shadow-DOM editors (grammar checking *and* the rewrite toolbar); new **About** section in Settings (version, star on GitHub, check for updates); refreshed icon.
-- **v0.1.4** — **Desktop app** (macOS · Windows · Linux) and **Microsoft Word** add-in; unified blue-check icon across every surface.
-
-## Roadmap
-
-- [x] **Chrome Web Store** — [live](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh)
-- [x] **Edge Add-ons** — [live](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel)
-- [x] **Firefox (AMO)** — [live](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/)
-- [x] **Microsoft Word add-in** — working; AppSource submission in progress
-- [x] **Desktop app (macOS · Windows · Linux)** — menu-bar/tray app, works in any application via a global hotkey ([download](../../releases/latest))
-- [ ] Safari App Store (build ready)
-- [x] **Android keyboard** — [live on Google Play](https://play.google.com/store/apps/details?id=org.matily.gemtype) ([source](https://github.com/MatilyLabs/GemType-Keyboard))
-- [x] **iOS keyboard** — [live on the App Store](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396)
-- [ ] Hosted-key option (proxy backend) — zero setup for end users
-- [ ] Tone and style preferences per site
-
-## Responsible use
-
-GemType sends the text you are actively editing to Google's Gemini API for
-analysis. Do not use it in fields containing passwords, secrets, or text you
-are not comfortable processing with a cloud AI service — or disable it for
-those sites with one click.
+- The text you ask GemType to check is sent **only** to Google's Gemini API (`generativelanguage.googleapis.com`), with your own key. There is no GemType server.
+- Your API key, settings and dashboard counts stay on your device and are never uploaded.
+- Password, payment and one-time-code fields are never read.
+- On Google's free tier, Google may use requests to improve its products; a paid key isn't used that way.
+- Full details: [PRIVACY.md](PRIVACY.md).
 
 ## Frequently asked questions
 
-**Is GemType a free alternative to Grammarly?**
-Yes. GemType provides live grammar checking, one-click fixes, and AI rewrites
-on any website at no cost — you supply your own free Gemini API key from
-Google AI Studio. There is no subscription and no premium tier.
+**Is GemType really free?**
+Yes. GemType is free forever and open source. It uses your own Gemini API key from Google AI Studio, which has a free tier with no credit card. There is no subscription, premium plan or ads.
 
-**Is the Gemini API key really free? Do I need a credit card?**
-Google AI Studio issues free API keys with no credit card required. The free
-quota is far more than one person needs for everyday typing; GemType is built
-to stay inside it (debounced checks, caching, sentence-scoped re-checks).
+**What is the best free alternative to Grammarly?**
+GemType is a free, open-source Grammarly alternative that checks grammar and spelling, rewrites text in different tones, and translates to English on any website, in Word, on the desktop, and on Android and iPhone — with no account and no tracking.
+
+**How do I get a free Gemini API key?**
+Go to [aistudio.google.com/apikey](https://aistudio.google.com/apikey), sign in with a Google account, accept the terms, and click **Create API key**. Copy the key and paste it into GemType's welcome page or Settings. No credit card is needed.
+
+**How do I check my text with GemType?**
+Click the small **G** badge in the corner of the text box, or press **Ctrl + Shift + Space** (**⌘ + Shift + Space** on Mac). Mistakes are underlined and listed; click **Accept** or **Accept all**. To check automatically while you type, choose **Auto** in the GemType popup.
+
+**Can GemType translate to English?**
+Yes. Select any text and click **English**. GemType translates Bangla, Hindi, Urdu, Spanish, Arabic and many other languages — including romanized text like Banglish and Hinglish — into natural English. You choose American or British English in Settings.
+
+**Can GemType write in my own style?**
+Yes. Describe how you write once in Settings → Custom rules → **My style** (for example "friendly, short sentences, no emojis"). Then select text and click **My**.
 
 **Is GemType safe? Where does my text go?**
-The text you edit is sent directly from your browser to Google's Gemini API,
-authenticated with your own key. There is no GemType server, no account, and
-no analytics — the developers never see your text. Password, payment, and
-one-time-code fields are never read. See [PRIVACY.md](PRIVACY.md).
+Your text goes directly from your device to Google's Gemini API, using your own key. GemType has no server, no account and no analytics, so its makers never see your text. The code is open source, so anyone can check it.
 
-**Which websites does it work on?**
-Any site with a normal text field or rich editor: Gmail, LinkedIn, X
-(Twitter), Reddit, GitHub, forums, web mail, CMS editors. Google Docs is the
-one notable exception, because it renders documents to a canvas and restricts
-its annotation API to Google-whitelisted vendors.
+**Which websites does GemType work on?**
+Any website with a normal text box or rich editor, such as Gmail, LinkedIn (including the post window), X, Reddit, Microsoft Teams, GitHub, forums and blog editors. Google Docs is not supported, because Google only allows approved vendors to work inside Docs.
 
-**Does it work in languages other than English?**
-Yes. GemType auto-detects the language you are writing in and checks it with
-the same model — Spanish, French, German, Portuguese, Bengali, Hindi, Arabic,
-Chinese, Japanese, and anything else Gemini understands. You can also pin a
-language in settings.
+**Does GemType work in other languages?**
+Yes. It detects the language you write in and checks it in that language — Spanish, French, German, Portuguese, Bengali, Hindi, Arabic, Chinese, Japanese and any other language Gemini understands. You can also pick a language in Settings.
 
-**How is this different from pasting my text into ChatGPT or Gemini?**
-GemType works where you type: mistakes are underlined in place while you
-write, fixes apply with one click and native undo, and each fix triggers an
-automatic re-check of the sentence. No copy-paste round trips.
+**Does GemType work on iPhone and Android?**
+Yes. GemType is available as a keyboard on [Android](https://play.google.com/store/apps/details?id=org.matily.gemtype) and [iPhone](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396) that fixes and rewrites text in any app. A Safari extension is coming soon.
 
-**Does it slow down my browser?**
-No. The content script stays inert until you focus a text field, checks only
-after you pause typing, and draws its UI on a lightweight overlay without
-touching the page's own editor.
+**How is GemType different from pasting text into ChatGPT or Gemini?**
+GemType works where you type. Mistakes are shown in place, fixes apply with one click and normal undo, and rewrites replace the selected text — no copying and pasting between tabs.
 
-**Can it run fully offline or with a local model?**
-Not yet. A pluggable backend (including self-hosted models) is on the
-roadmap.
+**Will GemType use up my free Gemini quota?**
+Not with normal use. GemType's default **On demand** mode only sends text when you ask, it sends only the paragraphs that changed, and accepting a fix costs nothing. If Google's daily limit is ever reached, GemType tells you when it resets.
+
+**How can a website turn GemType off for a field?**
+Add `data-gemtype="false"` to the field or a parent element.
+
+## What's new in 1.0
+
+On demand checking with **Ctrl/⌘ + Shift + Space**, **Accept all**, the new **My** and **English** rewrite buttons with a preview before anything changes, custom rules, a settings dashboard, a welcome page, LinkedIn post-window support, and a Microsoft Teams fix (thanks [@mantriyogesh](https://github.com/mantriyogesh)). Full notes on the [releases page](../../releases).
+
+**Coming next:** GemType for Safari, and a choice of AI providers.
 
 ## Contributing
 
-Contributions are welcome — this project went from an empty folder to a
-working extension in a day, and there is plenty of interesting work left:
-
-- Compatibility fixes for stubborn editors (report a site, ideally with a
-  reduced test case in `test/test-page.html`)
-- Translations for the UI
-- The Word add-in's native **annotation API** (inline squiggly underlines in Word)
-- The proxy backend for a zero-setup hosted mode
-- Help with the [Android keyboard](https://github.com/MatilyLabs/GemType-Keyboard) or the iOS keyboard
-
-Open an issue to discuss anything bigger before you build it. If GemType
-helped you, starring the repository genuinely helps others find it.
-
-## Sponsor this project
-
-GemType is free, open source, and unfunded. If you or your company find it
-useful, consider sponsoring:
-**[github.com/sponsors/riponcm](https://github.com/sponsors/riponcm)**. Every
-sponsor is credited in this README.
+Found a website where GemType doesn't work, or have an idea? [Open an issue](../../issues). Pull requests are welcome — the browser extension is in [`extension/`](extension/), the desktop app in [`desktop/`](desktop/), and the Word add-in in [`msword/`](msword/). If GemType helps you, **starring the repository** helps others find it.
 
 ## License
 
-[GNU GPL v3](LICENSE) © 2026 Ripon Chandra Malo (Matily), with the additional terms in [NOTICE](NOTICE).
+GemType is free and open source under the [GNU GPL v3](LICENSE), © 2026 Ripon Chandra Malo (Matily), with the additional terms in [NOTICE](NOTICE).
 
-GemType is free forever. You can use, study, change and share the code, and your versions must stay open source under the GPL. **If you reuse GemType's code, credit it:** any copy or modified version with a user interface must show *"Based on GemType by Ripon Chandra Malo (Matily)"* with a link to this repository, for example on its About screen ([NOTICE](NOTICE), GPL-3.0 section 7(b)).
+You can use, study, change and share the code, and your versions must stay open source under the GPL. **If you reuse GemType's code, credit it:** any copy or modified version with a user interface must show *"Based on GemType by Ripon Chandra Malo (Matily)"* with a link to this repository, for example on its About screen.
 
-The GemType name and logo are trademarks and are **not** covered by the license — see [TRADEMARK.md](TRADEMARK.md). Please give forks their own name and icon.
-
-Versions up to 0.1.5 were released under the Apache License 2.0 and stay available under it; GemType is GPL-3.0 from v1.0.0.
+The GemType name and logo are trademarks and are not covered by the license — see [TRADEMARK.md](TRADEMARK.md). Please give forks their own name and icon.
 
 ---
 
 <div align="center">
 
-Another open source product from <b>Matily</b> — open source software studio.
+Made by <b><a href="https://matily.org">Matily</a></b> — open source software studio.
 
 </div>
