@@ -159,8 +159,8 @@ GT.domPosToTextOffset = function (map, container, offset) {
 
 // ---------------------------------------------------------------------------
 // Replacement. execCommand('insertText') is deprecated-but-universal and is
-// the only path that (a) preserves the native undo stack and (b) fires
-// beforeinput/input so React, Vue, and rich editors treat it as a user edit.
+// the only path that (a) preserves the native undo stack and (b) fires input
+// so React and Vue treat it as a user edit.
 
 GT.setNativeValue = function (el, value) {
   const proto = GT.isTextarea(el)
@@ -169,6 +169,33 @@ GT.setNativeValue = function (el, value) {
   const setter = Object.getOwnPropertyDescriptor(proto, 'value').set;
   setter.call(el, value);
   el.dispatchEvent(new Event('input', { bubbles: true }));
+};
+
+// CKEditor 5 on Chromium (Teams) reverts execCommand edits: Chromium fires no
+// beforeinput for them. It does apply a synthetic beforeinput with targetRanges.
+// Returns true: applied; false: untouched, use execCommand; null: wrong edit.
+GT.dispatchInsertText = function (field, range, start, end, replacement, before) {
+  let ev;
+  try {
+    ev = new InputEvent('beforeinput', {
+      inputType: 'insertText',
+      data: replacement,
+      bubbles: true,
+      cancelable: true,
+      targetRanges: [new StaticRange(range)],
+    });
+  } catch {
+    return false;
+  }
+  // Without targetRanges the editor uses its own, stale selection.
+  if (!ev.getTargetRanges().length) return false;
+  field.dispatchEvent(ev);
+  const after = GT.extract(field).text;
+  if (after === before) return false;
+  // CKEditor renders runs of spaces as NBSP.
+  const norm = (t) => t.replace(/\u00a0/g, ' ');
+  const expected = before.slice(0, start) + replacement + before.slice(end);
+  return norm(after) === norm(expected) ? true : null;
 };
 
 // Replace [start,end) in the field with `replacement`.
@@ -196,13 +223,15 @@ GT.replaceRange = function (field, start, end, replacement) {
   }
 
   // contenteditable: re-extract for a fresh map, select the range, insert.
-  const { map } = GT.extract(field);
+  const { text: before, map } = GT.extract(field);
   const range = GT.textRangeToDomRange(map, start, end);
   if (!range) return false;
   field.focus();
   const sel = window.getSelection();
   sel.removeAllRanges();
   sel.addRange(range);
+  const applied = GT.dispatchInsertText(field, range, start, end, replacement, before);
+  if (applied !== false) return applied === true;
   let ok = false;
   try {
     ok = document.execCommand('insertText', false, replacement);
