@@ -14,10 +14,11 @@
 [![Google Play](https://img.shields.io/badge/Google%20Play-Live-34A853?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=org.matily.gemtype)
 [![App Store](https://img.shields.io/badge/App%20Store-Live-0D96F6?logo=appstore&logoColor=white)](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396)
 [![License: GPL v3](https://img.shields.io/badge/license-GPL%20v3-blue.svg)](LICENSE)
+[![Discord](https://img.shields.io/badge/Discord-Join%20for%20support-5865F2?logo=discord&logoColor=white)](https://discord.com/invite/sPc55HFsJ5)
 
 ### [➜ Install free: Chrome](https://chromewebstore.google.com/detail/linnnamnhkciekgpnegkcajcafmjlhgh) · [Edge](https://microsoftedge.microsoft.com/addons/detail/edbehlnmfcjhlbdlnmklicdoaopobbel) · [Firefox](https://addons.mozilla.org/firefox/addon/gemtype-ai-writing-assistant/) · [Android](https://play.google.com/store/apps/details?id=org.matily.gemtype) · [iPhone](https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396)
 
-**[gemtype.matily.org](https://gemtype.matily.org)** — the official site, with a live demo.
+**[gemtype.matily.org](https://gemtype.matily.org)** — the official site, with a live demo. · **[Join our Discord for support](https://discord.com/invite/sPc55HFsJ5)**
 
 <a href="https://play.google.com/store/apps/details?id=org.matily.gemtype"><img src="assets/badge-google-play.png" alt="Get GemType on Google Play" height="60" /></a>&nbsp;&nbsp;
 <a href="https://apps.apple.com/app/gemtype-grammar-checker-fix/id6830512396"><img src="assets/badge-app-store.svg" alt="Download GemType on the App Store" height="60" /></a>
@@ -169,6 +170,9 @@ GemType works where you type. Mistakes are shown in place, fixes apply with one 
 **Will GemType use up my free Gemini quota?**
 Not with normal use. GemType's default **On demand** mode only sends text when you ask, it sends only the paragraphs that changed, and accepting a fix costs nothing. If Google's daily limit is ever reached, GemType tells you when it resets.
 
+**Where can I get help with GemType?**
+Join the [GemType Discord server](https://discord.com/invite/sPc55HFsJ5) for support, questions and feature ideas, or open an issue on GitHub.
+
 **How can a website turn GemType off for a field?**
 Add `data-gemtype="false"` to the field or a parent element.
 
@@ -177,6 +181,10 @@ Add `data-gemtype="false"` to the field or a parent element.
 On demand checking with **Ctrl/⌘ + Shift + Space**, **Accept all**, the new **My** and **English** rewrite buttons with a preview before anything changes, custom rules, a settings dashboard, a welcome page, LinkedIn post-window support, and a Microsoft Teams fix (thanks [@mantriyogesh](https://github.com/mantriyogesh)). Full notes on the [releases page](../../releases).
 
 **Coming next:** GemType for Safari, and a choice of AI providers.
+
+## Get help
+
+Questions, problems or ideas? **[Join the GemType Discord server](https://discord.com/invite/sPc55HFsJ5)** — ask anything and get help from the community and the developer. You can also [open an issue on GitHub](../../issues).
 
 ## Contributing
 
